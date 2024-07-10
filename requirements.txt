@@ -5,3 +5,4 @@ typing-extensions>=4.12.2
 devtools>=0.12.2
 python-dotenv>=1.0.1
 pytest>=8.2.2
+typing>=3.10
