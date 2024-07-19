@@ -2,17 +2,18 @@ from setuptools import setup, find_packages
 from modelmetry.version import SDK_VERSION
 
 long_description = """
-Test description
+The Modelmetry SDK provides a Python interface to interact with the Modelmetry API, 
+allowing developers to easily integrate Modelmetry's capabilities into their applications.
 """
 
 setup(
-    name="modelmetry0-sdk",
+    name="modelmetry-test1-sdk",
     version=SDK_VERSION,
     description="Official Python library for Modelmetry",
     long_description=long_description,
-    url="https://github.com/modelmetry/modelmetry-sdk-python",
-    author="Modelmetry",
-    author_email="support@modelmetry.io",
+    url="https://github.com/test",
+    author="test",
+    author_email="support@modelmetry.com",
     license="Apache License 2.0",
     packages=find_packages(),
     include_package_data=True,
