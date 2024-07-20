@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.simple_message import SimpleMessage
 from modelmetry.openapi.models.simple_options import SimpleOptions
 from typing import Optional, Set
@@ -28,7 +28,7 @@ class ChatInput(BaseModel):
     """
     ChatInput
     """ # noqa: E501
-    messages: List[SimpleMessage] = Field(alias="Messages")
+    messages: Optional[List[SimpleMessage]] = Field(default=None, alias="Messages")
     settings: SimpleOptions = Field(alias="Settings")
     __properties: ClassVar[List[str]] = ["Messages", "Settings"]
 

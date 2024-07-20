@@ -96,11 +96,6 @@ class SimpleMessage(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['ToolCalls'] = _items
-        # set to None if tool_call_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.tool_call_id is None and "tool_call_id" in self.model_fields_set:
-            _dict['ToolCallID'] = None
-
         return _dict
 
     @classmethod

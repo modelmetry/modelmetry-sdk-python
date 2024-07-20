@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**messages** | [**List[SimpleMessage]**](SimpleMessage.md) |  | 
+**messages** | [**List[SimpleMessage]**](SimpleMessage.md) |  | [optional] 
 **settings** | [**SimpleOptions**](SimpleOptions.md) |  | 
 
 ## Example

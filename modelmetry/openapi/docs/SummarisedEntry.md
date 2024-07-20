@@ -7,10 +7,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **duration_ms** | **int** |  | 
 **evaluator_id** | **str** |  | 
+**findings** | [**List[SimplifiedFinding]**](SimplifiedFinding.md) |  | 
 **id** | **str** |  | 
 **instance_id** | **str** |  | 
 **message** | **str** |  | 
-**metrics** | [**List[MetricValue]**](MetricValue.md) |  | 
 **outcome** | **str** |  | 
 **score** | **float** |  | 
 **skip** | **str** |  | 

@@ -75,6 +75,7 @@ All URIs are relative to *http://api.modelmetry.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**call_guardrail**](modelmetry/openapi/docs/DefaultApi.md#call_guardrail) | **POST** /calls | CallGuardrail
+*DefaultApi* | [**ingest_signals_v1**](modelmetry/openapi/docs/DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
 
 
 ## Documentation For Models
@@ -83,21 +84,38 @@ Class | Method | HTTP request | Description
  - [CallGuardrailRequestBody](modelmetry/openapi/docs/CallGuardrailRequestBody.md)
  - [ChatInput](modelmetry/openapi/docs/ChatInput.md)
  - [ChatOutput](modelmetry/openapi/docs/ChatOutput.md)
+ - [CompletionPayload](modelmetry/openapi/docs/CompletionPayload.md)
+ - [CompletionPayloadContext](modelmetry/openapi/docs/CompletionPayloadContext.md)
+ - [CreateEventParams](modelmetry/openapi/docs/CreateEventParams.md)
+ - [CreateFindingParams](modelmetry/openapi/docs/CreateFindingParams.md)
+ - [CreateFindingParamsValue](modelmetry/openapi/docs/CreateFindingParamsValue.md)
+ - [CreateSessionParams](modelmetry/openapi/docs/CreateSessionParams.md)
+ - [CreateSpanParams](modelmetry/openapi/docs/CreateSpanParams.md)
+ - [CreateTraceParams](modelmetry/openapi/docs/CreateTraceParams.md)
+ - [EmbeddingsPayload](modelmetry/openapi/docs/EmbeddingsPayload.md)
  - [ErrorDetail](modelmetry/openapi/docs/ErrorDetail.md)
  - [ErrorModel](modelmetry/openapi/docs/ErrorModel.md)
+ - [Event](modelmetry/openapi/docs/Event.md)
+ - [Finding](modelmetry/openapi/docs/Finding.md)
  - [Function](modelmetry/openapi/docs/Function.md)
+ - [IngestSignalsV1RequestBody](modelmetry/openapi/docs/IngestSignalsV1RequestBody.md)
  - [Input](modelmetry/openapi/docs/Input.md)
- - [MetricValue](modelmetry/openapi/docs/MetricValue.md)
  - [Output](modelmetry/openapi/docs/Output.md)
  - [Payload](modelmetry/openapi/docs/Payload.md)
+ - [RetrievalPayload](modelmetry/openapi/docs/RetrievalPayload.md)
+ - [RetrievalQuery](modelmetry/openapi/docs/RetrievalQuery.md)
+ - [RetrievedItem](modelmetry/openapi/docs/RetrievedItem.md)
  - [SimpleMessage](modelmetry/openapi/docs/SimpleMessage.md)
  - [SimpleOptions](modelmetry/openapi/docs/SimpleOptions.md)
  - [SimplePart](modelmetry/openapi/docs/SimplePart.md)
+ - [SimplifiedFinding](modelmetry/openapi/docs/SimplifiedFinding.md)
+ - [Span](modelmetry/openapi/docs/Span.md)
  - [SummarisedEntry](modelmetry/openapi/docs/SummarisedEntry.md)
  - [TextInput](modelmetry/openapi/docs/TextInput.md)
  - [TextOutput](modelmetry/openapi/docs/TextOutput.md)
  - [Tool](modelmetry/openapi/docs/Tool.md)
  - [ToolCall](modelmetry/openapi/docs/ToolCall.md)
+ - [TraceWithSpans](modelmetry/openapi/docs/TraceWithSpans.md)
 
 
 <a id="documentation-for-authorization"></a>

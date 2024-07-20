@@ -48,8 +48,8 @@ class Call(BaseModel):
     @field_validator('outcome')
     def outcome_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['pass', 'fail', 'skip', 'error']):
-            raise ValueError("must be one of enum values ('pass', 'fail', 'skip', 'error')")
+        if value not in set(['pass', 'fail', 'error']):
+            raise ValueError("must be one of enum values ('pass', 'fail', 'error')")
         return value
 
     model_config = ConfigDict(

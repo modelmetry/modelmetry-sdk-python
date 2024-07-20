@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from modelmetry.openapi.models.metric_value import MetricValue
+from modelmetry.openapi.models.simplified_finding import SimplifiedFinding
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,15 +29,15 @@ class SummarisedEntry(BaseModel):
     """ # noqa: E501
     duration_ms: StrictInt = Field(alias="DurationMs")
     evaluator_id: StrictStr = Field(alias="EvaluatorID")
+    findings: List[SimplifiedFinding] = Field(alias="Findings")
     id: StrictStr = Field(alias="ID")
     instance_id: Optional[StrictStr] = Field(alias="InstanceID")
     message: StrictStr = Field(alias="Message")
-    metrics: List[MetricValue] = Field(alias="Metrics")
     outcome: StrictStr = Field(alias="Outcome")
     score: Optional[Union[StrictFloat, StrictInt]] = Field(alias="Score")
     skip: StrictStr = Field(alias="Skip")
     tenant_id: StrictStr = Field(alias="TenantID")
-    __properties: ClassVar[List[str]] = ["DurationMs", "EvaluatorID", "ID", "InstanceID", "Message", "Metrics", "Outcome", "Score", "Skip", "TenantID"]
+    __properties: ClassVar[List[str]] = ["DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "TenantID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,13 +78,13 @@ class SummarisedEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in metrics (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in findings (list)
         _items = []
-        if self.metrics:
-            for _item in self.metrics:
+        if self.findings:
+            for _item in self.findings:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict['Metrics'] = _items
+            _dict['Findings'] = _items
         # set to None if instance_id (nullable) is None
         # and model_fields_set contains the field
         if self.instance_id is None and "instance_id" in self.model_fields_set:
@@ -109,10 +109,10 @@ class SummarisedEntry(BaseModel):
         _obj = cls.model_validate({
             "DurationMs": obj.get("DurationMs"),
             "EvaluatorID": obj.get("EvaluatorID"),
+            "Findings": [SimplifiedFinding.from_dict(_item) for _item in obj["Findings"]] if obj.get("Findings") is not None else None,
             "ID": obj.get("ID"),
             "InstanceID": obj.get("InstanceID"),
             "Message": obj.get("Message"),
-            "Metrics": [MetricValue.from_dict(_item) for _item in obj["Metrics"]] if obj.get("Metrics") is not None else None,
             "Outcome": obj.get("Outcome"),
             "Score": obj.get("Score"),
             "Skip": obj.get("Skip"),
