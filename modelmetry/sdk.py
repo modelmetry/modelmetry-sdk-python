@@ -96,5 +96,5 @@ class Client:
         )
             
         res = self.api_instance.call_guardrail_with_http_info(body)
-        output = GuardrailCallOutput(res[0])
+        output = GuardrailCallOutput(res.data)
         return output
