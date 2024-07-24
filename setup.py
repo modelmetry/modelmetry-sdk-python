@@ -7,11 +7,11 @@ allowing developers to easily integrate Modelmetry's capabilities into their app
 """
 
 setup(
-    name="modelmetry-test1-sdk",
+    name="modelmetry-python-sdk",
     version=SDK_VERSION,
     description="Official Python library for Modelmetry",
     long_description=long_description,
-    url="https://github.com/test",
+    url="https://modelmetry.com",
     author="test",
     author_email="support@modelmetry.com",
     license="Apache License 2.0",
