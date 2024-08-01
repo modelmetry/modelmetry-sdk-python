@@ -1,3 +1,7 @@
+build:
+	@echo "Building the package..."
+	@python -m build
+
 pipi:
 	@echo "Installing pip dependencies..."
 	@pip install -r requirements.txt
