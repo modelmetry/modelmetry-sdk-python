@@ -7,7 +7,7 @@ allowing developers to easily integrate Modelmetry's capabilities into their app
 """
 
 setup(
-    name="modelmetry-python-sdk",
+    name="modelmetry-sdk",
     version=SDK_VERSION,
     description="Official Python library for Modelmetry",
     long_description=long_description,
