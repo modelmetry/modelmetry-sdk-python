@@ -20,31 +20,6 @@ class TestEvent(unittest.TestCase):
     self.assertEqual(event.at, at)
     self.assertEqual(event.attributes, attributes)
 
-  def test_set_attribute(self):
-    event = Event("test_event")
-    key = "key"
-    value = "value"
-
-    event.set_attribute(key, value)
-
-    self.assertEqual(event.attributes[key], value)
-
-  def test_merge_attributes(self):
-    event = Event("test_event")
-    attributes = {"key1": "value1", "key2": "value2"}
-
-    event.merge_attributes(attributes)
-
-    self.assertEqual(event.attributes, attributes)
-
-  def test_put_attributes(self):
-    event = Event("test_event")
-    attributes = {"key1": "value1", "key2": "value2"}
-
-    event.put_attributes(attributes)
-
-    self.assertEqual(event.attributes, attributes)
-
   def test_to_ingest_params(self):
     name = "test_event"
     trace_id = "12345"

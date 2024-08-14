@@ -3,7 +3,7 @@ sys.path.append('.')
 
 import uuid
 
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 from datetime import datetime
 from modelmetry.openapi import CreateEventParams
 
@@ -14,7 +14,7 @@ class Event:
     trace_id: Optional[str] = None,
     span_id: Optional[str] = None,
     at: Optional[datetime] = None,
-    attributes: Optional[Dict[str, str]] = None,
+    attributes: Optional[Dict[str, Any]] = None,
   ) -> None:
     self.xid = str(uuid.uuid4())
     self.name = name
@@ -23,25 +23,13 @@ class Event:
     self.at = at or datetime.now()
     self.attributes = attributes or {}
 
-  def set_attribute(self, key: str, value: str) -> "Event":
-    self.attributes[key] = value
-    return self
-
-  def merge_attributes(self, attributes: Dict[str, str]) -> "Event":
-    self.attributes.update(attributes)
-    return self
-
-  def put_attributes(self, attributes: Dict[str, str]) -> "Event":
-    self.attributes = attributes
-    return self
-
-  @staticmethod
-  def from_span(span: "Span", name: str) -> "Event":
-    return Event(
-      name=name,
-      trace_id=span.get_trace_id(),
-      span_id=span.get_xid(),
-    )
+  # @staticmethod
+  # def from_span(span: "Span", name: str) -> "Event":
+  #   return Event(
+  #     name=name,
+  #     trace_id=span.get_trace_id(),
+  #     span_id=span.get_xid(),
+  #   )
 
   def to_ingest_params(self) -> CreateEventParams:
     return CreateEventParams(
