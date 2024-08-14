@@ -17,7 +17,6 @@ Example:
     >>> body = CallGuardrailRequestBody(...)
     >>> response = client.call_guardrail(body)
 """
-
 from modelmetry import openapi
 from modelmetry.openapi.models import CallGuardrailRequestBody, Call
 
@@ -96,5 +95,6 @@ class Client:
         )
             
         res = self.api_instance.call_guardrail_with_http_info(body)
-        output = GuardrailCallOutput(res.data)
+
+        output = GuardrailCallOutput(res[0])
         return output
