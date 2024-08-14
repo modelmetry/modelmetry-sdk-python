@@ -11,7 +11,7 @@ specdl:
 	# @curl -O https://api.modelmetry.com/sdk/spec.yaml
 	@curl -O http://0.0.0.0:8888/sdk/spec.yaml
 
-specgen:
+specgen: specdl
 	@echo "Generating OpenAPI spec..."
 	@npx @openapitools/openapi-generator-cli generate \
 		-i spec.yaml \
