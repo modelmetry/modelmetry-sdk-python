@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.create_finding_params_value import CreateFindingParamsValue
 from typing import Optional, Set
@@ -41,6 +41,16 @@ class CreateFindingParams(BaseModel):
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["At", "Comment", "Description", "EntryID", "Metadata", "Name", "Source", "SpanID", "TraceID", "Value", "XID"]
+
+    @field_validator('source')
+    def source_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['annotation', 'api', 'enduser', 'evaluator']):
+            raise ValueError("must be one of enum values ('annotation', 'api', 'enduser', 'evaluator')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,

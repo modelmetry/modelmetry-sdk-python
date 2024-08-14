@@ -36,7 +36,9 @@ components:
         SummarisedEntries:
           items:
             $ref: "#/components/schemas/SummarisedEntry"
-          type: array
+          type:
+            - array
+            - "null"
         TenantID:
           type: string
         UpdatedAt:
@@ -85,7 +87,9 @@ components:
         Messages:
           items:
             $ref: "#/components/schemas/SimpleMessage"
-          type: array
+          type:
+            - array
+            - "null"
         Settings:
           $ref: "#/components/schemas/SimpleOptions"
       required:
@@ -97,7 +101,9 @@ components:
         Messages:
           items:
             $ref: "#/components/schemas/SimpleMessage"
-          type: array
+          type:
+            - array
+            - "null"
         Settings:
           $ref: "#/components/schemas/SimpleOptions"
       required:
@@ -128,7 +134,9 @@ components:
         RetrievedItems:
           items:
             $ref: "#/components/schemas/RetrievedItem"
-          type: array
+          type:
+            - array
+            - "null"
       required:
         - ParsedSystem
         - RetrievedItems
@@ -190,6 +198,11 @@ components:
         Name:
           type: string
         Source:
+          enum:
+            - annotation
+            - api
+            - enduser
+            - evaluator
           type:
             - string
             - "null"
@@ -306,7 +319,9 @@ components:
         Inputs:
           items:
             type: string
-          type: array
+          type:
+            - array
+            - "null"
         Options:
           $ref: "#/components/schemas/SimpleOptions"
       required:
@@ -344,7 +359,9 @@ components:
           description: Optional list of individual error details
           items:
             $ref: "#/components/schemas/ErrorDetail"
-          type: array
+          type:
+            - array
+            - "null"
         instance:
           description: A URI reference that identifies the specific occurrence of the problem.
           examples:
@@ -511,23 +528,33 @@ components:
         Events:
           items:
             $ref: "#/components/schemas/CreateEventParams"
-          type: array
+          type:
+            - array
+            - "null"
         Findings:
           items:
             $ref: "#/components/schemas/CreateFindingParams"
-          type: array
+          type:
+            - array
+            - "null"
         Sessions:
           items:
             $ref: "#/components/schemas/CreateSessionParams"
-          type: array
+          type:
+            - array
+            - "null"
         Spans:
           items:
             $ref: "#/components/schemas/CreateSpanParams"
-          type: array
+          type:
+            - array
+            - "null"
         Traces:
           items:
             $ref: "#/components/schemas/CreateTraceParams"
-          type: array
+          type:
+            - array
+            - "null"
       type: object
     Input:
       additionalProperties: false
@@ -562,11 +589,15 @@ components:
         Queries:
           items:
             $ref: "#/components/schemas/RetrievalQuery"
-          type: array
+          type:
+            - array
+            - "null"
         Retrieved:
           items:
             $ref: "#/components/schemas/RetrievedItem"
-          type: array
+          type:
+            - array
+            - "null"
       required:
         - Queries
         - Retrieved
@@ -578,7 +609,9 @@ components:
           items:
             format: float
             type: number
-          type: array
+          type:
+            - array
+            - "null"
         Name:
           type: string
       required:
@@ -609,7 +642,9 @@ components:
           items:
             $ref: "#/components/schemas/SimplePart"
           minItems: 1
-          type: array
+          type:
+            - array
+            - "null"
         Name:
           type: string
         Role:
@@ -666,7 +701,9 @@ components:
         Tools:
           items:
             $ref: "#/components/schemas/Tool"
-          type: array
+          type:
+            - array
+            - "null"
         TopLogprobs:
           format: int64
           type: integer
@@ -753,13 +790,17 @@ components:
         Events:
           items:
             $ref: "#/components/schemas/Event"
-          type: array
+          type:
+            - array
+            - "null"
         Family:
           type: string
         Findings:
           items:
             $ref: "#/components/schemas/Finding"
-          type: array
+          type:
+            - array
+            - "null"
         ID:
           type: string
         Message:
@@ -821,7 +862,9 @@ components:
         Findings:
           items:
             $ref: "#/components/schemas/SimplifiedFinding"
-          type: array
+          type:
+            - array
+            - "null"
         ID:
           type: string
         InstanceID:
@@ -928,7 +971,9 @@ components:
         Spans:
           items:
             $ref: "#/components/schemas/Span"
-          type: array
+          type:
+            - array
+            - "null"
         Start:
           format: date-time
           type: string
