@@ -108,8 +108,8 @@ class Trace:
         finding = Finding(
             name=name,
             value=value,
-            trace_id=self.trace_id,
-            span_id=self.xid,
+            trace_id=self.xid,
+            span_id=None,
             comment=comment,
             description=description,
             metadata=metadata,
@@ -121,8 +121,8 @@ class Trace:
     def event(self, name: str) -> Event:
         event = Event(
             name=name,
-            trace_id=self.trace_id,
-            span_id=self.xid,
+            trace_id=self.xid,
+            span_id=None,
         )
         self.events.append(event)
         return event

@@ -27,14 +27,6 @@ class Event:
         self.at = at or datetime.now()
         self.attributes = attributes or {}
 
-    # @staticmethod
-    # def from_span(span: "Span", name: str) -> "Event":
-    #   return Event(
-    #     name=name,
-    #     trace_id=span.get_trace_id(),
-    #     span_id=span.get_xid(),
-    #   )
-
     def to_ingest_params(self) -> CreateEventParams:
         return CreateEventParams(
             xid=self.xid,
@@ -45,3 +37,11 @@ class Event:
             span_id=self.span_id,
             entry_id=None,
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, Event):
+            return False
+        return self.xid == other.xid
+
+    def __hash__(self):
+        return hash(self.xid)

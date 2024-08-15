@@ -51,3 +51,11 @@ class Finding:
             span_id=self.span_id,
             entry_id=None,
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, Finding):
+            return False
+        return self.xid == other.xid
+
+    def __hash__(self):
+        return hash(self.xid)

@@ -188,11 +188,7 @@ class BaseSpan:
             xid=self.xid,
             name=self.name,
             start=self.started_at.isoformat(),
-            end=(
-                self.ended_at.isoformat()
-                if self.ended_at
-                else datetime.now().isoformat()
-            ),
+            end=(self.ended_at.isoformat() if self.ended_at else None),
             message=self.message,
             trace_id=self.trace_id,
             attributes=self.attributes,
@@ -201,6 +197,14 @@ class BaseSpan:
             parent_id=self.parent_id,
             severity=self.severity,
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, BaseSpan):
+            return False
+        return self.xid == other.xid
+
+    def __hash__(self):
+        return hash(self.xid)
 
 
 class OtherSpan(BaseSpan):

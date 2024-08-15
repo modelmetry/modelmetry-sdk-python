@@ -17,8 +17,11 @@ Example:
     >>> body = CallGuardrailRequestBody(...)
     >>> response = client.call_guardrail(body)
 """
+
 from modelmetry import openapi
 from modelmetry.openapi.models import CallGuardrailRequestBody, Call
+from modelmetry.observability.client import ObservabilityClient
+
 
 class GuardrailCallOutput:
     """
@@ -39,9 +42,10 @@ class GuardrailCallOutput:
 
     def __str__(self):
         return f"GuardrailCallOutput(ID={self.Call.id}, Passed={self.Passed} Failed={self.Failed} Errored={self.Errored})"
-    
+
     def __repr__(self):
         return f"GuardrailCallOutput(ID={self.Call.id}, Passed={self.Passed} Failed={self.Failed} Errored={self.Errored})"
+
 
 class Client:
     """
@@ -58,6 +62,8 @@ class Client:
         call_guardrail(self, body: CallGuardrailRequestBody): Calls the guardrail endpoint with the provided body.
     """
 
+    _observability: ObservabilityClient = None
+
     def __init__(self, api_key: str, tenant_id: str, host="https://api.modelmetry.com"):
         """
         Initializes the Client with the necessary configuration.
@@ -69,15 +75,23 @@ class Client:
         """
         self.configuration = openapi.Configuration(
             host,
-            api_key={'apikeyAuth': api_key},
+            api_key={"apikeyAuth": api_key},
         )
         self.tenant_id = tenant_id
         self.api_key = api_key
         self.client = openapi.ApiClient(self.configuration)
         self.api_instance = openapi.DefaultApi(self.client)
 
+        self._observability = ObservabilityClient(
+            tenant_id=tenant_id,
+            backend=self.api_instance,
+        )
+
+    def observability(self) -> ObservabilityClient:
+        return self._observability
+
     def check(
-        self, 
+        self,
         guardrail_id: str,
         text_input: openapi.TextInput = None,
         chat_input: openapi.ChatInput = None,
@@ -93,7 +107,7 @@ class Client:
                 Output=openapi.Output(Text=text_output, Chat=chat_output),
             ),
         )
-            
+
         res = self.api_instance.call_guardrail_with_http_info(body)
 
         output = GuardrailCallOutput(res[0])
