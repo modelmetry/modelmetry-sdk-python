@@ -85,6 +85,12 @@ class BaseSpan:
         self.events.append(event)
         return event
 
+    def get_events(self) -> List[Event]:
+        return self.events
+
+    def get_findings(self) -> List[Finding]:
+        return self.findings
+
     def errored(self, error: Exception) -> None:
         self.event("errored")
         self.severity = "error"

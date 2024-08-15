@@ -173,6 +173,12 @@ class Trace:
     def get_descendant_spans_count(self) -> int:
         return len(self.get_descendant_spans())
 
+    def get_events(self) -> List[Event]:
+        return self.events
+
+    def get_findings(self) -> List[Finding]:
+        return self.findings
+
     def to_ingest_params(self) -> CreateTraceParams:
         return CreateTraceParams(
             xid=self.xid,
@@ -182,3 +188,14 @@ class Trace:
             attributes=self.attributes,
             session_id=None,
         )
+
+    def has_ended(self) -> bool:
+        return bool(self.ended_at)
+
+    def __eq__(self, other):
+        if not isinstance(other, Trace):
+            return False
+        return self.xid == other.xid
+
+    def __hash__(self):
+        return hash(self.xid)
