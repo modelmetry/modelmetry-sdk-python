@@ -50,25 +50,26 @@ class FlushManager:
                 continue  # If queue is empty, continue the loop
 
             except Exception as e:
-                print(f"Error sending traces: {e}")
+                # print(f"Error sending traces: {e}")
                 self.on_failure(list_of_traces)
                 self.queue.task_done()
 
     def _send_batch(self, batch: IngestSignalsV1RequestBody):
-        print("FlushManager._send_batch")
+        # print("FlushManager._send_batch")
         self.api.ingest_signals_v1(batch)
 
     def shutdown(self):
         self._running = False
 
         if self.queue.empty():
-            print("FlushManager.shutdown queue is empty, returning")
+            # print("FlushManager.shutdown queue is empty, returning")
             return
 
         self.worker_thread.join(timeout=2)
 
         if self.worker_thread.is_alive():
-            print("Warning: Worker thread did not exit cleanly")
+            pass
+            # print("Warning: Worker thread did not exit cleanly")
 
 
 class ObservabilityClient:
@@ -94,11 +95,12 @@ class ObservabilityClient:
         self.tenant_id = tenant_id
         self.backend = backend
         self.traces = []
-
-        self.traces_lock = threading.Lock()
-        self.task_manager = FlushManager(api=backend, on_failure=self._on_batch_failure)
         self.max_size_kb = max_size_kb
         self.flush_interval = flush_interval
+
+        # Initialize the flushing mechanism
+        self.traces_lock = threading.Lock()
+        self.task_manager = FlushManager(api=backend, on_failure=self._on_batch_failure)
         self.flush_timer = threading.Timer(self.flush_interval, self._timed_flush)
         self.flush_timer.start()
 
@@ -127,14 +129,13 @@ class ObservabilityClient:
             self.task_manager.process(batch)
 
     def _timed_flush(self):
-        print("_timed_flush")
+        self.flush_timer.cancel()
         if self.traces:
             self.flush_batch(self.traces)
         self.flush_timer = threading.Timer(self.flush_interval, self._timed_flush)
         self.flush_timer.start()
 
     def _on_batch_failure(self, failed_traces: List[Trace]):
-        print("_on_batch_failure")
         # with self.traces_lock:
         self.traces.extend(failed_traces)
 
@@ -150,7 +151,6 @@ class ObservabilityClient:
         self.flush_all()
         self.task_manager.shutdown()
         self.traces_lock = None
-        print("shutdown completed successfully")
 
     def get_traces(self) -> List[Trace]:
         return self.traces
