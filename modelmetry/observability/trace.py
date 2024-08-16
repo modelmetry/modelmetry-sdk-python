@@ -1,38 +1,10 @@
-# private readonly xid: string;
-# private readonly tenantId: string;
-# private name = "";
-# private attributes: schemas["TraceWithSpans"]["Attributes"] = {};
-# private startedAt: Date = new Date();
-# private endedAt: Date | undefined;
-
-# private spans: Span[] = [];
-# private events: Event[] = [];
-# private findings: Finding[] = [];
-
-# constructor({
-#   name,
-#   tenantId,
-#   attributes,
-# }: {
-#   name: string;
-#   tenantId: string;
-#   attributes?: schemas["TraceWithSpans"]["Attributes"];
-# }) {
-#   this.xid = crypto.randomUUID();
-#   this.tenantId = tenantId;
-#   this.name = name;
-#   this.attributes = attributes || {};
-#   this.startedAt = new Date();
-# }
-
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Union
 import uuid
 
 from modelmetry.observability.event import Event
 from modelmetry.observability.finding import Finding
 from modelmetry.observability.span import (
-    BaseSpan,
     CompletionSpan,
     EmbeddingsSpan,
     OtherSpan,
@@ -50,7 +22,7 @@ class Trace:
         self.tenant_id = tenant_id
         self.name = name
         self.attributes = attributes or {}
-        self.started_at = datetime.now()
+        self.started_at = datetime.now(timezone.utc)
         self.ended_at = None
 
         self.spans = []
@@ -131,7 +103,7 @@ class Trace:
 
     def end(self) -> "Trace":
         if not self.ended_at:
-            self.ended_at = datetime.now()
+            self.ended_at = datetime.now(timezone.utc)
         return self
 
     def set_ended_at_automatically(self) -> "Trace":
@@ -143,7 +115,7 @@ class Trace:
             children_ended_at = [date for date in children_ended_at if date]
 
             if not children_ended_at:
-                self.ended_at = datetime.now()
+                self.ended_at = datetime.now(timezone.utc)
                 return self
 
             max_children_ended_at = max(children_ended_at)
@@ -183,8 +155,8 @@ class Trace:
         return CreateTraceParams(
             xid=self.xid,
             name=self.name,
-            start=self.started_at.isoformat(),
-            end=self.ended_at.isoformat() if self.ended_at else None,
+            start=self.started_at,
+            end=self.ended_at or None,
             attributes=self.attributes,
             session_id=None,
         )

@@ -1,7 +1,7 @@
 import unittest
 
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 from modelmetry.observability.event import Event
 
 
@@ -10,7 +10,7 @@ class TestEvent(unittest.TestCase):
         name = "test_event"
         trace_id = "12345"
         span_id = "67890"
-        at = datetime.now()
+        at = datetime.now(timezone.utc)
         attributes = {"key1": "value1", "key2": "value2"}
 
         event = Event(
@@ -27,7 +27,7 @@ class TestEvent(unittest.TestCase):
         name = "test_event"
         trace_id = "12345"
         span_id = "67890"
-        at = datetime.now()
+        at = datetime.now(timezone.utc)
         attributes = {"key1": "value1", "key2": "value2"}
 
         event = Event(

@@ -1,5 +1,5 @@
 from typing import Any, Optional, Union
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 from typing import Dict, Optional
@@ -31,7 +31,7 @@ class Finding:
         self.source: str = source or "api"
         self.comment: Optional[str] = comment
         self.metadata = metadata or {}
-        self.at: datetime = at or datetime.now()
+        self.at: datetime = at or datetime.now(timezone.utc)
 
     def set_value(self, value: Union[int, bool, str]) -> "Finding":
         self.value = value
@@ -45,7 +45,7 @@ class Finding:
             comment=self.comment,
             description=self.description,
             source=self.source or "api",
-            at=self.at.isoformat(),
+            at=self.at,
             metadata=self.metadata,
             trace_id=self.trace_id,
             span_id=self.span_id,

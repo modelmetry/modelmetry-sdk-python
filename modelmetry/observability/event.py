@@ -5,7 +5,7 @@ sys.path.append(".")
 import uuid
 
 from typing import Any, Dict, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from modelmetry.openapi import CreateEventParams
 
 
@@ -24,7 +24,7 @@ class Event:
         self.trace_id = trace_id
         self.tenant_id = tenant_id
         self.span_id = span_id
-        self.at = at or datetime.now()
+        self.at = at or datetime.now(timezone.utc)
         self.attributes = attributes or {}
 
     def to_ingest_params(self) -> CreateEventParams:

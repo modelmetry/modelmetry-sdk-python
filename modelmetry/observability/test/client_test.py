@@ -12,7 +12,6 @@ class TestClientFlushing(unittest.TestCase):
 
     def tearDown(self):
         self.client.shutdown()
-        return super().tearDown()
 
     def test_flush_batch(self):
         t1 = self.client.trace("trace1").end()
@@ -49,7 +48,7 @@ class TestClientFlushing(unittest.TestCase):
         t2 = self.client.trace("trace2").end()
         traces = [t1, t2]
         self.client.traces = []
-        self.client._on_batch_failure(traces)
+        self.client._on_batch_failure(traces, Exception("test"))
         self.assertEqual(self.client.traces, traces)
 
     def test_get_traces(self):
@@ -80,21 +79,6 @@ class TestClientFlushing(unittest.TestCase):
             t1.xid: t1,
         }
         self.assertEqual(self.client.get_queued_traces(), [t2, t3])
-
-    def test_mark_as_transiting(self):
-        t1 = self.client.trace("trace1").end()
-        t2 = self.client.trace("trace2").end()
-        traces = [t1, t2]
-        self.client.mark_as_transiting(traces)
-        self.assertEqual(self.client.in_transit, {trace.xid: trace for trace in traces})
-
-    def test_unmark_as_transiting(self):
-        t1 = self.client.trace("trace1").end()
-        t2 = self.client.trace("trace2").end()
-        traces = [t1, t2]
-        self.client.in_transit = {trace.xid: trace for trace in traces}
-        self.client.unmark_as_transiting(traces)
-        self.assertEqual(self.client.in_transit, {})
 
     def test_calculate_kilobyte_size(self):
         size = self.client.calculate_kilobyte_size("test")

@@ -99,8 +99,8 @@ class TestTrace(unittest.TestCase):
         self.assertEqual(ingest_params.xid, trace.xid)
         self.assertEqual(ingest_params.name, trace.name)
         self.assertEqual(ingest_params.attributes, trace.attributes)
-        self.assertEqual(ingest_params.start.isoformat(), trace.started_at.isoformat())
-        self.assertEqual(ingest_params.end.isoformat(), trace.ended_at.isoformat())
+        self.assertEqual(ingest_params.start, trace.started_at)
+        self.assertEqual(ingest_params.end, trace.ended_at)
         self.assertIsNone(ingest_params.session_id)
 
     def test_setting_ended_at_automatically_when_there_are_child_spans(self):

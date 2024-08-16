@@ -1,37 +1,30 @@
-from asyncio import sleep
 import queue
 from threading import Lock, Timer
 import threading
-import time
 from typing import Any, Callable, Dict, List
-import uuid
 
-from modelmetry.observability.event import Event
-from modelmetry.observability.finding import Finding
 from modelmetry.observability.ingest import build_ingest_batch_from_traces
 from modelmetry.observability.trace import Trace
 import sys
 
 from modelmetry.openapi.api.default_api import DefaultApi
-from modelmetry.openapi.models.create_event_params import CreateEventParams
-from modelmetry.openapi.models.create_finding_params import CreateFindingParams
-from modelmetry.openapi.models.create_session_params import CreateSessionParams
-from modelmetry.openapi.models.create_span_params import CreateSpanParams
-from modelmetry.openapi.models.create_trace_params import CreateTraceParams
 from modelmetry.openapi.models.ingest_signals_v1_request_body import (
     IngestSignalsV1RequestBody,
 )
-from modelmetry.openapi.models.span import Span
 
 
 class FlushManager:
     def __init__(
-        self, api: DefaultApi, on_failure: Callable[[List[List[Trace]]], None]
+        self,
+        api: DefaultApi,
+        on_failure: Callable[[List[Trace], Exception], None],
+        on_flushed: Callable[[List[Trace]], None],
     ):
         self.api = api
         self._running = True
         self.queue = queue.Queue()
         self.on_failure = on_failure
+        self.on_flushed = on_flushed
         self.worker_thread = threading.Thread(target=self._worker, daemon=True)
         self.worker_thread.start()
 
@@ -44,19 +37,24 @@ class FlushManager:
                 list_of_traces = self.queue.get(timeout=1)  # Wait for 1 second
                 batch = build_ingest_batch_from_traces(list_of_traces)
                 self._send_batch(batch)
+                self.on_flushed(list_of_traces)
                 self.queue.task_done()
 
             except queue.Empty:
                 continue  # If queue is empty, continue the loop
 
             except Exception as e:
-                # print(f"Error sending traces: {e}")
-                self.on_failure(list_of_traces)
+                print(
+                    f"Error sending traces: {e} / {type(e)}"
+                )  # also show the typeof the erorr
+                self.on_failure(list_of_traces, e)
                 self.queue.task_done()
 
     def _send_batch(self, batch: IngestSignalsV1RequestBody):
-        # print("FlushManager._send_batch")
-        self.api.ingest_signals_v1(batch)
+        try:
+            self.api.ingest_signals_v1(batch)
+        except Exception as e:
+            raise e
 
     def shutdown(self):
         self._running = False
@@ -85,12 +83,17 @@ class ObservabilityClient:
     flush_timer: Timer = None
     max_size_kb: int = 5
 
+    on_flush_success_callback: Callable[[List[Trace]], None] = None
+    on_flush_failure_callback: Callable[[List[Trace], Exception], None] = None
+
     def __init__(
         self,
         backend: DefaultApi,
         tenant_id: str,
         max_size_kb: int = None,
         flush_interval: int = None,
+        on_flush_success_callback: Callable[[List[Trace]], None] = None,
+        on_flush_failure_callback: Callable[[List[Trace], Exception], None] = None,
     ) -> None:
         self.tenant_id = tenant_id
         self.backend = backend
@@ -100,12 +103,17 @@ class ObservabilityClient:
 
         # Initialize the flushing mechanism
         self.traces_lock = threading.Lock()
-        self.task_manager = FlushManager(api=backend, on_failure=self._on_batch_failure)
+        self.task_manager = FlushManager(
+            api=backend,
+            on_failure=self._on_batch_failure,
+            on_flushed=self._on_batch_flushed,
+        )
         self.flush_timer = threading.Timer(self.flush_interval, self._timed_flush)
         self.flush_timer.start()
 
     def flush_batch(self, traces_to_flush: List[Trace]):
         batch = []
+
         with self.traces_lock:
             # select the traces that have ended to transit
             ready_traces = [
@@ -114,16 +122,13 @@ class ObservabilityClient:
                 if t.has_ended() and not self.in_transit.get(t.xid)
             ]
 
-            # add the traces to the batch, if they have ended and are not currently in transit
             for trace in ready_traces:
-                batch.append(trace)
-
-            # remove them from the list of traces to be flushed
-            for trace in ready_traces:
+                # mark them as in transit
+                self.in_transit[trace.xid] = trace
+                # remove them from the list of traces to be flushed
                 self.traces.remove(trace)
-
-            # add them to the in-transit list
-            self.mark_as_transiting(traces_to_flush)
+                # add the traces to the batch, if they have ended and are not currently in transit
+                batch.append(trace)
 
         if batch:
             self.task_manager.process(batch)
@@ -135,9 +140,19 @@ class ObservabilityClient:
         self.flush_timer = threading.Timer(self.flush_interval, self._timed_flush)
         self.flush_timer.start()
 
-    def _on_batch_failure(self, failed_traces: List[Trace]):
+    def _on_batch_flushed(self, flushed_traces: List[Trace]):
+        # with self.traces_lock:
+        for trace in flushed_traces:
+            del self.in_transit[trace.xid]
+        if self.on_flush_success_callback:
+            self.on_flush_success_callback(flushed_traces)
+
+    def _on_batch_failure(self, failed_traces: List[Trace], problem: Exception):
+        print(f"_on_batch_failure: {problem} / {type(problem)}")
         # with self.traces_lock:
         self.traces.extend(failed_traces)
+        if self.on_flush_failure_callback:
+            self.on_flush_failure_callback(failed_traces, problem)
 
     def flush_all(self):
         self.flush_batch(self.traces)
@@ -148,7 +163,7 @@ class ObservabilityClient:
 
     def shutdown(self):
         self.flush_timer.cancel()
-        self.flush_all()
+        self.flush_sync()
         self.task_manager.shutdown()
         self.traces_lock = None
 
@@ -167,14 +182,6 @@ class ObservabilityClient:
         return [
             t for t in self.traces if t.has_ended() and not self.in_transit.get(t.xid)
         ]
-
-    def mark_as_transiting(self, traces: List[Trace]) -> None:
-        for trace in traces:
-            self.in_transit[trace.xid] = trace
-
-    def unmark_as_transiting(self, traces: List[Trace]) -> None:
-        for trace in traces:
-            del self.in_transit[trace.xid]
 
     def calculate_kilobyte_size(self, anything: Any) -> int:
         return sys.getsizeof(anything) // 1024

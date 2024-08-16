@@ -1,11 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Union
 import uuid
 
 from modelmetry.observability.finding import Finding
 from modelmetry.observability.event import Event
 from modelmetry.openapi import CreateSpanParams
-from modelmetry.openapi.models import (
+from modelmetry import (
     EmbeddingsPayload,
     CompletionPayload,
     RetrievalPayload,
@@ -39,7 +39,7 @@ class BaseSpan:
         self.parent_id: Optional[str] = parent_id
         self.name: str = name
         self.message: str = message
-        self.started_at: datetime = datetime.now()
+        self.started_at: datetime = datetime.now(timezone.utc)
         self.ended_at: Optional[datetime] = None
         self.severity: str = severity
         self.attributes: Dict[str, Any] = attributes or {}
@@ -96,7 +96,7 @@ class BaseSpan:
         self.severity = "error"
         self.message = str(error)
         self.attributes["error"] = str(error)
-        self.ended_at = datetime.now()
+        self.ended_at = datetime.now(timezone.utc)
 
     def completion(self, name: str) -> "CompletionSpan":
         span = CompletionSpan(
@@ -153,7 +153,7 @@ class BaseSpan:
 
     def maybe_set_ended_at_to_now(self) -> None:
         if not self.ended_at:
-            self.ended_at = datetime.now()
+            self.ended_at = datetime.now(timezone.utc)
 
     def set_ended_at_automatically(self):
         for span in self.get_children_spans():
@@ -164,7 +164,7 @@ class BaseSpan:
                 span.ended_at for span in self.get_children_spans() if span.ended_at
             ]
             if not children_ended_at:
-                self.ended_at = datetime.now()
+                self.ended_at = datetime.now(timezone.utc)
                 return self
 
             max_children_ended_at = max(children_ended_at)
@@ -187,8 +187,8 @@ class BaseSpan:
         return CreateSpanParams(
             xid=self.xid,
             name=self.name,
-            start=self.started_at.isoformat(),
-            end=(self.ended_at.isoformat() if self.ended_at else None),
+            start=self.started_at,
+            end=self.ended_at or None,
             message=self.message,
             trace_id=self.trace_id,
             attributes=self.attributes,
@@ -231,6 +231,10 @@ class OtherSpan(BaseSpan):
             attributes=attributes,
         )
 
+    def end(self) -> "OtherSpan":
+        self.maybe_set_ended_at_to_now()
+        return self
+
 
 class EmbeddingsSpan(BaseSpan):
 
@@ -262,6 +266,10 @@ class EmbeddingsSpan(BaseSpan):
             inputs=inputs or [],
             options=options or SimpleOptions(),
         )
+
+    def end(self) -> "EmbeddingsSpan":
+        self.maybe_set_ended_at_to_now()
+        return self
 
 
 class CompletionSpan(BaseSpan):
@@ -302,6 +310,10 @@ class CompletionSpan(BaseSpan):
             Output=output or None,
         )
 
+    def end(self) -> "CompletionSpan":
+        self.maybe_set_ended_at_to_now()
+        return self
+
 
 class RetrievalSpan(BaseSpan):
 
@@ -333,3 +345,7 @@ class RetrievalSpan(BaseSpan):
             Queries=queries or [],
             Retrieved=retrieved or [],
         )
+
+    def end(self) -> "RetrievalSpan":
+        self.maybe_set_ended_at_to_now()
+        return self
