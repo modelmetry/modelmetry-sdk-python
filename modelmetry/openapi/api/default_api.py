@@ -21,7 +21,7 @@ from typing import Optional
 from modelmetry.openapi.models.call import Call
 from modelmetry.openapi.models.call_guardrail_request_body import CallGuardrailRequestBody
 from modelmetry.openapi.models.ingest_signals_v1_request_body import IngestSignalsV1RequestBody
-from modelmetry.openapi.models.trace_with_spans import TraceWithSpans
+from modelmetry.openapi.models.ingest_signals_v1_response_body import IngestSignalsV1ResponseBody
 
 from modelmetry.openapi.api_client import ApiClient, RequestSerialized
 from modelmetry.openapi.api_response import ApiResponse
@@ -344,7 +344,7 @@ class DefaultApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TraceWithSpans:
+    ) -> IngestSignalsV1ResponseBody:
         """Ingest signals (v1)
 
 
@@ -381,7 +381,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TraceWithSpans",
+            '200': "IngestSignalsV1ResponseBody",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -410,7 +410,7 @@ class DefaultApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TraceWithSpans]:
+    ) -> ApiResponse[IngestSignalsV1ResponseBody]:
         """Ingest signals (v1)
 
 
@@ -447,7 +447,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TraceWithSpans",
+            '200': "IngestSignalsV1ResponseBody",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -513,7 +513,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TraceWithSpans",
+            '200': "IngestSignalsV1ResponseBody",
         }
         response_data = self.api_client.call_api(
             *_param,

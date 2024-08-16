@@ -36,7 +36,9 @@ components:
         SummarisedEntries:
           items:
             $ref: "#/components/schemas/SummarisedEntry"
-          type: array
+          type:
+            - array
+            - "null"
         TenantID:
           type: string
         UpdatedAt:
@@ -85,7 +87,9 @@ components:
         Messages:
           items:
             $ref: "#/components/schemas/SimpleMessage"
-          type: array
+          type:
+            - array
+            - "null"
         Settings:
           $ref: "#/components/schemas/SimpleOptions"
       required:
@@ -97,41 +101,13 @@ components:
         Messages:
           items:
             $ref: "#/components/schemas/SimpleMessage"
-          type: array
+          type:
+            - array
+            - "null"
         Settings:
           $ref: "#/components/schemas/SimpleOptions"
       required:
         - Settings
-      type: object
-    CompletionPayload:
-      additionalProperties: false
-      properties:
-        Context:
-          $ref: "#/components/schemas/CompletionPayloadContext"
-        Input:
-          $ref: "#/components/schemas/Input"
-        Model:
-          type: string
-        Options:
-          $ref: "#/components/schemas/SimpleOptions"
-        Output:
-          $ref: "#/components/schemas/Output"
-      required:
-        - Model
-        - Options
-      type: object
-    CompletionPayloadContext:
-      additionalProperties: false
-      properties:
-        ParsedSystem:
-          type: string
-        RetrievedItems:
-          items:
-            $ref: "#/components/schemas/RetrievedItem"
-          type: array
-      required:
-        - ParsedSystem
-        - RetrievedItems
       type: object
     CreateEventParams:
       additionalProperties: false
@@ -190,6 +166,11 @@ components:
         Name:
           type: string
         Source:
+          enum:
+            - annotation
+            - api
+            - enduser
+            - evaluator
           type:
             - string
             - "null"
@@ -300,19 +281,6 @@ components:
         - XID
         - Start
       type: object
-    EmbeddingsPayload:
-      additionalProperties: false
-      properties:
-        Inputs:
-          items:
-            type: string
-          type: array
-        Options:
-          $ref: "#/components/schemas/SimpleOptions"
-      required:
-        - Inputs
-        - Options
-      type: object
     ErrorDetail:
       additionalProperties: false
       properties:
@@ -344,7 +312,9 @@ components:
           description: Optional list of individual error details
           items:
             $ref: "#/components/schemas/ErrorDetail"
-          type: array
+          type:
+            - array
+            - "null"
         instance:
           description: A URI reference that identifies the specific occurrence of the problem.
           examples:
@@ -370,124 +340,6 @@ components:
           format: uri
           type: string
       type: object
-    Event:
-      additionalProperties: false
-      properties:
-        At:
-          format: date-time
-          type: string
-        Attributes:
-          additionalProperties: {}
-          type: object
-        CreatedAt:
-          format: date-time
-          type: string
-        EntryID:
-          type:
-            - string
-            - "null"
-        ID:
-          type: string
-        Name:
-          type: string
-        SpanID:
-          type:
-            - string
-            - "null"
-        TenantID:
-          type: string
-        TraceID:
-          type:
-            - string
-            - "null"
-        UpdatedAt:
-          format: date-time
-          type: string
-        XID:
-          type: string
-      required:
-        - ID
-        - XID
-        - TenantID
-        - Name
-        - Attributes
-        - At
-        - UpdatedAt
-        - CreatedAt
-        - TraceID
-        - SpanID
-        - EntryID
-      type: object
-    Finding:
-      additionalProperties: false
-      properties:
-        At:
-          format: date-time
-          type: string
-        Comment:
-          type: string
-        CreatedAt:
-          format: date-time
-          type: string
-        EntryID:
-          type:
-            - string
-            - "null"
-        EvaluatorID:
-          type:
-            - string
-            - "null"
-        ID:
-          type: string
-        Metadata:
-          additionalProperties: {}
-          type: object
-        Name:
-          type: string
-        Source:
-          enum:
-            - annotation
-            - api
-            - enduser
-            - evaluator
-          type: string
-        SpanID:
-          type:
-            - string
-            - "null"
-        TenantID:
-          type: string
-        TraceID:
-          type:
-            - string
-            - "null"
-        UpdatedAt:
-          format: date-time
-          type: string
-        Value:
-          oneOf:
-            - type: number
-            - type: boolean
-            - type: string
-        XID:
-          type: string
-      required:
-        - ID
-        - XID
-        - Name
-        - TenantID
-        - TraceID
-        - SpanID
-        - EntryID
-        - Value
-        - Source
-        - Comment
-        - Metadata
-        - EvaluatorID
-        - At
-        - UpdatedAt
-        - CreatedAt
-      type: object
     Function:
       additionalProperties: false
       properties:
@@ -511,23 +363,44 @@ components:
         Events:
           items:
             $ref: "#/components/schemas/CreateEventParams"
-          type: array
+          type:
+            - array
+            - "null"
         Findings:
           items:
             $ref: "#/components/schemas/CreateFindingParams"
-          type: array
+          type:
+            - array
+            - "null"
         Sessions:
           items:
             $ref: "#/components/schemas/CreateSessionParams"
-          type: array
+          type:
+            - array
+            - "null"
         Spans:
           items:
             $ref: "#/components/schemas/CreateSpanParams"
-          type: array
+          type:
+            - array
+            - "null"
         Traces:
           items:
             $ref: "#/components/schemas/CreateTraceParams"
-          type: array
+          type:
+            - array
+            - "null"
+      type: object
+    IngestSignalsV1ResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - http://api.modelmetry.com//schemas/IngestSignalsV1ResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
       type: object
     Input:
       additionalProperties: false
@@ -536,9 +409,6 @@ components:
           $ref: "#/components/schemas/ChatInput"
         Text:
           $ref: "#/components/schemas/TextInput"
-      type: object
-    OtherPayload:
-      additionalProperties: false
       type: object
     Output:
       additionalProperties: false
@@ -556,52 +426,6 @@ components:
         Output:
           $ref: "#/components/schemas/Output"
       type: object
-    RetrievalPayload:
-      additionalProperties: false
-      properties:
-        Queries:
-          items:
-            $ref: "#/components/schemas/RetrievalQuery"
-          type: array
-        Retrieved:
-          items:
-            $ref: "#/components/schemas/RetrievedItem"
-          type: array
-      required:
-        - Queries
-        - Retrieved
-      type: object
-    RetrievalQuery:
-      additionalProperties: false
-      properties:
-        Embeddings:
-          items:
-            format: float
-            type: number
-          type: array
-        Name:
-          type: string
-      required:
-        - Name
-        - Embeddings
-      type: object
-    RetrievedItem:
-      additionalProperties: false
-      properties:
-        Content: {}
-        ContentType:
-          type: string
-        Identifier:
-          type: string
-        Metadata:
-          additionalProperties: {}
-          type: object
-      required:
-        - Identifier
-        - ContentType
-        - Content
-        - Metadata
-      type: object
     SimpleMessage:
       additionalProperties: false
       properties:
@@ -609,7 +433,9 @@ components:
           items:
             $ref: "#/components/schemas/SimplePart"
           minItems: 1
-          type: array
+          type:
+            - array
+            - "null"
         Name:
           type: string
         Role:
@@ -666,7 +492,9 @@ components:
         Tools:
           items:
             $ref: "#/components/schemas/Tool"
-          type: array
+          type:
+            - array
+            - "null"
         TopLogprobs:
           format: int64
           type: integer
@@ -734,82 +562,6 @@ components:
         - EvaluatorID
         - At
       type: object
-    Span:
-      additionalProperties: false
-      properties:
-        Attributes:
-          additionalProperties: {}
-          type: object
-        Completion:
-          $ref: "#/components/schemas/CompletionPayload"
-        CreatedAt:
-          format: date-time
-          type: string
-        Embeddings:
-          $ref: "#/components/schemas/EmbeddingsPayload"
-        End:
-          format: date-time
-          type: string
-        Events:
-          items:
-            $ref: "#/components/schemas/Event"
-          type: array
-        Family:
-          type: string
-        Findings:
-          items:
-            $ref: "#/components/schemas/Finding"
-          type: array
-        ID:
-          type: string
-        Message:
-          type: string
-        Name:
-          type: string
-        Other:
-          $ref: "#/components/schemas/OtherPayload"
-        ParentID:
-          type:
-            - string
-            - "null"
-        Retrieval:
-          $ref: "#/components/schemas/RetrievalPayload"
-        Severity:
-          type: string
-        Start:
-          format: date-time
-          type: string
-        TenantID:
-          type: string
-        TraceID:
-          type: string
-        UpdatedAt:
-          format: date-time
-          type: string
-        XID:
-          type: string
-      required:
-        - ID
-        - XID
-        - TenantID
-        - TraceID
-        - ParentID
-        - Name
-        - Family
-        - Severity
-        - Message
-        - Start
-        - End
-        - Embeddings
-        - Retrieval
-        - Completion
-        - Other
-        - Attributes
-        - Events
-        - Findings
-        - UpdatedAt
-        - CreatedAt
-      type: object
     SummarisedEntry:
       additionalProperties: false
       properties:
@@ -821,7 +573,9 @@ components:
         Findings:
           items:
             $ref: "#/components/schemas/SimplifiedFinding"
-          type: array
+          type:
+            - array
+            - "null"
         ID:
           type: string
         InstanceID:
@@ -898,60 +652,6 @@ components:
         - ID
         - Function
       type: object
-    TraceWithSpans:
-      additionalProperties: false
-      properties:
-        $schema:
-          description: A URL to the JSON Schema for this object.
-          examples:
-            - http://api.modelmetry.com//schemas/TraceWithSpans.json
-          format: uri
-          readOnly: true
-          type: string
-        Attributes:
-          additionalProperties: {}
-          type: object
-        CreatedAt:
-          format: date-time
-          type: string
-        End:
-          format: date-time
-          type: string
-        ID:
-          type: string
-        Name:
-          type: string
-        SessionID:
-          type:
-            - string
-            - "null"
-        Spans:
-          items:
-            $ref: "#/components/schemas/Span"
-          type: array
-        Start:
-          format: date-time
-          type: string
-        TenantID:
-          type: string
-        UpdatedAt:
-          format: date-time
-          type: string
-        XID:
-          type: string
-      required:
-        - Spans
-        - ID
-        - XID
-        - TenantID
-        - SessionID
-        - Name
-        - Start
-        - End
-        - Attributes
-        - UpdatedAt
-        - CreatedAt
-      type: object
   securitySchemes:
     apikeyAuth:
       in: header
@@ -1007,7 +707,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TraceWithSpans"
+                $ref: "#/components/schemas/IngestSignalsV1ResponseBody"
           description: OK
         default:
           content:

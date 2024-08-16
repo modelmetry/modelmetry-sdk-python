@@ -90,7 +90,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ingest_signals_v1**
-> TraceWithSpans ingest_signals_v1(ingest_signals_v1_request_body)
+> IngestSignalsV1ResponseBody ingest_signals_v1(ingest_signals_v1_request_body)
 
 Ingest signals (v1)
 
@@ -101,7 +101,7 @@ Ingest signals (v1)
 ```python
 import modelmetry.openapi
 from modelmetry.openapi.models.ingest_signals_v1_request_body import IngestSignalsV1RequestBody
-from modelmetry.openapi.models.trace_with_spans import TraceWithSpans
+from modelmetry.openapi.models.ingest_signals_v1_response_body import IngestSignalsV1ResponseBody
 from modelmetry.openapi.rest import ApiException
 from pprint import pprint
 
@@ -148,7 +148,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TraceWithSpans**](TraceWithSpans.md)
+[**IngestSignalsV1ResponseBody**](IngestSignalsV1ResponseBody.md)
 
 ### Authorization
 
