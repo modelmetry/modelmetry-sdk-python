@@ -30,6 +30,7 @@ class RetrievalPayload(BaseModel):
     """ # noqa: E501
     queries: List[RetrievalQuery] = Field(alias="Queries")
     retrieved: List[RetrievedItem] = Field(alias="Retrieved")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Queries", "Retrieved"]
 
     model_config = ConfigDict(
@@ -62,8 +63,10 @@ class RetrievalPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -85,6 +88,11 @@ class RetrievalPayload(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['Retrieved'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -100,6 +108,11 @@ class RetrievalPayload(BaseModel):
             "Queries": [RetrievalQuery.from_dict(_item) for _item in obj["Queries"]] if obj.get("Queries") is not None else None,
             "Retrieved": [RetrievedItem.from_dict(_item) for _item in obj["Retrieved"]] if obj.get("Retrieved") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

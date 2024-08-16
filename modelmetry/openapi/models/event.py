@@ -28,10 +28,10 @@ class Event(BaseModel):
     Event
     """ # noqa: E501
     at: datetime = Field(alias="At")
-    attributes: Dict[str, Any] = Field(alias="Attributes")
     created_at: datetime = Field(alias="CreatedAt")
     entry_id: StrictStr = Field(alias="EntryID")
     id: StrictStr = Field(alias="ID")
+    metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
     span_id: StrictStr = Field(alias="SpanID")
     tenant_id: StrictStr = Field(alias="TenantID")
@@ -39,7 +39,7 @@ class Event(BaseModel):
     updated_at: datetime = Field(alias="UpdatedAt")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "Attributes", "CreatedAt", "EntryID", "ID", "Name", "SpanID", "TenantID", "TraceID", "UpdatedAt", "XID"]
+    __properties: ClassVar[List[str]] = ["At", "CreatedAt", "EntryID", "ID", "Metadata", "Name", "SpanID", "TenantID", "TraceID", "UpdatedAt", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -100,10 +100,10 @@ class Event(BaseModel):
 
         _obj = cls.model_validate({
             "At": obj.get("At"),
-            "Attributes": obj.get("Attributes"),
             "CreatedAt": obj.get("CreatedAt"),
             "EntryID": obj.get("EntryID"),
             "ID": obj.get("ID"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "SpanID": obj.get("SpanID"),
             "TenantID": obj.get("TenantID"),

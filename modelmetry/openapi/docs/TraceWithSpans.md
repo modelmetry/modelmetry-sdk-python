@@ -5,13 +5,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**var_schema** | **str** | A URL to the JSON Schema for this object. | [optional] [readonly] 
-**attributes** | **object** |  | 
 **created_at** | **datetime** |  | 
 **end** | **datetime** |  | 
 **id** | **str** |  | 
+**metadata** | **Dict[str, object]** |  | 
 **name** | **str** |  | 
-**session_id** | **str** |  | 
+**session_id** | **str** |  | [optional] 
 **spans** | [**List[Span]**](Span.md) |  | 
 **start** | **datetime** |  | 
 **tenant_id** | **str** |  | 

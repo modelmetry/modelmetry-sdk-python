@@ -17,7 +17,7 @@ class Event:
         trace_id: Optional[str] = None,
         span_id: Optional[str] = None,
         at: Optional[datetime] = None,
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> None:
         self.xid = str(uuid.uuid4())
         self.name = name
@@ -25,14 +25,14 @@ class Event:
         self.tenant_id = tenant_id
         self.span_id = span_id
         self.at = at or datetime.now(timezone.utc)
-        self.attributes = attributes or {}
+        self.metadata = metadata or {}
 
     def to_ingest_params(self) -> CreateEventParams:
         return CreateEventParams(
             xid=self.xid,
             name=self.name,
             at=self.at,
-            attributes=self.attributes,
+            metadata=self.metadata,
             trace_id=self.trace_id,
             span_id=self.span_id,
             entry_id=None,

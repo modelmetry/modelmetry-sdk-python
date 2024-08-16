@@ -15,16 +15,16 @@ class TestTrace(unittest.TestCase):
         trace = Trace(name="test", tenant_id="tenant_id")
         self.assertEqual(trace.name, "test")
         self.assertEqual(trace.tenant_id, "tenant_id")
-        self.assertEqual(trace.attributes, {})
+        self.assertEqual(trace.metadata, {})
         self.assertIsInstance(trace.started_at, datetime)
 
-        # add attributes
-        trace = Trace(name="test", tenant_id="tenant_id", attributes={"key": "value"})
-        self.assertEqual(trace.attributes, {"key": "value"})
+        # add metadata
+        trace = Trace(name="test", tenant_id="tenant_id", metadata={"key": "value"})
+        self.assertEqual(trace.metadata, {"key": "value"})
 
-        # update attributes
-        trace.attributes["foo"] = 4.4
-        self.assertEqual(trace.attributes, {"key": "value", "foo": 4.4})
+        # update metadata
+        trace.metadata["foo"] = 4.4
+        self.assertEqual(trace.metadata, {"key": "value", "foo": 4.4})
 
     def test_create_a_span_with_family(self):
         # test creating concrate spans: CompletionSpan, RetrievalSpan, EmbeddingsSpan, OtherSpan.
@@ -87,7 +87,7 @@ class TestTrace(unittest.TestCase):
         trace = Trace(
             name="test",
             tenant_id="tenant_id",
-            attributes={"key": "value", "foo": 4.4, "bar": False},
+            metadata={"key": "value", "foo": 4.4, "bar": False},
         )
         span1 = trace.other_span("span1")
         span1_1 = span1.other_span("span1_1")
@@ -98,7 +98,7 @@ class TestTrace(unittest.TestCase):
         ingest_params = trace.to_ingest_params()
         self.assertEqual(ingest_params.xid, trace.xid)
         self.assertEqual(ingest_params.name, trace.name)
-        self.assertEqual(ingest_params.attributes, trace.attributes)
+        self.assertEqual(ingest_params.metadata, trace.metadata)
         self.assertEqual(ingest_params.start, trace.started_at)
         self.assertEqual(ingest_params.end, trace.ended_at)
         self.assertIsNone(ingest_params.session_id)

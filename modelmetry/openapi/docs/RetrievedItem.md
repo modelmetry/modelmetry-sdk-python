@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **content** | **object** |  | 
 **content_type** | **str** |  | 
 **identifier** | **str** |  | 
-**metadata** | **object** |  | 
+**metadata** | **Dict[str, object]** |  | 
 
 ## Example
 

@@ -173,8 +173,8 @@ class ObservabilityClient:
     def get_in_transit(self) -> Dict[str, Trace]:
         return self.in_transit
 
-    def trace(self, name: str, attributes: Dict[str, Any] = None) -> Trace:
-        trace = Trace(name=name, tenant_id=self.tenant_id, attributes=attributes)
+    def trace(self, name: str, metadata: Dict[str, Any] = None) -> Trace:
+        trace = Trace(name=name, tenant_id=self.tenant_id, metadata=metadata)
         self.traces.append(trace)
         return trace
 

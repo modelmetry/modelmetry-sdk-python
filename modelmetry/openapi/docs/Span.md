@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **object** |  | 
 **completion** | [**CompletionPayload**](CompletionPayload.md) |  | 
 **created_at** | **datetime** |  | 
 **embeddings** | [**EmbeddingsPayload**](EmbeddingsPayload.md) |  | 
@@ -15,8 +14,9 @@ Name | Type | Description | Notes
 **findings** | [**List[Finding]**](Finding.md) |  | 
 **id** | **str** |  | 
 **message** | **str** |  | 
+**metadata** | **object** |  | 
 **name** | **str** |  | 
-**other** | **object** |  | 
+**other** | **Dict[str, object]** |  | 
 **parent_id** | **str** |  | 
 **retrieval** | [**RetrievalPayload**](RetrievalPayload.md) |  | 
 **severity** | **str** |  | 

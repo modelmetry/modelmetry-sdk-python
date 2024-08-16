@@ -28,20 +28,19 @@ class TraceWithSpans(BaseModel):
     """
     TraceWithSpans
     """ # noqa: E501
-    var_schema: Optional[StrictStr] = Field(default=None, description="A URL to the JSON Schema for this object.", alias="$schema")
-    attributes: Dict[str, Any] = Field(alias="Attributes")
     created_at: datetime = Field(alias="CreatedAt")
     end: datetime = Field(alias="End")
     id: StrictStr = Field(alias="ID")
+    metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
-    session_id: StrictStr = Field(alias="SessionID")
+    session_id: Optional[StrictStr] = Field(default=None, alias="SessionID")
     spans: List[Span] = Field(alias="Spans")
     start: datetime = Field(alias="Start")
     tenant_id: StrictStr = Field(alias="TenantID")
     updated_at: datetime = Field(alias="UpdatedAt")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["$schema", "Attributes", "CreatedAt", "End", "ID", "Name", "SessionID", "Spans", "Start", "TenantID", "UpdatedAt", "XID"]
+    __properties: ClassVar[List[str]] = ["CreatedAt", "End", "ID", "Metadata", "Name", "SessionID", "Spans", "Start", "TenantID", "UpdatedAt", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,11 +72,9 @@ class TraceWithSpans(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
         * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "var_schema",
             "additional_properties",
         ])
 
@@ -110,11 +107,10 @@ class TraceWithSpans(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "$schema": obj.get("$schema"),
-            "Attributes": obj.get("Attributes"),
             "CreatedAt": obj.get("CreatedAt"),
             "End": obj.get("End"),
             "ID": obj.get("ID"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "SessionID": obj.get("SessionID"),
             "Spans": [Span.from_dict(_item) for _item in obj["Spans"]] if obj.get("Spans") is not None else None,

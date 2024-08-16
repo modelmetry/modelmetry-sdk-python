@@ -27,11 +27,11 @@ class CreateSpanParams(BaseModel):
     """
     CreateSpanParams
     """ # noqa: E501
-    attributes: Optional[Dict[str, Any]] = Field(default=None, alias="Attributes")
     end: datetime = Field(alias="End")
     family: Optional[StrictStr] = Field(default=None, alias="Family")
     family_data: Optional[Any] = Field(default=None, alias="FamilyData")
     message: Optional[StrictStr] = Field(default=None, alias="Message")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, alias="Metadata")
     name: StrictStr = Field(alias="Name")
     parent_id: Optional[StrictStr] = Field(default=None, alias="ParentID")
     severity: Optional[StrictStr] = Field(default=None, alias="Severity")
@@ -39,7 +39,7 @@ class CreateSpanParams(BaseModel):
     trace_id: StrictStr = Field(alias="TraceID")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Attributes", "End", "Family", "FamilyData", "Message", "Name", "ParentID", "Severity", "Start", "TraceID", "XID"]
+    __properties: ClassVar[List[str]] = ["End", "Family", "FamilyData", "Message", "Metadata", "Name", "ParentID", "Severity", "Start", "TraceID", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -104,11 +104,11 @@ class CreateSpanParams(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Attributes": obj.get("Attributes"),
             "End": obj.get("End"),
             "Family": obj.get("Family"),
             "FamilyData": obj.get("FamilyData"),
             "Message": obj.get("Message"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "ParentID": obj.get("ParentID"),
             "Severity": obj.get("Severity"),

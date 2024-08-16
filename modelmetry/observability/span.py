@@ -9,12 +9,13 @@ from modelmetry import (
     EmbeddingsPayload,
     CompletionPayload,
     RetrievalPayload,
-    SimpleOptions,
+    Options,
 )
 from modelmetry.openapi.models.completion_payload_context import (
     CompletionPayloadContext,
 )
 from modelmetry.openapi.models.input import Input
+from modelmetry.openapi.models.options import Options
 from modelmetry.openapi.models.output import Output
 from modelmetry.openapi.models.retrieval_query import RetrievalQuery
 from modelmetry.openapi.models.retrieved_item import RetrievedItem
@@ -31,7 +32,7 @@ class BaseSpan:
         message: str = "",
         severity: str = "unset",
         family: str = "",
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ):
         self.xid: str = str(uuid.uuid4())
         self.tenant_id: str = tenant_id
@@ -42,7 +43,7 @@ class BaseSpan:
         self.started_at: datetime = datetime.now(timezone.utc)
         self.ended_at: Optional[datetime] = None
         self.severity: str = severity
-        self.attributes: Dict[str, Any] = attributes or {}
+        self.metadata: Dict[str, Any] = metadata or {}
         self.family: str = family
         self.family_data: Dict[str, Any] = {}
 
@@ -95,7 +96,7 @@ class BaseSpan:
         self.event("errored")
         self.severity = "error"
         self.message = str(error)
-        self.attributes["error"] = str(error)
+        self.metadata["error"] = str(error)
         self.ended_at = datetime.now(timezone.utc)
 
     def completion(self, name: str) -> "CompletionSpan":
@@ -191,7 +192,7 @@ class BaseSpan:
             end=self.ended_at or None,
             message=self.message,
             trace_id=self.trace_id,
-            attributes=self.attributes,
+            metadata=self.metadata,
             family=self.family,
             family_data=self.family_data,
             parent_id=self.parent_id,
@@ -218,7 +219,7 @@ class OtherSpan(BaseSpan):
         message: str = "",
         severity: str = "unset",
         family: str = "",
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ):
         super().__init__(
             name=name,
@@ -228,7 +229,7 @@ class OtherSpan(BaseSpan):
             message=message,
             severity=severity,
             family=family,
-            attributes=attributes,
+            metadata=metadata,
         )
 
     def end(self) -> "OtherSpan":
@@ -247,9 +248,9 @@ class EmbeddingsSpan(BaseSpan):
         message: str = "",
         severity: str = "unset",
         family: str = "",
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
         inputs: List[str] = None,
-        options: SimpleOptions = None,
+        options: Options = None,
     ):
         super().__init__(
             name=name,
@@ -259,12 +260,12 @@ class EmbeddingsSpan(BaseSpan):
             message=message,
             severity=severity,
             family=family,
-            attributes=attributes,
+            metadata=metadata,
         )
 
         self.family_data = EmbeddingsPayload(
             inputs=inputs or [],
-            options=options or SimpleOptions(),
+            options=options or Options(),
         )
 
     def end(self) -> "EmbeddingsSpan":
@@ -284,10 +285,10 @@ class CompletionSpan(BaseSpan):
         message: str = "",
         severity: str = "unset",
         family: str = "",
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
         input: Input = None,
         context: CompletionPayloadContext = None,
-        options: SimpleOptions = None,
+        options: Options = None,
         output: Output = None,
     ):
         super().__init__(
@@ -298,12 +299,12 @@ class CompletionSpan(BaseSpan):
             message=message,
             severity=severity,
             family=family,
-            attributes=attributes,
+            metadata=metadata,
         )
 
         self.family_data = CompletionPayload(
             Model=model or "unknown/unknown",
-            Options=options or SimpleOptions(),
+            Options=options or Options(),
             # optional
             Context=context or None,
             Input=input or None,
@@ -326,7 +327,7 @@ class RetrievalSpan(BaseSpan):
         message: str = "",
         severity: str = "unset",
         family: str = "",
-        attributes: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
         queries: List[RetrievalQuery] = None,
         retrieved: List[RetrievedItem] = None,
     ):
@@ -338,7 +339,7 @@ class RetrievalSpan(BaseSpan):
             message=message,
             severity=severity,
             family=family,
-            attributes=attributes,
+            metadata=metadata,
         )
 
         self.family_data = RetrievalPayload(

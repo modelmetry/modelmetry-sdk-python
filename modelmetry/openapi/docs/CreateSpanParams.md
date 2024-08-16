@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **object** |  | [optional] 
 **end** | **datetime** |  | 
 **family** | **str** |  | [optional] 
 **family_data** | **object** |  | [optional] 
 **message** | **str** |  | [optional] 
+**metadata** | **object** |  | [optional] 
 **name** | **str** |  | 
 **parent_id** | **str** |  | [optional] 
 **severity** | **str** |  | [optional] 

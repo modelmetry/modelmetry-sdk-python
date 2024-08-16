@@ -20,9 +20,9 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.completion_payload_context import CompletionPayloadContext
-from modelmetry.openapi.models.input import Input
+from modelmetry.openapi.models.completion_payload_input import CompletionPayloadInput
+from modelmetry.openapi.models.options import Options
 from modelmetry.openapi.models.output import Output
-from modelmetry.openapi.models.simple_options import SimpleOptions
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,10 +31,11 @@ class CompletionPayload(BaseModel):
     CompletionPayload
     """ # noqa: E501
     context: Optional[CompletionPayloadContext] = Field(default=None, alias="Context")
-    input: Optional[Input] = Field(default=None, alias="Input")
+    input: Optional[CompletionPayloadInput] = Field(default=None, alias="Input")
     model: StrictStr = Field(alias="Model")
-    options: SimpleOptions = Field(alias="Options")
+    options: Options = Field(alias="Options")
     output: Optional[Output] = Field(default=None, alias="Output")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Context", "Input", "Model", "Options", "Output"]
 
     model_config = ConfigDict(
@@ -67,8 +68,10 @@ class CompletionPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -88,6 +91,11 @@ class CompletionPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of output
         if self.output:
             _dict['Output'] = self.output.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -101,11 +109,16 @@ class CompletionPayload(BaseModel):
 
         _obj = cls.model_validate({
             "Context": CompletionPayloadContext.from_dict(obj["Context"]) if obj.get("Context") is not None else None,
-            "Input": Input.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
+            "Input": CompletionPayloadInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
             "Model": obj.get("Model"),
-            "Options": SimpleOptions.from_dict(obj["Options"]) if obj.get("Options") is not None else None,
+            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None,
             "Output": Output.from_dict(obj["Output"]) if obj.get("Output") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

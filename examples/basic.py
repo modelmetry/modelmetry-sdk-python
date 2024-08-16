@@ -1,32 +1,29 @@
+import os
 import sys
 
 sys.path.append(".")
 
 import modelmetry.sdk
-from modelmetry.openapi.models import (
-    CallGuardrailRequestBody,
-    Payload,
-    Input,
-    TextInput,
-)
 from devtools import debug
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def main():
 
     # Instantiate the SDK with your tenant_id and api_key
     # You can find your API key in Modelmetry's settings
-    client = modelmetry.sdk.Client(tenant_id="ten_xxx", api_key="abcdef")
+    client = modelmetry.sdk.Client(
+        tenant_id=os.getenv("TENANT_ID"),
+        api_key=os.getenv("API_KEY"),
+        host=os.getenv("HOST"),
+    )
 
     # Call the guardrail with the CallGuardrailRequestBody object
-    res = client.call_guardrail(
-        CallGuardrailRequestBody(
-            # Use the guardrail ID your want to call and check your payload against.
-            # And you can edit the various evaluators used by this guardrail in your Modelmetry dashboard.
-            GuardrailID="grd_xyz",
-            # The payload object is used to pass the data your guardrail should evaluate synchronously.
-            Payload=Payload(Input=Input(Text=TextInput(Text="Hello, World!"))),
-        )
+    res = client.check(
+        guardrail_id="grd_jaohzgcbd5hbt1grwmvp",
+        input_text="I want to know the weather in London tomorrow",
     )
 
     # C'mon... who are we if we aren't even logging stuff to the terminal?
@@ -41,6 +38,13 @@ def main():
         # You can have access to more data for debugging (scores, evaluation(s) that failed) in the Call
         for entry in res.Call.summarised_entries:
             print(entry)
+
+    else:
+        print("Passed!")
+
+    client.shutdown()
+
+    return
 
 
 if __name__ == "__main__":

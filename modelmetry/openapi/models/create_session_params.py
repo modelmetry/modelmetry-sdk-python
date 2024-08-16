@@ -26,11 +26,11 @@ class CreateSessionParams(BaseModel):
     """
     CreateSessionParams
     """ # noqa: E501
-    attributes: Optional[Dict[str, Any]] = Field(default=None, alias="Attributes")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, alias="Metadata")
     name: Optional[StrictStr] = Field(default=None, alias="Name")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Attributes", "Name", "XID"]
+    __properties: ClassVar[List[str]] = ["Metadata", "Name", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,7 +90,7 @@ class CreateSessionParams(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Attributes": obj.get("Attributes"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "XID": obj.get("XID")
         })

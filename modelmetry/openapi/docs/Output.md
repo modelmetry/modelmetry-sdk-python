@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**chat** | [**ChatOutput**](ChatOutput.md) |  | [optional] 
-**text** | [**TextOutput**](TextOutput.md) |  | [optional] 
+**messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | [optional] 
+**text** | **str** |  | [optional] 
 
 ## Example
 

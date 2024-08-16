@@ -74,7 +74,7 @@ class TestSpan(unittest.TestCase):
         self.assertEqual(params.parent_id, span.parent_id)
         self.assertEqual(params.start, span.started_at)
         self.assertEqual(params.end, span.ended_at)
-        self.assertEqual(params.attributes, span.attributes)
+        self.assertEqual(params.metadata, span.metadata)
         self.assertEqual(params.family, span.family)
         self.assertEqual(params.family_data, span.family_data)
         self.assertEqual(params.message, span.message)

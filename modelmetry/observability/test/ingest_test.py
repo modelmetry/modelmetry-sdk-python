@@ -14,9 +14,9 @@ class TestIngest(unittest.TestCase):
 
     def test_build_ingest_batch_from_traces(self):
 
-        trace1 = Trace(name="trace1", tenant_id="ten_test", attributes={"a": 1})
-        trace2 = Trace(name="trace2", tenant_id="ten_test", attributes={"a": 2})
-        trace3 = Trace(name="trace3", tenant_id="ten_test", attributes={"a": 3})
+        trace1 = Trace(name="trace1", tenant_id="ten_test", metadata={"a": 1})
+        trace2 = Trace(name="trace2", tenant_id="ten_test", metadata={"a": 2})
+        trace3 = Trace(name="trace3", tenant_id="ten_test", metadata={"a": 3})
 
         trace1_span1 = trace2.completion(name="trace1.span1", model="model1")
         trace1_span1_event1 = trace1_span1.event(name="trace1.span1.event1")

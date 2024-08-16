@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**input** | [**Input**](Input.md) |  | [optional] 
+**input** | [**CompletionPayloadInput**](CompletionPayloadInput.md) |  | [optional] 
 **output** | [**Output**](Output.md) |  | [optional] 
 
 ## Example

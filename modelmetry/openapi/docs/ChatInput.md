@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**messages** | [**List[SimpleMessage]**](SimpleMessage.md) |  | [optional] 
-**settings** | [**SimpleOptions**](SimpleOptions.md) |  | 
+**messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | [optional] 
+**options** | [**Options**](Options.md) |  | 
 
 ## Example
 

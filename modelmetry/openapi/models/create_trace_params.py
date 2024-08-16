@@ -27,14 +27,14 @@ class CreateTraceParams(BaseModel):
     """
     CreateTraceParams
     """ # noqa: E501
-    attributes: Optional[Dict[str, Any]] = Field(default=None, alias="Attributes")
     end: Optional[datetime] = Field(default=None, alias="End")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, alias="Metadata")
     name: Optional[StrictStr] = Field(default=None, alias="Name")
     session_id: Optional[StrictStr] = Field(default=None, alias="SessionID")
     start: datetime = Field(alias="Start")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Attributes", "End", "Name", "SessionID", "Start", "XID"]
+    __properties: ClassVar[List[str]] = ["End", "Metadata", "Name", "SessionID", "Start", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,8 +94,8 @@ class CreateTraceParams(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Attributes": obj.get("Attributes"),
             "End": obj.get("End"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "SessionID": obj.get("SessionID"),
             "Start": obj.get("Start"),

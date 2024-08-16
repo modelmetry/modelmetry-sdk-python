@@ -19,8 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.simple_message import SimpleMessage
-from modelmetry.openapi.models.simple_options import SimpleOptions
+from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
+from modelmetry.openapi.models.options import Options
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,9 +28,9 @@ class ChatInput(BaseModel):
     """
     ChatInput
     """ # noqa: E501
-    messages: Optional[List[SimpleMessage]] = Field(default=None, alias="Messages")
-    settings: SimpleOptions = Field(alias="Settings")
-    __properties: ClassVar[List[str]] = ["Messages", "Settings"]
+    messages: Optional[List[ChatInputMessagesInner]] = Field(default=None, alias="Messages")
+    options: Options = Field(alias="Options")
+    __properties: ClassVar[List[str]] = ["Messages", "Options"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,9 +78,9 @@ class ChatInput(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['Messages'] = _items
-        # override the default output from pydantic by calling `to_dict()` of settings
-        if self.settings:
-            _dict['Settings'] = self.settings.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of options
+        if self.options:
+            _dict['Options'] = self.options.to_dict()
         return _dict
 
     @classmethod
@@ -93,8 +93,8 @@ class ChatInput(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Messages": [SimpleMessage.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None,
-            "Settings": SimpleOptions.from_dict(obj["Settings"]) if obj.get("Settings") is not None else None
+            "Messages": [ChatInputMessagesInner.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None,
+            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None
         })
         return _obj
 

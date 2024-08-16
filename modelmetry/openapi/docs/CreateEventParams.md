@@ -6,8 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **at** | **datetime** |  | [optional] 
-**attributes** | **object** |  | [optional] 
 **entry_id** | **str** |  | [optional] 
+**metadata** | **object** |  | [optional] 
 **name** | **str** |  | 
 **span_id** | **str** |  | [optional] 
 **trace_id** | **str** |  | [optional] 

@@ -18,9 +18,13 @@ Example:
     >>> response = client.call_guardrail(body)
 """
 
+from typing import List
+
 from modelmetry import openapi
 from modelmetry.openapi.models import CallGuardrailRequestBody, Call
 from modelmetry.observability.client import ObservabilityClient
+from modelmetry.openapi.models.chat_input import ChatInput
+from modelmetry.openapi.models.text_input import TextInput
 
 
 class GuardrailCallOutput:
@@ -90,25 +94,39 @@ class Client:
     def observability(self) -> ObservabilityClient:
         return self._observability
 
+    def shutdown(self):
+        self._observability.shutdown()
+
     def check(
         self,
         guardrail_id: str,
-        text_input: openapi.TextInput = None,
-        chat_input: openapi.ChatInput = None,
-        text_output: openapi.TextOutput = None,
-        chat_output: openapi.ChatOutput = None,
+        input_text: str = None,
+        input_chat: openapi.ChatInput = None,
+        output_text: str = None,
+        output_chat: List[openapi.ChatInputMessagesInner] = None,
     ) -> GuardrailCallOutput:
+
+        input: openapi.CompletionPayloadInput | None = None
+        output: openapi.Output | None = None
+
+        if input_text:
+            input = openapi.CompletionPayloadInput(TextInput(Text=input_text))
+
+        if input_chat:
+            input = openapi.CompletionPayloadInput(input_chat)
+
+        if output_chat:
+            output = openapi.Output(Messages=output_chat)
+
+        if output_text and len(output_text) > 0:
+            output = openapi.Output(Text=output_text)
 
         body = CallGuardrailRequestBody(
             TenantID=self.tenant_id,
             GuardrailID=guardrail_id,
-            Payload=openapi.Payload(
-                Input=openapi.Input(Text=text_input, Chat=chat_input),
-                Output=openapi.Output(Text=text_output, Chat=chat_output),
-            ),
+            Payload=openapi.Payload(Input=input, Output=output),
         )
 
         res = self.api_instance.call_guardrail_with_http_info(body)
-
-        output = GuardrailCallOutput(res[0])
+        output = GuardrailCallOutput(res.data)
         return output

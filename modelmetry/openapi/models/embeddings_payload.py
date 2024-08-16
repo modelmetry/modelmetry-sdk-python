@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
-from modelmetry.openapi.models.simple_options import SimpleOptions
+from modelmetry.openapi.models.options import Options
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,7 +28,8 @@ class EmbeddingsPayload(BaseModel):
     EmbeddingsPayload
     """ # noqa: E501
     inputs: List[StrictStr] = Field(alias="Inputs")
-    options: SimpleOptions = Field(alias="Options")
+    options: Options = Field(alias="Options")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Inputs", "Options"]
 
     model_config = ConfigDict(
@@ -61,8 +62,10 @@ class EmbeddingsPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -73,6 +76,11 @@ class EmbeddingsPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of options
         if self.options:
             _dict['Options'] = self.options.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -86,8 +94,13 @@ class EmbeddingsPayload(BaseModel):
 
         _obj = cls.model_validate({
             "Inputs": obj.get("Inputs"),
-            "Options": SimpleOptions.from_dict(obj["Options"]) if obj.get("Options") is not None else None
+            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

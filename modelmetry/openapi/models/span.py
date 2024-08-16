@@ -32,7 +32,6 @@ class Span(BaseModel):
     """
     Span
     """ # noqa: E501
-    attributes: Dict[str, Any] = Field(alias="Attributes")
     completion: CompletionPayload = Field(alias="Completion")
     created_at: datetime = Field(alias="CreatedAt")
     embeddings: EmbeddingsPayload = Field(alias="Embeddings")
@@ -42,6 +41,7 @@ class Span(BaseModel):
     findings: List[Finding] = Field(alias="Findings")
     id: StrictStr = Field(alias="ID")
     message: StrictStr = Field(alias="Message")
+    metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
     other: Dict[str, Any] = Field(alias="Other")
     parent_id: StrictStr = Field(alias="ParentID")
@@ -53,7 +53,7 @@ class Span(BaseModel):
     updated_at: datetime = Field(alias="UpdatedAt")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Attributes", "Completion", "CreatedAt", "Embeddings", "End", "Events", "Family", "Findings", "ID", "Message", "Name", "Other", "ParentID", "Retrieval", "Severity", "Start", "TenantID", "TraceID", "UpdatedAt", "XID"]
+    __properties: ClassVar[List[str]] = ["Completion", "CreatedAt", "Embeddings", "End", "Events", "Family", "Findings", "ID", "Message", "Metadata", "Name", "Other", "ParentID", "Retrieval", "Severity", "Start", "TenantID", "TraceID", "UpdatedAt", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -136,7 +136,6 @@ class Span(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Attributes": obj.get("Attributes"),
             "Completion": CompletionPayload.from_dict(obj["Completion"]) if obj.get("Completion") is not None else None,
             "CreatedAt": obj.get("CreatedAt"),
             "Embeddings": EmbeddingsPayload.from_dict(obj["Embeddings"]) if obj.get("Embeddings") is not None else None,
@@ -146,6 +145,7 @@ class Span(BaseModel):
             "Findings": [Finding.from_dict(_item) for _item in obj["Findings"]] if obj.get("Findings") is not None else None,
             "ID": obj.get("ID"),
             "Message": obj.get("Message"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "Other": obj.get("Other"),
             "ParentID": obj.get("ParentID"),

@@ -17,11 +17,11 @@ class Trace:
 
     spans: List[Union[CompletionSpan, RetrievalSpan, EmbeddingsSpan, OtherSpan]] = []
 
-    def __init__(self, name: str, tenant_id: str, attributes: Dict[str, Any] = None):
+    def __init__(self, name: str, tenant_id: str, metadata: Dict[str, Any] = None):
         self.xid = str(uuid.uuid4())
         self.tenant_id = tenant_id
         self.name = name
-        self.attributes = attributes or {}
+        self.metadata = metadata or {}
         self.started_at = datetime.now(timezone.utc)
         self.ended_at = None
 
@@ -157,7 +157,7 @@ class Trace:
             name=self.name,
             start=self.started_at,
             end=self.ended_at or None,
-            attributes=self.attributes,
+            metadata=self.metadata,
             session_id=None,
         )
 

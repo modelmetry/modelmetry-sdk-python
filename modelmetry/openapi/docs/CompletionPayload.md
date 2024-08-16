@@ -6,9 +6,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | [**CompletionPayloadContext**](CompletionPayloadContext.md) |  | [optional] 
-**input** | [**Input**](Input.md) |  | [optional] 
+**input** | [**CompletionPayloadInput**](CompletionPayloadInput.md) |  | [optional] 
 **model** | **str** |  | 
-**options** | [**SimpleOptions**](SimpleOptions.md) |  | 
+**options** | [**Options**](Options.md) |  | 
 **output** | [**Output**](Output.md) |  | [optional] 
 
 ## Example

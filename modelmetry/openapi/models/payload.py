@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.input import Input
+from modelmetry.openapi.models.completion_payload_input import CompletionPayloadInput
 from modelmetry.openapi.models.output import Output
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +28,7 @@ class Payload(BaseModel):
     """
     Payload
     """ # noqa: E501
-    input: Optional[Input] = Field(default=None, alias="Input")
+    input: Optional[CompletionPayloadInput] = Field(default=None, alias="Input")
     output: Optional[Output] = Field(default=None, alias="Output")
     __properties: ClassVar[List[str]] = ["Input", "Output"]
 
@@ -89,7 +89,7 @@ class Payload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Input": Input.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
+            "Input": CompletionPayloadInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
             "Output": Output.from_dict(obj["Output"]) if obj.get("Output") is not None else None
         })
         return _obj

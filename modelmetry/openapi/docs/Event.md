@@ -6,10 +6,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **at** | **datetime** |  | 
-**attributes** | **object** |  | 
 **created_at** | **datetime** |  | 
 **entry_id** | **str** |  | 
 **id** | **str** |  | 
+**metadata** | **object** |  | 
 **name** | **str** |  | 
 **span_id** | **str** |  | 
 **tenant_id** | **str** |  | 

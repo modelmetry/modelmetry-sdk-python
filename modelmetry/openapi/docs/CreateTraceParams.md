@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **object** |  | [optional] 
 **end** | **datetime** |  | [optional] 
+**metadata** | **object** |  | [optional] 
 **name** | **str** |  | [optional] 
 **session_id** | **str** |  | [optional] 
 **start** | **datetime** |  | 

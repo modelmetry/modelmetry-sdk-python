@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **object** |  | [optional] 
+**metadata** | **object** |  | [optional] 
 **name** | **str** |  | [optional] 
 **xid** | **str** |  | 
 

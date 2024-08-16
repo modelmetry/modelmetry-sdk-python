@@ -17,10 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.chat_output import ChatOutput
-from modelmetry.openapi.models.text_output import TextOutput
+from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,9 +27,9 @@ class Output(BaseModel):
     """
     Output
     """ # noqa: E501
-    chat: Optional[ChatOutput] = Field(default=None, alias="Chat")
-    text: Optional[TextOutput] = Field(default=None, alias="Text")
-    __properties: ClassVar[List[str]] = ["Chat", "Text"]
+    messages: Optional[List[ChatInputMessagesInner]] = Field(default=None, alias="Messages")
+    text: Optional[StrictStr] = Field(default=None, alias="Text")
+    __properties: ClassVar[List[str]] = ["Messages", "Text"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,12 +70,13 @@ class Output(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of chat
-        if self.chat:
-            _dict['Chat'] = self.chat.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of text
-        if self.text:
-            _dict['Text'] = self.text.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in messages (list)
+        _items = []
+        if self.messages:
+            for _item in self.messages:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['Messages'] = _items
         return _dict
 
     @classmethod
@@ -89,8 +89,8 @@ class Output(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Chat": ChatOutput.from_dict(obj["Chat"]) if obj.get("Chat") is not None else None,
-            "Text": TextOutput.from_dict(obj["Text"]) if obj.get("Text") is not None else None
+            "Messages": [ChatInputMessagesInner.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None,
+            "Text": obj.get("Text")
         })
         return _obj
 

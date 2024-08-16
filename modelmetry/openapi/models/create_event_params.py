@@ -28,14 +28,14 @@ class CreateEventParams(BaseModel):
     CreateEventParams
     """ # noqa: E501
     at: Optional[datetime] = Field(default=None, alias="At")
-    attributes: Optional[Dict[str, Any]] = Field(default=None, alias="Attributes")
     entry_id: Optional[StrictStr] = Field(default=None, alias="EntryID")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, alias="Metadata")
     name: StrictStr = Field(alias="Name")
     span_id: Optional[StrictStr] = Field(default=None, alias="SpanID")
     trace_id: Optional[StrictStr] = Field(default=None, alias="TraceID")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "Attributes", "EntryID", "Name", "SpanID", "TraceID", "XID"]
+    __properties: ClassVar[List[str]] = ["At", "EntryID", "Metadata", "Name", "SpanID", "TraceID", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,8 +96,8 @@ class CreateEventParams(BaseModel):
 
         _obj = cls.model_validate({
             "At": obj.get("At"),
-            "Attributes": obj.get("Attributes"),
             "EntryID": obj.get("EntryID"),
+            "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
             "SpanID": obj.get("SpanID"),
             "TraceID": obj.get("TraceID"),

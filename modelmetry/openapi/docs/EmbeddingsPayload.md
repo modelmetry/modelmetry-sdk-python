@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **inputs** | **List[str]** |  | 
-**options** | [**SimpleOptions**](SimpleOptions.md) |  | 
+**options** | [**Options**](Options.md) |  | 
 
 ## Example
 
