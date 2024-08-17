@@ -6,8 +6,8 @@ from modelmetry.openapi.api_response import ApiResponse
 from unittest.mock import MagicMock, patch
 from datetime import date
 
-from modelmetry.sdk import Client, GuardrailCallOutput
-from modelmetry.openapi.models import Call, Output
+from modelmetry.sdk import Client, GuardrailCheckOutput
+from modelmetry.openapi.models import GuardrailCheck, Output
 
 
 def test_client_api_key_and_tenant_id():
@@ -20,7 +20,7 @@ def test_client_check():
     mock_response = ApiResponse(
         status_code=200,
         raw_data=b"",
-        data=Call(
+        data=GuardrailCheck(
             id="call_123",
             tenant_id="test_tenant_id",
             guardrail_id="test_guardrail_id",
@@ -42,14 +42,14 @@ def test_client_check():
     output_text = "Test output"
 
     # Call the method
-    client.api_instance.call_guardrail_with_http_info = MagicMock(
+    client.api_instance.check_payload_with_http_info = MagicMock(
         return_value=mock_response
     )
 
     result = client.check(guardrail_id=guardrail_id, output_text=output_text)
 
     # Assertions
-    assert isinstance(result, GuardrailCallOutput)
+    assert isinstance(result, GuardrailCheckOutput)
     assert result.Call.id == "call_123"
     assert result.Passed
     assert not result.Failed

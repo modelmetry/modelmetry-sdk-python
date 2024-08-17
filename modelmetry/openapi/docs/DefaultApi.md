@@ -4,14 +4,14 @@ All URIs are relative to *http://api.modelmetry.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**call_guardrail**](DefaultApi.md#call_guardrail) | **POST** /calls | CallGuardrail
+[**check_payload**](DefaultApi.md#check_payload) | **POST** /checks | CheckPayload
 [**ingest_signals_v1**](DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
 
 
-# **call_guardrail**
-> Call call_guardrail(call_guardrail_request_body, dryrun=dryrun)
+# **check_payload**
+> GuardrailCheck check_payload(check_payload_request_body, dryrun=dryrun)
 
-CallGuardrail
+CheckPayload
 
 ### Example
 
@@ -19,8 +19,8 @@ CallGuardrail
 
 ```python
 import modelmetry.openapi
-from modelmetry.openapi.models.call import Call
-from modelmetry.openapi.models.call_guardrail_request_body import CallGuardrailRequestBody
+from modelmetry.openapi.models.check_payload_request_body import CheckPayloadRequestBody
+from modelmetry.openapi.models.guardrail_check import GuardrailCheck
 from modelmetry.openapi.rest import ApiException
 from pprint import pprint
 
@@ -45,16 +45,16 @@ configuration.api_key['apikeyAuth'] = os.environ["API_KEY"]
 with modelmetry.openapi.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = modelmetry.openapi.DefaultApi(api_client)
-    call_guardrail_request_body = modelmetry.openapi.CallGuardrailRequestBody() # CallGuardrailRequestBody | 
+    check_payload_request_body = modelmetry.openapi.CheckPayloadRequestBody() # CheckPayloadRequestBody | 
     dryrun = True # bool |  (optional)
 
     try:
-        # CallGuardrail
-        api_response = api_instance.call_guardrail(call_guardrail_request_body, dryrun=dryrun)
-        print("The response of DefaultApi->call_guardrail:\n")
+        # CheckPayload
+        api_response = api_instance.check_payload(check_payload_request_body, dryrun=dryrun)
+        print("The response of DefaultApi->check_payload:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DefaultApi->call_guardrail: %s\n" % e)
+        print("Exception when calling DefaultApi->check_payload: %s\n" % e)
 ```
 
 
@@ -64,12 +64,12 @@ with modelmetry.openapi.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **call_guardrail_request_body** | [**CallGuardrailRequestBody**](CallGuardrailRequestBody.md)|  | 
+ **check_payload_request_body** | [**CheckPayloadRequestBody**](CheckPayloadRequestBody.md)|  | 
  **dryrun** | **bool**|  | [optional] 
 
 ### Return type
 
-[**Call**](Call.md)
+[**GuardrailCheck**](GuardrailCheck.md)
 
 ### Authorization
 

@@ -18,8 +18,8 @@ from typing_extensions import Annotated
 
 from pydantic import StrictBool
 from typing import Optional
-from modelmetry.openapi.models.call import Call
-from modelmetry.openapi.models.call_guardrail_request_body import CallGuardrailRequestBody
+from modelmetry.openapi.models.check_payload_request_body import CheckPayloadRequestBody
+from modelmetry.openapi.models.guardrail_check import GuardrailCheck
 from modelmetry.openapi.models.ingest_signals_v1_request_body import IngestSignalsV1RequestBody
 from modelmetry.openapi.models.ingest_signals_v1_response_body import IngestSignalsV1ResponseBody
 
@@ -42,9 +42,9 @@ class DefaultApi:
 
 
     @validate_call
-    def call_guardrail(
+    def check_payload(
         self,
-        call_guardrail_request_body: CallGuardrailRequestBody,
+        check_payload_request_body: CheckPayloadRequestBody,
         dryrun: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -58,12 +58,12 @@ class DefaultApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Call:
-        """CallGuardrail
+    ) -> GuardrailCheck:
+        """CheckPayload
 
 
-        :param call_guardrail_request_body: (required)
-        :type call_guardrail_request_body: CallGuardrailRequestBody
+        :param check_payload_request_body: (required)
+        :type check_payload_request_body: CheckPayloadRequestBody
         :param dryrun:
         :type dryrun: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -88,8 +88,8 @@ class DefaultApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._call_guardrail_serialize(
-            call_guardrail_request_body=call_guardrail_request_body,
+        _param = self._check_payload_serialize(
+            check_payload_request_body=check_payload_request_body,
             dryrun=dryrun,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -98,7 +98,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Call",
+            '200': "GuardrailCheck",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -112,9 +112,9 @@ class DefaultApi:
 
 
     @validate_call
-    def call_guardrail_with_http_info(
+    def check_payload_with_http_info(
         self,
-        call_guardrail_request_body: CallGuardrailRequestBody,
+        check_payload_request_body: CheckPayloadRequestBody,
         dryrun: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -128,12 +128,12 @@ class DefaultApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Call]:
-        """CallGuardrail
+    ) -> ApiResponse[GuardrailCheck]:
+        """CheckPayload
 
 
-        :param call_guardrail_request_body: (required)
-        :type call_guardrail_request_body: CallGuardrailRequestBody
+        :param check_payload_request_body: (required)
+        :type check_payload_request_body: CheckPayloadRequestBody
         :param dryrun:
         :type dryrun: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -158,8 +158,8 @@ class DefaultApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._call_guardrail_serialize(
-            call_guardrail_request_body=call_guardrail_request_body,
+        _param = self._check_payload_serialize(
+            check_payload_request_body=check_payload_request_body,
             dryrun=dryrun,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -168,7 +168,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Call",
+            '200': "GuardrailCheck",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -182,9 +182,9 @@ class DefaultApi:
 
 
     @validate_call
-    def call_guardrail_without_preload_content(
+    def check_payload_without_preload_content(
         self,
-        call_guardrail_request_body: CallGuardrailRequestBody,
+        check_payload_request_body: CheckPayloadRequestBody,
         dryrun: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -199,11 +199,11 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """CallGuardrail
+        """CheckPayload
 
 
-        :param call_guardrail_request_body: (required)
-        :type call_guardrail_request_body: CallGuardrailRequestBody
+        :param check_payload_request_body: (required)
+        :type check_payload_request_body: CheckPayloadRequestBody
         :param dryrun:
         :type dryrun: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -228,8 +228,8 @@ class DefaultApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._call_guardrail_serialize(
-            call_guardrail_request_body=call_guardrail_request_body,
+        _param = self._check_payload_serialize(
+            check_payload_request_body=check_payload_request_body,
             dryrun=dryrun,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -238,7 +238,7 @@ class DefaultApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Call",
+            '200': "GuardrailCheck",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -247,9 +247,9 @@ class DefaultApi:
         return response_data.response
 
 
-    def _call_guardrail_serialize(
+    def _check_payload_serialize(
         self,
-        call_guardrail_request_body,
+        check_payload_request_body,
         dryrun,
         _request_auth,
         _content_type,
@@ -278,8 +278,8 @@ class DefaultApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if call_guardrail_request_body is not None:
-            _body_params = call_guardrail_request_body
+        if check_payload_request_body is not None:
+            _body_params = check_payload_request_body
 
 
         # set the HTTP header `Accept`
@@ -312,7 +312,7 @@ class DefaultApi:
 
         return self.api_client.param_serialize(
             method='POST',
-            resource_path='/calls',
+            resource_path='/checks',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

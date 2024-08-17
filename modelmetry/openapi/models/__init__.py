@@ -16,10 +16,9 @@
 # import models into model package
 from modelmetry.openapi.models.assistant_message import AssistantMessage
 from modelmetry.openapi.models.assistant_message_contents_inner import AssistantMessageContentsInner
-from modelmetry.openapi.models.call import Call
-from modelmetry.openapi.models.call_guardrail_request_body import CallGuardrailRequestBody
 from modelmetry.openapi.models.chat_input import ChatInput
 from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
+from modelmetry.openapi.models.check_payload_request_body import CheckPayloadRequestBody
 from modelmetry.openapi.models.completion_payload import CompletionPayload
 from modelmetry.openapi.models.completion_payload_context import CompletionPayloadContext
 from modelmetry.openapi.models.completion_payload_input import CompletionPayloadInput
@@ -36,6 +35,7 @@ from modelmetry.openapi.models.error_model import ErrorModel
 from modelmetry.openapi.models.event import Event
 from modelmetry.openapi.models.finding import Finding
 from modelmetry.openapi.models.function import Function
+from modelmetry.openapi.models.guardrail_check import GuardrailCheck
 from modelmetry.openapi.models.ingest_signals_v1_request_body import IngestSignalsV1RequestBody
 from modelmetry.openapi.models.ingest_signals_v1_response_body import IngestSignalsV1ResponseBody
 from modelmetry.openapi.models.options import Options

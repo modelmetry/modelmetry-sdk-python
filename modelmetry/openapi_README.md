@@ -55,16 +55,16 @@ configuration.api_key['apikeyAuth'] = os.environ["API_KEY"]
 with modelmetry.openapi.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = modelmetry.openapi.DefaultApi(api_client)
-    call_guardrail_request_body = modelmetry.openapi.CallGuardrailRequestBody() # CallGuardrailRequestBody | 
+    check_payload_request_body = modelmetry.openapi.CheckPayloadRequestBody() # CheckPayloadRequestBody | 
     dryrun = True # bool |  (optional)
 
     try:
-        # CallGuardrail
-        api_response = api_instance.call_guardrail(call_guardrail_request_body, dryrun=dryrun)
-        print("The response of DefaultApi->call_guardrail:\n")
+        # CheckPayload
+        api_response = api_instance.check_payload(check_payload_request_body, dryrun=dryrun)
+        print("The response of DefaultApi->check_payload:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling DefaultApi->call_guardrail: %s\n" % e)
+        print("Exception when calling DefaultApi->check_payload: %s\n" % e)
 
 ```
 
@@ -74,7 +74,7 @@ All URIs are relative to *http://api.modelmetry.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**call_guardrail**](modelmetry/openapi/docs/DefaultApi.md#call_guardrail) | **POST** /calls | CallGuardrail
+*DefaultApi* | [**check_payload**](modelmetry/openapi/docs/DefaultApi.md#check_payload) | **POST** /checks | CheckPayload
 *DefaultApi* | [**ingest_signals_v1**](modelmetry/openapi/docs/DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
 
 
@@ -82,10 +82,9 @@ Class | Method | HTTP request | Description
 
  - [AssistantMessage](modelmetry/openapi/docs/AssistantMessage.md)
  - [AssistantMessageContentsInner](modelmetry/openapi/docs/AssistantMessageContentsInner.md)
- - [Call](modelmetry/openapi/docs/Call.md)
- - [CallGuardrailRequestBody](modelmetry/openapi/docs/CallGuardrailRequestBody.md)
  - [ChatInput](modelmetry/openapi/docs/ChatInput.md)
  - [ChatInputMessagesInner](modelmetry/openapi/docs/ChatInputMessagesInner.md)
+ - [CheckPayloadRequestBody](modelmetry/openapi/docs/CheckPayloadRequestBody.md)
  - [CompletionPayload](modelmetry/openapi/docs/CompletionPayload.md)
  - [CompletionPayloadContext](modelmetry/openapi/docs/CompletionPayloadContext.md)
  - [CompletionPayloadInput](modelmetry/openapi/docs/CompletionPayloadInput.md)
@@ -102,6 +101,7 @@ Class | Method | HTTP request | Description
  - [Event](modelmetry/openapi/docs/Event.md)
  - [Finding](modelmetry/openapi/docs/Finding.md)
  - [Function](modelmetry/openapi/docs/Function.md)
+ - [GuardrailCheck](modelmetry/openapi/docs/GuardrailCheck.md)
  - [IngestSignalsV1RequestBody](modelmetry/openapi/docs/IngestSignalsV1RequestBody.md)
  - [IngestSignalsV1ResponseBody](modelmetry/openapi/docs/IngestSignalsV1ResponseBody.md)
  - [Options](modelmetry/openapi/docs/Options.md)
