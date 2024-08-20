@@ -34,7 +34,7 @@ class CreateFindingParams(BaseModel):
     entry_id: Optional[StrictStr] = Field(default=None, alias="EntryID")
     metadata: Optional[Dict[str, Any]] = Field(default=None, alias="Metadata")
     name: StrictStr = Field(alias="Name")
-    source: Optional[StrictStr] = Field(default=None, alias="Source")
+    source: Optional[StrictStr] = Field(default='annotation', alias="Source")
     span_id: Optional[StrictStr] = Field(default=None, alias="SpanID")
     trace_id: Optional[StrictStr] = Field(default=None, alias="TraceID")
     value: CreateFindingParamsValue = Field(alias="Value")
@@ -48,8 +48,8 @@ class CreateFindingParams(BaseModel):
         if value is None:
             return value
 
-        if value not in set(['annotation', 'api', 'enduser', 'evaluator']):
-            raise ValueError("must be one of enum values ('annotation', 'api', 'enduser', 'evaluator')")
+        if value not in set(['annotation', 'evaluator', 'sdk']):
+            raise ValueError("must be one of enum values ('annotation', 'evaluator', 'sdk')")
         return value
 
     model_config = ConfigDict(
@@ -119,7 +119,7 @@ class CreateFindingParams(BaseModel):
             "EntryID": obj.get("EntryID"),
             "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
-            "Source": obj.get("Source"),
+            "Source": obj.get("Source") if obj.get("Source") is not None else 'annotation',
             "SpanID": obj.get("SpanID"),
             "TraceID": obj.get("TraceID"),
             "Value": CreateFindingParamsValue.from_dict(obj["Value"]) if obj.get("Value") is not None else None,

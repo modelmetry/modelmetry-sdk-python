@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**check_id** | **str** |  | 
 **duration_ms** | **int** |  | 
 **evaluator_id** | **str** |  | 
 **findings** | [**List[SimplifiedFinding]**](SimplifiedFinding.md) |  | 

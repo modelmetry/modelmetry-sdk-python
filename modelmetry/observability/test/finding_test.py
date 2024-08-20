@@ -12,7 +12,7 @@ class TestFinding(unittest.TestCase):
         trace_id = "test_trace_id"
         span_id = "test_span_id"
         description = "test_description"
-        source = "api"
+        source = "sdk"
         comment = "test_comment"
         metadata = {"key1": "value1", "key2": "value2"}
         at = datetime.now(timezone.utc)
@@ -45,7 +45,7 @@ class TestFinding(unittest.TestCase):
         trace_id = "test_trace_id"
         span_id = "test_span_id"
         description = "test_description"
-        source = "api"
+        source = "sdk"
         comment = "test_comment"
         metadata = {"key1": "value1", "key2": "value2"}
         at = datetime.now(timezone.utc)

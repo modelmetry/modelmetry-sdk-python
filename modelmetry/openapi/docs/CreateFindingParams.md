@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **entry_id** | **str** |  | [optional] 
 **metadata** | **object** |  | [optional] 
 **name** | **str** |  | 
-**source** | **str** |  | [optional] 
+**source** | **str** |  | [optional] [default to 'annotation']
 **span_id** | **str** |  | [optional] 
 **trace_id** | **str** |  | [optional] 
 **value** | [**CreateFindingParamsValue**](CreateFindingParamsValue.md) |  | 

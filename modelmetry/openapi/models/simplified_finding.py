@@ -41,8 +41,8 @@ class SimplifiedFinding(BaseModel):
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['annotation', 'api', 'enduser', 'evaluator']):
-            raise ValueError("must be one of enum values ('annotation', 'api', 'enduser', 'evaluator')")
+        if value not in set(['annotation', 'evaluator', 'sdk']):
+            raise ValueError("must be one of enum values ('annotation', 'evaluator', 'sdk')")
         return value
 
     model_config = ConfigDict(
@@ -111,7 +111,7 @@ class SimplifiedFinding(BaseModel):
             "EvaluatorID": obj.get("EvaluatorID"),
             "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
-            "Source": obj.get("Source"),
+            "Source": obj.get("Source") if obj.get("Source") is not None else 'annotation',
             "Value": CreateFindingParamsValue.from_dict(obj["Value"]) if obj.get("Value") is not None else None
         })
         # store additional fields in additional_properties

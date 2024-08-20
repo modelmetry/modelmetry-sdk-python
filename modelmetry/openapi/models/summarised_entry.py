@@ -27,6 +27,7 @@ class SummarisedEntry(BaseModel):
     """
     SummarisedEntry
     """ # noqa: E501
+    check_id: Optional[StrictStr] = Field(alias="CheckID")
     duration_ms: StrictInt = Field(alias="DurationMs")
     evaluator_id: StrictStr = Field(alias="EvaluatorID")
     findings: List[SimplifiedFinding] = Field(alias="Findings")
@@ -37,7 +38,7 @@ class SummarisedEntry(BaseModel):
     score: Optional[Union[StrictFloat, StrictInt]] = Field(alias="Score")
     skip: StrictStr = Field(alias="Skip")
     tenant_id: StrictStr = Field(alias="TenantID")
-    __properties: ClassVar[List[str]] = ["DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "TenantID"]
+    __properties: ClassVar[List[str]] = ["CheckID", "DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "TenantID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,6 +86,11 @@ class SummarisedEntry(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['Findings'] = _items
+        # set to None if check_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.check_id is None and "check_id" in self.model_fields_set:
+            _dict['CheckID'] = None
+
         # set to None if instance_id (nullable) is None
         # and model_fields_set contains the field
         if self.instance_id is None and "instance_id" in self.model_fields_set:
@@ -107,6 +113,7 @@ class SummarisedEntry(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "CheckID": obj.get("CheckID"),
             "DurationMs": obj.get("DurationMs"),
             "EvaluatorID": obj.get("EvaluatorID"),
             "Findings": [SimplifiedFinding.from_dict(_item) for _item in obj["Findings"]] if obj.get("Findings") is not None else None,

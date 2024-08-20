@@ -6,17 +6,18 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **at** | **datetime** |  | 
+**check_id** | **str** |  | [optional] 
 **comment** | **str** |  | 
 **created_at** | **datetime** |  | 
-**entry_id** | **str** |  | 
+**entry_id** | **str** |  | [optional] 
 **evaluator_id** | **str** |  | 
 **id** | **str** |  | 
 **metadata** | **object** |  | 
 **name** | **str** |  | 
-**source** | **str** |  | 
-**span_id** | **str** |  | 
+**source** | **str** |  | [default to 'annotation']
+**span_id** | **str** |  | [optional] 
 **tenant_id** | **str** |  | 
-**trace_id** | **str** |  | 
+**trace_id** | **str** |  | [optional] 
 **updated_at** | **datetime** |  | 
 **value** | [**CreateFindingParamsValue**](CreateFindingParamsValue.md) |  | 
 **xid** | **str** |  | 

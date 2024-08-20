@@ -19,7 +19,7 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.create_finding_params_value import CreateFindingParamsValue
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,28 +29,29 @@ class Finding(BaseModel):
     Finding
     """ # noqa: E501
     at: datetime = Field(alias="At")
+    check_id: Optional[StrictStr] = Field(default=None, alias="CheckID")
     comment: StrictStr = Field(alias="Comment")
     created_at: datetime = Field(alias="CreatedAt")
-    entry_id: StrictStr = Field(alias="EntryID")
+    entry_id: Optional[StrictStr] = Field(default=None, alias="EntryID")
     evaluator_id: StrictStr = Field(alias="EvaluatorID")
     id: StrictStr = Field(alias="ID")
     metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
     source: StrictStr = Field(alias="Source")
-    span_id: StrictStr = Field(alias="SpanID")
+    span_id: Optional[StrictStr] = Field(default=None, alias="SpanID")
     tenant_id: StrictStr = Field(alias="TenantID")
-    trace_id: StrictStr = Field(alias="TraceID")
+    trace_id: Optional[StrictStr] = Field(default=None, alias="TraceID")
     updated_at: datetime = Field(alias="UpdatedAt")
     value: CreateFindingParamsValue = Field(alias="Value")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "Comment", "CreatedAt", "EntryID", "EvaluatorID", "ID", "Metadata", "Name", "Source", "SpanID", "TenantID", "TraceID", "UpdatedAt", "Value", "XID"]
+    __properties: ClassVar[List[str]] = ["At", "CheckID", "Comment", "CreatedAt", "EntryID", "EvaluatorID", "ID", "Metadata", "Name", "Source", "SpanID", "TenantID", "TraceID", "UpdatedAt", "Value", "XID"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['annotation', 'api', 'enduser', 'evaluator']):
-            raise ValueError("must be one of enum values ('annotation', 'api', 'enduser', 'evaluator')")
+        if value not in set(['annotation', 'evaluator', 'sdk']):
+            raise ValueError("must be one of enum values ('annotation', 'evaluator', 'sdk')")
         return value
 
     model_config = ConfigDict(
@@ -115,6 +116,7 @@ class Finding(BaseModel):
 
         _obj = cls.model_validate({
             "At": obj.get("At"),
+            "CheckID": obj.get("CheckID"),
             "Comment": obj.get("Comment"),
             "CreatedAt": obj.get("CreatedAt"),
             "EntryID": obj.get("EntryID"),
@@ -122,7 +124,7 @@ class Finding(BaseModel):
             "ID": obj.get("ID"),
             "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),
-            "Source": obj.get("Source"),
+            "Source": obj.get("Source") if obj.get("Source") is not None else 'annotation',
             "SpanID": obj.get("SpanID"),
             "TenantID": obj.get("TenantID"),
             "TraceID": obj.get("TraceID"),

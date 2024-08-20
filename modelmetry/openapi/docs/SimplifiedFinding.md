@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **evaluator_id** | **str** |  | 
 **metadata** | **object** |  | 
 **name** | **str** |  | 
-**source** | **str** |  | 
+**source** | **str** |  | [default to 'annotation']
 **value** | [**CreateFindingParamsValue**](CreateFindingParamsValue.md) |  | 
 
 ## Example

@@ -16,7 +16,7 @@ class Finding:
         trace_id: Optional[str] = None,
         span_id: Optional[str] = None,
         description: Optional[str] = None,
-        source: Optional[str] = "api",
+        source: Optional[str] = "sdk",
         comment: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None,
         at: Optional[datetime] = None,
@@ -28,7 +28,7 @@ class Finding:
         self.trace_id: Optional[str] = trace_id
         self.span_id: Optional[str] = span_id
         self.description: Optional[str] = description
-        self.source: str = source or "api"
+        self.source: str = source or "sdk"
         self.comment: Optional[str] = comment
         self.metadata = metadata or {}
         self.at: datetime = at or datetime.now(timezone.utc)
@@ -44,7 +44,7 @@ class Finding:
             value=CreateFindingParamsValue(actual_instance=self.value),
             comment=self.comment,
             description=self.description,
-            source=self.source or "api",
+            source=self.source or "sdk",
             at=self.at,
             metadata=self.metadata,
             trace_id=self.trace_id,
