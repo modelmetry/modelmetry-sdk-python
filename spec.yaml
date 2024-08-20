@@ -53,6 +53,8 @@ components:
             - "null"
         Options:
           $ref: "#/components/schemas/Options"
+      required:
+        - Messages
       type: object
     CheckPayloadRequestBody:
       additionalProperties: false

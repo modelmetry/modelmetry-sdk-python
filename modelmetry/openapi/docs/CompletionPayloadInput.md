@@ -7,7 +7,7 @@ Input for completion
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **text** | **str** |  | 
-**messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | [optional] 
+**messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | 
 **options** | [**Options**](Options.md) |  | [optional] 
 
 ## Example

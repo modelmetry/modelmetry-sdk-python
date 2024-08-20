@@ -29,7 +29,7 @@ def main():
         traces, exception
     )
 
-    t1 = client.observability().trace("python.demo")
+    t1 = observability.trace("python.demo")
     t1.event("Just a quick event to show the first demo started :)")
 
     s1 = t1.completion("first-span", "openai/gpt-3.5-turbo")
@@ -38,8 +38,8 @@ def main():
 
     t1.end()
 
-    client.observability().flush_sync()
-    client.observability().shutdown()
+    observability.flush_sync()
+    observability.shutdown()
 
 
 if __name__ == "__main__":

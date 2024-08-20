@@ -49,6 +49,7 @@ class Client:
             self._observability = ObservabilityClient(
                 tenant_id=self.tenant_id,
                 api_key=self.api_key,
+                host=self._configuration.host,
             )
         return self._observability
 
@@ -62,4 +63,4 @@ class Client:
         return self._guardrails
 
     def shutdown(self):
-        self._observability.shutdown()
+        self.observability().shutdown()

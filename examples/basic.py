@@ -32,7 +32,7 @@ def main():
     debug(res)
 
     # Check the outcome of the guardrail and handle the happy and unhappy paths accordingly.
-    if res.failed:
+    if res.passed:
         print("Sorry user, I cannot help you with this query at the moment.")
 
         # You can have access to more data for debugging (scores, evaluation(s) that failed) in the Call

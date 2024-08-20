@@ -28,7 +28,7 @@ class ChatInput(BaseModel):
     """
     ChatInput
     """ # noqa: E501
-    messages: Optional[List[ChatInputMessagesInner]] = Field(default=None, alias="Messages")
+    messages: List[ChatInputMessagesInner] = Field(alias="Messages")
     options: Optional[Options] = Field(default=None, alias="Options")
     __properties: ClassVar[List[str]] = ["Messages", "Options"]
 
