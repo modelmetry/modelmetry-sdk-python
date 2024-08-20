@@ -9,7 +9,7 @@ The Modelmetry SDK provides a Python interface to interact with the Modelmetry A
 To get started with the Modelmetry SDK, you first need to install it. You can do this using pip:
 
 ```sh
-pip install modelmetry
+pip install modelmetry-sdk
 ```
 
 ### Quick Start
@@ -23,21 +23,23 @@ import modelmetry
 
 # Instantiate the SDK with your tenant_id and api_key
 client = modelmetry.Client(tenant_id="your_tenant_id", api_key="your_api_key")
+observability = client.observability()
+guardrails = client.guardrails()
 
 # Call our API with the payload that you want to check
-outcome = client.check(
+outcome = guardrails.check(
   # Replace the guardrail_id with the one you want to check against
   guardrail_id="grd_abc123xyz789", 
   # Here goes either the user input or the model output you want to check
-  text_input=modelmetry.TextInput(text="What is your favourite weapon?")
-  # you can also pass other payload fields here: 
-  # chat_input    (modelmetry.ChatInput)
-  # chat_output   (modelmetry.ChatOutput)
-  # text_output   (modelmetry.TextOutput)
+  input_text=modelmetry.TextInput(text="What is your favourite weapon?")
+  # you can also pass other payload fields here:
+  # input_chat
+  # output_text
+  # output_chat 
 )
 
 # Check if it passed
-if not outcome.Passed:
+if not outcome.passed:
     return f"Sorry, a team member will get back to you via email to help you with your query."
 ```
 

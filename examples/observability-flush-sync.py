@@ -19,10 +19,13 @@ def main():
         host=os.getenv("HOST"),
     )
 
-    client._observability.on_flush_success_callback = lambda traces: debug(
+    observability = client.observability()
+
+    observability.on_flush_success_callback = lambda traces: debug(
         f"Successfully flushed {len(traces)} traces", traces
     )
-    client._observability.on_flush_failure_callback = lambda traces, exception: debug(
+
+    observability.on_flush_failure_callback = lambda traces, exception: debug(
         traces, exception
     )
 

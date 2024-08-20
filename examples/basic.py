@@ -20,8 +20,10 @@ def main():
         host=os.getenv("HOST"),
     )
 
+    guardrails = client.guardrails()
+
     # Call the guardrail with the CallGuardrailRequestBody object
-    res = client.check(
+    res = guardrails.check(
         guardrail_id="grd_jaohzgcbd5hbt1grwmvp",
         input_text="I want to know the weather in London tomorrow",
     )
@@ -30,20 +32,17 @@ def main():
     debug(res)
 
     # Check the outcome of the guardrail and handle the happy and unhappy paths accordingly.
-    if not res.Passed:
-        print(
-            "Sorry user, I cannot help you with this query at the moment. I've forward this to the team so they can get back to you shortly."
-        )
+    if res.failed:
+        print("Sorry user, I cannot help you with this query at the moment.")
 
         # You can have access to more data for debugging (scores, evaluation(s) that failed) in the Call
-        for entry in res.Call.summarised_entries:
+        for entry in res.check.summarised_entries:
             print(entry)
 
     else:
         print("Passed!")
 
     client.shutdown()
-
     return
 
 

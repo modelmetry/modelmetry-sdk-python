@@ -3,6 +3,7 @@ from threading import Lock, Timer
 import threading
 from typing import Any, Callable, Dict, List
 
+from modelmetry import openapi
 from modelmetry.observability.ingest import build_ingest_batch_from_traces
 from modelmetry.observability.trace import Trace
 import sys
@@ -88,23 +89,30 @@ class ObservabilityClient:
 
     def __init__(
         self,
-        backend: DefaultApi,
+        # backend
+        api_key: str,
         tenant_id: str,
+        host: str = None,
+        # opts
         max_size_kb: int = None,
         flush_interval: int = None,
         on_flush_success_callback: Callable[[List[Trace]], None] = None,
         on_flush_failure_callback: Callable[[List[Trace], Exception], None] = None,
     ) -> None:
         self.tenant_id = tenant_id
-        self.backend = backend
         self.traces = []
         self.max_size_kb = max_size_kb
         self.flush_interval = flush_interval
 
+        self.client = openapi.ApiClient(
+            openapi.Configuration(host, api_key={"apikeyAuth": api_key})
+        )
+        self.backend = openapi.DefaultApi(self.client)
+
         # Initialize the flushing mechanism
         self.traces_lock = threading.Lock()
         self.task_manager = FlushManager(
-            api=backend,
+            api=self.backend,
             on_failure=self._on_batch_failure,
             on_flushed=self._on_batch_flushed,
         )
