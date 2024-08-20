@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **var_schema** | **str** | A URL to the JSON Schema for this object. | [optional] [readonly] 
 **guardrail_id** | **str** |  | 
 **payload** | [**Payload**](Payload.md) |  | 
-**tenant_id** | **str** |  | 
+**tenant_id** | **str** |  | [optional] 
 
 ## Example
 

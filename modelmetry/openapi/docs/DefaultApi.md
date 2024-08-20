@@ -4,14 +4,14 @@ All URIs are relative to *http://api.modelmetry.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**check_payload**](DefaultApi.md#check_payload) | **POST** /checks | CheckPayload
+[**check_payload**](DefaultApi.md#check_payload) | **POST** /checks | Check a payload
 [**ingest_signals_v1**](DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
 
 
 # **check_payload**
 > GuardrailCheck check_payload(check_payload_request_body, dryrun=dryrun)
 
-CheckPayload
+Check a payload
 
 ### Example
 
@@ -49,7 +49,7 @@ with modelmetry.openapi.ApiClient(configuration) as api_client:
     dryrun = True # bool |  (optional)
 
     try:
-        # CheckPayload
+        # Check a payload
         api_response = api_instance.check_payload(check_payload_request_body, dryrun=dryrun)
         print("The response of DefaultApi->check_payload:\n")
         pprint(api_response)

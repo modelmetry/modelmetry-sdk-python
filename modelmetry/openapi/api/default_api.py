@@ -59,7 +59,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GuardrailCheck:
-        """CheckPayload
+        """Check a payload
 
 
         :param check_payload_request_body: (required)
@@ -129,7 +129,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GuardrailCheck]:
-        """CheckPayload
+        """Check a payload
 
 
         :param check_payload_request_body: (required)
@@ -199,7 +199,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """CheckPayload
+        """Check a payload
 
 
         :param check_payload_request_body: (required)

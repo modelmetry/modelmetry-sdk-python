@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **text** | **str** |  | 
 **messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | [optional] 
-**options** | [**Options**](Options.md) |  | 
+**options** | [**Options**](Options.md) |  | [optional] 
 
 ## Example
 

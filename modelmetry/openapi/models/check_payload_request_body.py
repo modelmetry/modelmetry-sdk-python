@@ -30,7 +30,7 @@ class CheckPayloadRequestBody(BaseModel):
     var_schema: Optional[StrictStr] = Field(default=None, description="A URL to the JSON Schema for this object.", alias="$schema")
     guardrail_id: StrictStr = Field(alias="GuardrailID")
     payload: Payload = Field(alias="Payload")
-    tenant_id: StrictStr = Field(alias="TenantID")
+    tenant_id: Optional[StrictStr] = Field(default=None, alias="TenantID")
     __properties: ClassVar[List[str]] = ["$schema", "GuardrailID", "Payload", "TenantID"]
 
     model_config = ConfigDict(

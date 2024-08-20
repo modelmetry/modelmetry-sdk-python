@@ -94,5 +94,4 @@ modelmetry/openapi/models/trace_with_spans.py
 modelmetry/openapi/models/user_message.py
 modelmetry/openapi/rest.py
 modelmetry/openapi/test/__init__.py
-modelmetry/openapi/test/test_guardrail_check.py
 modelmetry/openapi_README.md
