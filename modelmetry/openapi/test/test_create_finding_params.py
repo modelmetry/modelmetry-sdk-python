@@ -41,7 +41,7 @@ class TestCreateFindingParams(unittest.TestCase):
                 entry_id = '',
                 metadata = None,
                 name = '',
-                source = '',
+                source = 'annotation',
                 span_id = '',
                 trace_id = '',
                 value = None,

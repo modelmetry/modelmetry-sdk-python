@@ -35,7 +35,7 @@ class TestCreateSessionParams(unittest.TestCase):
         model = CreateSessionParams()
         if include_optional:
             return CreateSessionParams(
-                attributes = None,
+                metadata = None,
                 name = '',
                 xid = ''
             )

@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **model_list** | **List[str]** |  | [optional] 
 **n** | **int** |  | [optional] 
 **presence_penalty** | **float** |  | [optional] 
+**provider** | **str** |  | [optional] 
 **response_format** | **object** |  | [optional] 
 **seed** | **int** |  | [optional] 
 **stop** | **object** |  | [optional] 

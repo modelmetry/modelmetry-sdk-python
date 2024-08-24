@@ -18,9 +18,8 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List
 from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
-from modelmetry.openapi.models.options import Options
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,8 +28,7 @@ class ChatInput(BaseModel):
     ChatInput
     """ # noqa: E501
     messages: List[ChatInputMessagesInner] = Field(alias="Messages")
-    options: Optional[Options] = Field(default=None, alias="Options")
-    __properties: ClassVar[List[str]] = ["Messages", "Options"]
+    __properties: ClassVar[List[str]] = ["Messages"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,9 +76,6 @@ class ChatInput(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['Messages'] = _items
-        # override the default output from pydantic by calling `to_dict()` of options
-        if self.options:
-            _dict['Options'] = self.options.to_dict()
         return _dict
 
     @classmethod
@@ -93,8 +88,7 @@ class ChatInput(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Messages": [ChatInputMessagesInner.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None,
-            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None
+            "Messages": [ChatInputMessagesInner.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None
         })
         return _obj
 

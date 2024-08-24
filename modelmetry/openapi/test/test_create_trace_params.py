@@ -35,8 +35,8 @@ class TestCreateTraceParams(unittest.TestCase):
         model = CreateTraceParams()
         if include_optional:
             return CreateTraceParams(
-                attributes = None,
                 end = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
+                metadata = None,
                 name = '',
                 session_id = '',
                 start = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),

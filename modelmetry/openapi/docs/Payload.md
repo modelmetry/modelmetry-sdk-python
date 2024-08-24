@@ -5,7 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**input** | [**CompletionPayloadInput**](CompletionPayloadInput.md) |  | [optional] 
+**input** | [**CompletionFamilyDataInput**](CompletionFamilyDataInput.md) |  | [optional] 
+**options** | [**Options**](Options.md) |  | [optional] 
 **output** | [**Output**](Output.md) |  | [optional] 
 
 ## Example

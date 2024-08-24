@@ -44,7 +44,10 @@ class TestGuardrailCheck(unittest.TestCase):
                 metadata = None,
                 outcome = 'pass',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_payload_input.CompletionPayload_Input(), 
+                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
+                    options = {
+                        'key' : null
+                        }, 
                     output = modelmetry.openapi.models.output.Output(
                         messages = [
                             modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
@@ -52,6 +55,7 @@ class TestGuardrailCheck(unittest.TestCase):
                         text = '', ), ),
                 summarised_entries = [
                     modelmetry.openapi.models.summarised_entry.SummarisedEntry(
+                        check_id = '', 
                         duration_ms = 56, 
                         evaluator_id = '', 
                         findings = [
@@ -65,7 +69,9 @@ class TestGuardrailCheck(unittest.TestCase):
                         outcome = '', 
                         score = 1.337, 
                         skip = '', 
-                        tenant_id = '', )
+                        span_id = '', 
+                        tenant_id = '', 
+                        trace_id = '', )
                     ],
                 tenant_id = '',
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
@@ -81,7 +87,10 @@ class TestGuardrailCheck(unittest.TestCase):
                 metadata = None,
                 outcome = 'pass',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_payload_input.CompletionPayload_Input(), 
+                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
+                    options = {
+                        'key' : null
+                        }, 
                     output = modelmetry.openapi.models.output.Output(
                         messages = [
                             modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
@@ -89,6 +98,7 @@ class TestGuardrailCheck(unittest.TestCase):
                         text = '', ), ),
                 summarised_entries = [
                     modelmetry.openapi.models.summarised_entry.SummarisedEntry(
+                        check_id = '', 
                         duration_ms = 56, 
                         evaluator_id = '', 
                         findings = [
@@ -102,7 +112,9 @@ class TestGuardrailCheck(unittest.TestCase):
                         outcome = '', 
                         score = 1.337, 
                         skip = '', 
-                        tenant_id = '', )
+                        span_id = '', 
+                        tenant_id = '', 
+                        trace_id = '', )
                     ],
                 tenant_id = '',
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),

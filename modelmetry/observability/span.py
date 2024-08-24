@@ -6,19 +6,26 @@ from modelmetry.observability.finding import Finding
 from modelmetry.observability.event import Event
 from modelmetry.openapi import CreateSpanParams
 from modelmetry import (
-    EmbeddingsPayload,
-    CompletionPayload,
-    RetrievalPayload,
+    EmbeddingsFamilyData,
+    CompletionFamilyData,
+    RetrievalFamilyData,
     Options,
 )
-from modelmetry.openapi.models.completion_payload_context import (
-    CompletionPayloadContext,
+from modelmetry.openapi.models.chat_input import ChatInput
+from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
+from modelmetry.openapi.models.completion_family_data import CompletionFamilyData
+from modelmetry.openapi.models.completion_family_data_input import (
+    CompletionFamilyDataInput,
 )
-from modelmetry.openapi.models.input import Input
+from modelmetry.openapi.models.cost import Cost
+from modelmetry.openapi.models.document import Document
+from modelmetry.openapi.models.money import Money
 from modelmetry.openapi.models.options import Options
 from modelmetry.openapi.models.output import Output
 from modelmetry.openapi.models.retrieval_query import RetrievalQuery
-from modelmetry.openapi.models.retrieved_item import RetrievedItem
+from modelmetry.openapi.models.text_input import TextInput
+from modelmetry.openapi.models.usage import Usage
+from modelmetry.openapi.models.usage_value import UsageValue
 
 
 class BaseSpan:
@@ -263,7 +270,7 @@ class EmbeddingsSpan(BaseSpan):
             metadata=metadata,
         )
 
-        self.family_data = EmbeddingsPayload(
+        self.family_data = EmbeddingsFamilyData(
             inputs=inputs or [],
             options=options or Options(),
         )
@@ -274,6 +281,8 @@ class EmbeddingsSpan(BaseSpan):
 
 
 class CompletionSpan(BaseSpan):
+
+    family_data: CompletionFamilyData
 
     def __init__(
         self,
@@ -286,10 +295,12 @@ class CompletionSpan(BaseSpan):
         severity: str = "unset",
         family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
-        input: Input = None,
-        context: CompletionPayloadContext = None,
+        input: CompletionFamilyDataInput = None,
+        documents: List[Document] = None,
         options: Options = None,
         output: Output = None,
+        usage: Usage = None,
+        cost: Cost = None,
     ):
         super().__init__(
             name=name,
@@ -302,21 +313,103 @@ class CompletionSpan(BaseSpan):
             metadata=metadata,
         )
 
-        self.family_data = CompletionPayload(
-            Model=model or "unknown/unknown",
+        self.family_data = CompletionFamilyData(
             Options=options or Options(),
-            # optional
-            Context=context or None,
+            Documents=documents or None,
             Input=input or None,
             Output=output or None,
+            Usage=usage or None,
+            Cost=cost or None,
         )
 
     def end(self) -> "CompletionSpan":
         self.maybe_set_ended_at_to_now()
         return self
 
+    def set_model(self, model: str) -> "CompletionSpan":
+        self.family_data.options.model = model
+        return self
+
+    def set_provider(self, provider: str) -> "CompletionSpan":
+        self.family_data.options.provider = provider
+        return self
+
+    def set_input(self, input: CompletionFamilyDataInput) -> "CompletionSpan":
+        self.family_data.input = input
+        return self
+
+    def set_input_text(self, input: str) -> "CompletionSpan":
+        self.set_input(CompletionFamilyDataInput(TextInput(Text=input)))
+        return self
+
+    def set_input_messages(
+        self, messages: List[ChatInputMessagesInner]
+    ) -> "CompletionSpan":
+        self.set_input(CompletionFamilyDataInput(ChatInput(Messages=messages)))
+        return self
+
+    def set_output(self, output: Output) -> "CompletionSpan":
+        self.family_data.output = output
+        return self
+
+    def set_output_text(self, output: str) -> "CompletionSpan":
+        self.set_output(Output(Text=output))
+        return self
+
+    def set_output_messages(
+        self, messages: List[ChatInputMessagesInner]
+    ) -> "CompletionSpan":
+        self.set_output(Output(Messages=messages))
+        return self
+
+    def set_usage(
+        self, kind: str, amount: int, unit: str = "tokens"
+    ) -> "CompletionSpan":
+        self.family_data.usage = self.family_data.usage or {}
+        if kind == "input":
+            self.family_data.usage.input = UsageValue(Amount=amount, Unit=unit)
+        elif kind == "output":
+            self.family_data.usage.output = UsageValue(Amount=amount, Unit=unit)
+        elif kind == "total":
+            self.family_data.usage.total = UsageValue(Amount=amount, Unit=unit)
+        return self
+
+    def set_cost(
+        self, kind: str, amount: float, currency: str = "USD"
+    ) -> "CompletionSpan":
+        self.family_data.cost = self.family_data.cost or {}
+        if kind == "input":
+            self.family_data.cost.input = Money(Amount=amount, Currency=currency)
+        elif kind == "output":
+            self.family_data.cost.output = Money(Amount=amount, Currency=currency)
+        elif kind == "total":
+            self.family_data.cost.total = Money(Amount=amount, Currency=currency)
+        return self
+
+    def add_document(
+        self,
+        identifier: str,
+        title: str,
+        content_type: str,
+        content: any = None,
+        metadata: Dict[str, Any] = None,
+    ) -> "CompletionSpan":
+        self.family_data.documents = self.family_data.documents or []
+        self.family_data.documents.append(
+            Document(
+                Identifier=identifier,
+                Title=title,
+                ContentType=content_type,
+                Content=content or None,
+                Metadata=metadata or None,
+            )
+        )
+        return self
+
 
 class RetrievalSpan(BaseSpan):
+
+    family_data: RetrievalFamilyData
 
     def __init__(
         self,
@@ -329,7 +422,7 @@ class RetrievalSpan(BaseSpan):
         family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
         queries: List[RetrievalQuery] = None,
-        retrieved: List[RetrievedItem] = None,
+        documents: List[Document] = None,
     ):
         super().__init__(
             name=name,
@@ -342,11 +435,43 @@ class RetrievalSpan(BaseSpan):
             metadata=metadata,
         )
 
-        self.family_data = RetrievalPayload(
+        self.family_data = RetrievalFamilyData(
             Queries=queries or [],
-            Retrieved=retrieved or [],
+            Documents=documents or [],
         )
 
     def end(self) -> "RetrievalSpan":
         self.maybe_set_ended_at_to_now()
+        return self
+
+    def add_document(
+        self,
+        identifier: str,
+        title: str,
+        content_type: str,
+        content: Any = None,
+        metadata: Dict[str, Any] = None,
+    ) -> "RetrievalSpan":
+        self.family_data.documents = self.family_data.documents or []
+        self.family_data.documents.append(
+            Document(
+                Identifier=identifier,
+                Title=title,
+                ContentType=content_type,
+                Content=content or None,
+                Metadata=metadata or None,
+            )
+        )
+        return self
+
+    def add_query(
+        self, text_representation: str, embeddings: List[float] = None
+    ) -> "RetrievalSpan":
+        self.family_data.queries = self.family_data.queries or []
+        self.family_data.queries.append(
+            RetrievalQuery(
+                TextRepresentation=text_representation,
+                Embeddings=embeddings or None,
+            )
+        )
         return self

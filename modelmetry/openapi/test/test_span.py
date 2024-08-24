@@ -35,101 +35,13 @@ class TestSpan(unittest.TestCase):
         model = Span()
         if include_optional:
             return Span(
-                attributes = None,
-                completion = modelmetry.openapi.models.completion_payload.CompletionPayload(
-                    context = modelmetry.openapi.models.completion_payload_context.CompletionPayloadContext(
-                        parsed_system = '', 
-                        retrieved_items = [
-                            {
-                                'key' : null
-                                }
-                            ], ), 
-                    input = modelmetry.openapi.models.input.Input(
-                        chat = modelmetry.openapi.models.chat_input.ChatInput(
-                            messages = [
-                                modelmetry.openapi.models.simple_message.SimpleMessage(
-                                    contents = [
-                                        modelmetry.openapi.models.simple_part.SimplePart(
-                                            detail = 'auto', 
-                                            mime_type = '', 
-                                            text = '', 
-                                            uri = '', )
-                                        ], 
-                                    name = '', 
-                                    role = 'system', 
-                                    tool_call_id = '', 
-                                    tool_calls = [
-                                        modelmetry.openapi.models.tool_call.ToolCall(
-                                            function = modelmetry.openapi.models.function.Function(
-                                                arguments = null, 
-                                                name = '', ), 
-                                            id = '', 
-                                            type = 'function', )
-                                        ], )
-                                ], 
-                            settings = modelmetry.openapi.models.simple_options.SimpleOptions(
-                                frequency_penalty = 1.337, 
-                                logprobs = True, 
-                                max_tokens = 56, 
-                                n = 56, 
-                                presence_penalty = 1.337, 
-                                seed = 56, 
-                                stream = True, 
-                                temperature = 0, 
-                                timeout = 0, 
-                                tool_choice = '', 
-                                tools = [
-                                    modelmetry.openapi.models.tool.Tool(
-                                        description = '', 
-                                        name = '', 
-                                        parameters = null, )
-                                    ], 
-                                top_logprobs = 56, 
-                                top_p = 0, 
-                                user = '', ), ), 
-                        text = modelmetry.openapi.models.text_input.TextInput(
-                            text = '', ), ), 
-                    model = '', 
-                    options = modelmetry.openapi.models.simple_options.SimpleOptions(
-                        frequency_penalty = 1.337, 
-                        logprobs = True, 
-                        max_tokens = 56, 
-                        n = 56, 
-                        presence_penalty = 1.337, 
-                        seed = 56, 
-                        stream = True, 
-                        temperature = 0, 
-                        timeout = 0, 
-                        tool_choice = '', 
-                        top_logprobs = 56, 
-                        top_p = 0, 
-                        user = '', ), 
-                    output = modelmetry.openapi.models.output.Output(), ),
+                completion = {
+                    'key' : null
+                    },
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                embeddings = modelmetry.openapi.models.embeddings_payload.EmbeddingsPayload(
-                    inputs = [
-                        ''
-                        ], 
-                    options = modelmetry.openapi.models.simple_options.SimpleOptions(
-                        frequency_penalty = 1.337, 
-                        logprobs = True, 
-                        max_tokens = 56, 
-                        n = 56, 
-                        presence_penalty = 1.337, 
-                        seed = 56, 
-                        stream = True, 
-                        temperature = 0, 
-                        timeout = 0, 
-                        tool_choice = '', 
-                        tools = [
-                            modelmetry.openapi.models.tool.Tool(
-                                description = '', 
-                                name = '', 
-                                parameters = null, )
-                            ], 
-                        top_logprobs = 56, 
-                        top_p = 0, 
-                        user = '', ), ),
+                embeddings = {
+                    'key' : null
+                    },
                 end = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 events = [
                     {
@@ -144,22 +56,17 @@ class TestSpan(unittest.TestCase):
                     ],
                 id = '',
                 message = '',
+                metadata = {
+                    'key' : null
+                    },
                 name = '',
-                other = None,
+                other = {
+                    'key' : null
+                    },
                 parent_id = '',
-                retrieval = modelmetry.openapi.models.retrieval_payload.RetrievalPayload(
-                    queries = [
-                        modelmetry.openapi.models.retrieval_query.RetrievalQuery(
-                            embeddings = [
-                                1.337
-                                ], 
-                            name = '', )
-                        ], 
-                    retrieved = [
-                        {
-                            'key' : null
-                            }
-                        ], ),
+                retrieval = {
+                    'key' : null
+                    },
                 severity = '',
                 start = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 tenant_id = '',
@@ -169,101 +76,7 @@ class TestSpan(unittest.TestCase):
             )
         else:
             return Span(
-                attributes = None,
-                completion = modelmetry.openapi.models.completion_payload.CompletionPayload(
-                    context = modelmetry.openapi.models.completion_payload_context.CompletionPayloadContext(
-                        parsed_system = '', 
-                        retrieved_items = [
-                            {
-                                'key' : null
-                                }
-                            ], ), 
-                    input = modelmetry.openapi.models.input.Input(
-                        chat = modelmetry.openapi.models.chat_input.ChatInput(
-                            messages = [
-                                modelmetry.openapi.models.simple_message.SimpleMessage(
-                                    contents = [
-                                        modelmetry.openapi.models.simple_part.SimplePart(
-                                            detail = 'auto', 
-                                            mime_type = '', 
-                                            text = '', 
-                                            uri = '', )
-                                        ], 
-                                    name = '', 
-                                    role = 'system', 
-                                    tool_call_id = '', 
-                                    tool_calls = [
-                                        modelmetry.openapi.models.tool_call.ToolCall(
-                                            function = modelmetry.openapi.models.function.Function(
-                                                arguments = null, 
-                                                name = '', ), 
-                                            id = '', 
-                                            type = 'function', )
-                                        ], )
-                                ], 
-                            settings = modelmetry.openapi.models.simple_options.SimpleOptions(
-                                frequency_penalty = 1.337, 
-                                logprobs = True, 
-                                max_tokens = 56, 
-                                n = 56, 
-                                presence_penalty = 1.337, 
-                                seed = 56, 
-                                stream = True, 
-                                temperature = 0, 
-                                timeout = 0, 
-                                tool_choice = '', 
-                                tools = [
-                                    modelmetry.openapi.models.tool.Tool(
-                                        description = '', 
-                                        name = '', 
-                                        parameters = null, )
-                                    ], 
-                                top_logprobs = 56, 
-                                top_p = 0, 
-                                user = '', ), ), 
-                        text = modelmetry.openapi.models.text_input.TextInput(
-                            text = '', ), ), 
-                    model = '', 
-                    options = modelmetry.openapi.models.simple_options.SimpleOptions(
-                        frequency_penalty = 1.337, 
-                        logprobs = True, 
-                        max_tokens = 56, 
-                        n = 56, 
-                        presence_penalty = 1.337, 
-                        seed = 56, 
-                        stream = True, 
-                        temperature = 0, 
-                        timeout = 0, 
-                        tool_choice = '', 
-                        top_logprobs = 56, 
-                        top_p = 0, 
-                        user = '', ), 
-                    output = modelmetry.openapi.models.output.Output(), ),
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                embeddings = modelmetry.openapi.models.embeddings_payload.EmbeddingsPayload(
-                    inputs = [
-                        ''
-                        ], 
-                    options = modelmetry.openapi.models.simple_options.SimpleOptions(
-                        frequency_penalty = 1.337, 
-                        logprobs = True, 
-                        max_tokens = 56, 
-                        n = 56, 
-                        presence_penalty = 1.337, 
-                        seed = 56, 
-                        stream = True, 
-                        temperature = 0, 
-                        timeout = 0, 
-                        tool_choice = '', 
-                        tools = [
-                            modelmetry.openapi.models.tool.Tool(
-                                description = '', 
-                                name = '', 
-                                parameters = null, )
-                            ], 
-                        top_logprobs = 56, 
-                        top_p = 0, 
-                        user = '', ), ),
                 end = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 events = [
                     {
@@ -278,22 +91,11 @@ class TestSpan(unittest.TestCase):
                     ],
                 id = '',
                 message = '',
+                metadata = {
+                    'key' : null
+                    },
                 name = '',
-                other = None,
                 parent_id = '',
-                retrieval = modelmetry.openapi.models.retrieval_payload.RetrievalPayload(
-                    queries = [
-                        modelmetry.openapi.models.retrieval_query.RetrievalQuery(
-                            embeddings = [
-                                1.337
-                                ], 
-                            name = '', )
-                        ], 
-                    retrieved = [
-                        {
-                            'key' : null
-                            }
-                        ], ),
                 severity = '',
                 start = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 tenant_id = '',

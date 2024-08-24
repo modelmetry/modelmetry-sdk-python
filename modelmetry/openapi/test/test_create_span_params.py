@@ -35,11 +35,11 @@ class TestCreateSpanParams(unittest.TestCase):
         model = CreateSpanParams()
         if include_optional:
             return CreateSpanParams(
-                attributes = None,
                 end = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 family = '',
                 family_data = None,
                 message = '',
+                metadata = None,
                 name = '',
                 parent_id = '',
                 severity = '',

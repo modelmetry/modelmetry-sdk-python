@@ -38,14 +38,11 @@ class TestRetrievalQuery(unittest.TestCase):
                 embeddings = [
                     1.337
                     ],
-                name = ''
+                text_representation = ''
             )
         else:
             return RetrievalQuery(
-                embeddings = [
-                    1.337
-                    ],
-                name = '',
+                text_representation = '',
         )
         """
 

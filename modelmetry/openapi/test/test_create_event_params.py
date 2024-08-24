@@ -36,8 +36,8 @@ class TestCreateEventParams(unittest.TestCase):
         if include_optional:
             return CreateEventParams(
                 at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                attributes = None,
                 entry_id = '',
+                metadata = None,
                 name = '',
                 span_id = '',
                 trace_id = '',

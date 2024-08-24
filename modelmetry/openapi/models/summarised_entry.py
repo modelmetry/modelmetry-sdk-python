@@ -37,8 +37,10 @@ class SummarisedEntry(BaseModel):
     outcome: StrictStr = Field(alias="Outcome")
     score: Optional[Union[StrictFloat, StrictInt]] = Field(alias="Score")
     skip: StrictStr = Field(alias="Skip")
+    span_id: Optional[StrictStr] = Field(alias="SpanID")
     tenant_id: StrictStr = Field(alias="TenantID")
-    __properties: ClassVar[List[str]] = ["CheckID", "DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "TenantID"]
+    trace_id: Optional[StrictStr] = Field(alias="TraceID")
+    __properties: ClassVar[List[str]] = ["CheckID", "DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "SpanID", "TenantID", "TraceID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -101,6 +103,16 @@ class SummarisedEntry(BaseModel):
         if self.score is None and "score" in self.model_fields_set:
             _dict['Score'] = None
 
+        # set to None if span_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.span_id is None and "span_id" in self.model_fields_set:
+            _dict['SpanID'] = None
+
+        # set to None if trace_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.trace_id is None and "trace_id" in self.model_fields_set:
+            _dict['TraceID'] = None
+
         return _dict
 
     @classmethod
@@ -123,7 +135,9 @@ class SummarisedEntry(BaseModel):
             "Outcome": obj.get("Outcome"),
             "Score": obj.get("Score"),
             "Skip": obj.get("Skip"),
-            "TenantID": obj.get("TenantID")
+            "SpanID": obj.get("SpanID"),
+            "TenantID": obj.get("TenantID"),
+            "TraceID": obj.get("TraceID")
         })
         return _obj
 

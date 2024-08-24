@@ -36,6 +36,7 @@ class TestFinding(unittest.TestCase):
         if include_optional:
             return Finding(
                 at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
+                check_id = '',
                 comment = '',
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 entry_id = '',
@@ -56,15 +57,12 @@ class TestFinding(unittest.TestCase):
                 at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 comment = '',
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                entry_id = '',
                 evaluator_id = '',
                 id = '',
                 metadata = None,
                 name = '',
                 source = 'annotation',
-                span_id = '',
                 tenant_id = '',
-                trace_id = '',
                 updated_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 value = None,
                 xid = '',

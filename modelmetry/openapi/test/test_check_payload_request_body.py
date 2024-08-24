@@ -38,7 +38,10 @@ class TestCheckPayloadRequestBody(unittest.TestCase):
                 var_schema = '',
                 guardrail_id = '',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_payload_input.CompletionPayload_Input(), 
+                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
+                    options = {
+                        'key' : null
+                        }, 
                     output = modelmetry.openapi.models.output.Output(
                         messages = [
                             modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
@@ -50,13 +53,15 @@ class TestCheckPayloadRequestBody(unittest.TestCase):
             return CheckPayloadRequestBody(
                 guardrail_id = '',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_payload_input.CompletionPayload_Input(), 
+                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
+                    options = {
+                        'key' : null
+                        }, 
                     output = modelmetry.openapi.models.output.Output(
                         messages = [
                             modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
                             ], 
                         text = '', ), ),
-                tenant_id = '',
         )
         """
 

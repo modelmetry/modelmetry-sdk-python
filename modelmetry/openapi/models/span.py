@@ -19,12 +19,12 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
-from modelmetry.openapi.models.completion_payload import CompletionPayload
-from modelmetry.openapi.models.embeddings_payload import EmbeddingsPayload
+from typing import Any, ClassVar, Dict, List, Optional
+from modelmetry.openapi.models.completion_family_data import CompletionFamilyData
+from modelmetry.openapi.models.embeddings_family_data import EmbeddingsFamilyData
 from modelmetry.openapi.models.event import Event
 from modelmetry.openapi.models.finding import Finding
-from modelmetry.openapi.models.retrieval_payload import RetrievalPayload
+from modelmetry.openapi.models.retrieval_family_data import RetrievalFamilyData
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,9 +32,9 @@ class Span(BaseModel):
     """
     Span
     """ # noqa: E501
-    completion: CompletionPayload = Field(alias="Completion")
+    completion: Optional[CompletionFamilyData] = Field(default=None, alias="Completion")
     created_at: datetime = Field(alias="CreatedAt")
-    embeddings: EmbeddingsPayload = Field(alias="Embeddings")
+    embeddings: Optional[EmbeddingsFamilyData] = Field(default=None, alias="Embeddings")
     end: datetime = Field(alias="End")
     events: List[Event] = Field(alias="Events")
     family: StrictStr = Field(alias="Family")
@@ -43,9 +43,9 @@ class Span(BaseModel):
     message: StrictStr = Field(alias="Message")
     metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
-    other: Dict[str, Any] = Field(alias="Other")
+    other: Optional[Dict[str, Any]] = Field(default=None, alias="Other")
     parent_id: StrictStr = Field(alias="ParentID")
-    retrieval: RetrievalPayload = Field(alias="Retrieval")
+    retrieval: Optional[RetrievalFamilyData] = Field(default=None, alias="Retrieval")
     severity: StrictStr = Field(alias="Severity")
     start: datetime = Field(alias="Start")
     tenant_id: StrictStr = Field(alias="TenantID")
@@ -136,9 +136,9 @@ class Span(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Completion": CompletionPayload.from_dict(obj["Completion"]) if obj.get("Completion") is not None else None,
+            "Completion": CompletionFamilyData.from_dict(obj["Completion"]) if obj.get("Completion") is not None else None,
             "CreatedAt": obj.get("CreatedAt"),
-            "Embeddings": EmbeddingsPayload.from_dict(obj["Embeddings"]) if obj.get("Embeddings") is not None else None,
+            "Embeddings": EmbeddingsFamilyData.from_dict(obj["Embeddings"]) if obj.get("Embeddings") is not None else None,
             "End": obj.get("End"),
             "Events": [Event.from_dict(_item) for _item in obj["Events"]] if obj.get("Events") is not None else None,
             "Family": obj.get("Family"),
@@ -149,7 +149,7 @@ class Span(BaseModel):
             "Name": obj.get("Name"),
             "Other": obj.get("Other"),
             "ParentID": obj.get("ParentID"),
-            "Retrieval": RetrievalPayload.from_dict(obj["Retrieval"]) if obj.get("Retrieval") is not None else None,
+            "Retrieval": RetrievalFamilyData.from_dict(obj["Retrieval"]) if obj.get("Retrieval") is not None else None,
             "Severity": obj.get("Severity"),
             "Start": obj.get("Start"),
             "TenantID": obj.get("TenantID"),

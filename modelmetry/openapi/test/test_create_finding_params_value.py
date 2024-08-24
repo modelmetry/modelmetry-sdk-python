@@ -35,9 +35,13 @@ class TestCreateFindingParamsValue(unittest.TestCase):
         model = CreateFindingParamsValue()
         if include_optional:
             return CreateFindingParamsValue(
+                unit = '',
+                value = 1.337
             )
         else:
             return CreateFindingParamsValue(
+                unit = '',
+                value = 1.337,
         )
         """
 

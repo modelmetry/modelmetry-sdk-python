@@ -51,8 +51,6 @@ components:
           type:
             - array
             - "null"
-        Options:
-          $ref: "#/components/schemas/Options"
       required:
         - Messages
       type: object
@@ -76,41 +74,37 @@ components:
         - GuardrailID
         - Payload
       type: object
-    CompletionPayload:
+    CompletionFamilyData:
       additionalProperties: false
       properties:
-        Context:
-          $ref: "#/components/schemas/CompletionPayloadContext"
+        Cost:
+          $ref: "#/components/schemas/Cost"
+        Documents:
+          items:
+            $ref: "#/components/schemas/Document"
+          type: array
         Input:
           description: Input for completion
           oneOf:
             - $ref: "#/components/schemas/TextInput"
             - $ref: "#/components/schemas/ChatInput"
           type: object
-        Model:
-          type: string
         Options:
           $ref: "#/components/schemas/Options"
         Output:
           $ref: "#/components/schemas/Output"
-      required:
-        - Model
-        - Options
+        Usage:
+          $ref: "#/components/schemas/Usage"
       type: object
-    CompletionPayloadContext:
+    Cost:
       additionalProperties: false
       properties:
-        ParsedSystem:
-          type: string
-        RetrievedItems:
-          items:
-            $ref: "#/components/schemas/RetrievedItem"
-          type:
-            - array
-            - "null"
-      required:
-        - ParsedSystem
-        - RetrievedItems
+        Input:
+          $ref: "#/components/schemas/Money"
+        Output:
+          $ref: "#/components/schemas/Money"
+        Total:
+          $ref: "#/components/schemas/Money"
       type: object
     CreateEventParams:
       additionalProperties: false
@@ -190,6 +184,15 @@ components:
             - type: number
             - type: boolean
             - type: string
+            - properties:
+                Unit:
+                  type: string
+                Value:
+                  type: number
+              required:
+                - Value
+                - Unit
+              type: object
         XID:
           type: string
       required:
@@ -301,7 +304,25 @@ components:
         - MimeType
         - URI
       type: object
-    EmbeddingsPayload:
+    Document:
+      additionalProperties: false
+      properties:
+        Content: {}
+        ContentType:
+          type: string
+        Identifier:
+          type: string
+        Metadata:
+          additionalProperties: {}
+          type: object
+        Title:
+          type: string
+      required:
+        - Identifier
+        - Title
+        - ContentType
+      type: object
+    EmbeddingsFamilyData:
       additionalProperties: false
       properties:
         Inputs:
@@ -470,6 +491,15 @@ components:
             - type: number
             - type: boolean
             - type: string
+            - properties:
+                Unit:
+                  type: string
+                Value:
+                  type: number
+              required:
+                - Value
+                - Unit
+              type: object
         XID:
           type: string
       required:
@@ -483,6 +513,68 @@ components:
         - Metadata
         - EvaluatorID
         - At
+        - UpdatedAt
+        - CreatedAt
+      type: object
+    FullTrace:
+      additionalProperties: false
+      properties:
+        CreatedAt:
+          format: date-time
+          type: string
+        End:
+          format: date-time
+          type: string
+        Events:
+          items:
+            $ref: "#/components/schemas/Event"
+          type:
+            - array
+            - "null"
+        Findings:
+          items:
+            $ref: "#/components/schemas/Finding"
+          type:
+            - array
+            - "null"
+        ID:
+          type: string
+        Metadata:
+          additionalProperties: {}
+          type: object
+        Name:
+          type: string
+        SessionID:
+          type:
+            - string
+            - "null"
+        Spans:
+          items:
+            $ref: "#/components/schemas/Span"
+          type:
+            - array
+            - "null"
+        Start:
+          format: date-time
+          type: string
+        TenantID:
+          type: string
+        UpdatedAt:
+          format: date-time
+          type: string
+        XID:
+          type: string
+      required:
+        - Spans
+        - Events
+        - Findings
+        - ID
+        - XID
+        - TenantID
+        - Name
+        - Start
+        - End
+        - Metadata
         - UpdatedAt
         - CreatedAt
       type: object
@@ -608,6 +700,19 @@ components:
           readOnly: true
           type: string
       type: object
+    Money:
+      additionalProperties: false
+      properties:
+        Amount:
+          type: number
+        Currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+      required:
+        - Amount
+        - Currency
+      type: object
     Options:
       additionalProperties: false
       properties:
@@ -652,6 +757,8 @@ components:
         PresencePenalty:
           format: double
           type: number
+        Provider:
+          type: string
         ResponseFormat:
           additionalProperties: {}
           type: object
@@ -691,7 +798,7 @@ components:
         User:
           type: string
       type: object
-    OtherPayload:
+    OtherFamilyData:
       additionalProperties: false
       type: object
     Output:
@@ -728,27 +835,29 @@ components:
             - $ref: "#/components/schemas/TextInput"
             - $ref: "#/components/schemas/ChatInput"
           type: object
+        Options:
+          $ref: "#/components/schemas/Options"
         Output:
           $ref: "#/components/schemas/Output"
       type: object
-    RetrievalPayload:
+    RetrievalFamilyData:
       additionalProperties: false
       properties:
+        Documents:
+          items:
+            $ref: "#/components/schemas/Document"
+          type:
+            - array
+            - "null"
         Queries:
           items:
             $ref: "#/components/schemas/RetrievalQuery"
           type:
             - array
             - "null"
-        Retrieved:
-          items:
-            $ref: "#/components/schemas/RetrievedItem"
-          type:
-            - array
-            - "null"
       required:
         - Queries
-        - Retrieved
+        - Documents
       type: object
     RetrievalQuery:
       additionalProperties: false
@@ -760,28 +869,10 @@ components:
           type:
             - array
             - "null"
-        Name:
+        TextRepresentation:
           type: string
       required:
-        - Name
-        - Embeddings
-      type: object
-    RetrievedItem:
-      additionalProperties: false
-      properties:
-        Content: {}
-        ContentType:
-          type: string
-        Identifier:
-          type: string
-        Metadata:
-          additionalProperties: {}
-          type: object
-      required:
-        - Identifier
-        - ContentType
-        - Content
-        - Metadata
+        - TextRepresentation
       type: object
     SimplifiedFinding:
       additionalProperties: false
@@ -812,6 +903,15 @@ components:
             - type: number
             - type: boolean
             - type: string
+            - properties:
+                Unit:
+                  type: string
+                Value:
+                  type: number
+              required:
+                - Value
+                - Unit
+              type: object
       required:
         - Name
         - Value
@@ -825,12 +925,12 @@ components:
       additionalProperties: false
       properties:
         Completion:
-          $ref: "#/components/schemas/CompletionPayload"
+          $ref: "#/components/schemas/CompletionFamilyData"
         CreatedAt:
           format: date-time
           type: string
         Embeddings:
-          $ref: "#/components/schemas/EmbeddingsPayload"
+          $ref: "#/components/schemas/EmbeddingsFamilyData"
         End:
           format: date-time
           type: string
@@ -858,13 +958,13 @@ components:
         Name:
           type: string
         Other:
-          $ref: "#/components/schemas/OtherPayload"
+          $ref: "#/components/schemas/OtherFamilyData"
         ParentID:
           type:
             - string
             - "null"
         Retrieval:
-          $ref: "#/components/schemas/RetrievalPayload"
+          $ref: "#/components/schemas/RetrievalFamilyData"
         Severity:
           type: string
         Start:
@@ -891,10 +991,6 @@ components:
         - Message
         - Start
         - End
-        - Embeddings
-        - Retrieval
-        - Completion
-        - Other
         - Metadata
         - Events
         - Findings
@@ -936,13 +1032,23 @@ components:
             - "null"
         Skip:
           type: string
+        SpanID:
+          type:
+            - string
+            - "null"
         TenantID:
           type: string
+        TraceID:
+          type:
+            - string
+            - "null"
       required:
         - ID
         - TenantID
         - CheckID
         - InstanceID
+        - TraceID
+        - SpanID
         - EvaluatorID
         - Outcome
         - Skip
@@ -1084,53 +1190,28 @@ components:
         - UpdatedAt
         - CreatedAt
       type: object
-    TraceWithSpans:
+    Usage:
       additionalProperties: false
       properties:
-        CreatedAt:
-          format: date-time
-          type: string
-        End:
-          format: date-time
-          type: string
-        ID:
-          type: string
-        Metadata:
-          additionalProperties: {}
-          type: object
-        Name:
-          type: string
-        SessionID:
-          type:
-            - string
-            - "null"
-        Spans:
-          items:
-            $ref: "#/components/schemas/Span"
-          type:
-            - array
-            - "null"
-        Start:
-          format: date-time
-          type: string
-        TenantID:
-          type: string
-        UpdatedAt:
-          format: date-time
-          type: string
-        XID:
+        Input:
+          $ref: "#/components/schemas/UsageValue"
+        Output:
+          $ref: "#/components/schemas/UsageValue"
+        Total:
+          $ref: "#/components/schemas/UsageValue"
+      type: object
+    UsageValue:
+      additionalProperties: false
+      properties:
+        Amount:
+          format: double
+          type: number
+        Unit:
+          default: tokens
           type: string
       required:
-        - Spans
-        - ID
-        - XID
-        - TenantID
-        - Name
-        - Start
-        - End
-        - Metadata
-        - UpdatedAt
-        - CreatedAt
+        - Amount
+        - Unit
       type: object
     UserMessage:
       additionalProperties: false
@@ -1195,7 +1276,7 @@ paths:
           description: Error
       security:
         - apikeyAuth: []
-      summary: Check a payload
+      summary: Check payload
   /signals/ingest/v1:
     post:
       operationId: ingest-signals-v1
@@ -1220,6 +1301,6 @@ paths:
           description: Error
       security:
         - apikeyAuth: []
-      summary: Ingest signals (v1)
+      summary: Ingest signals v1
 servers:
   - url: http://api.modelmetry.com/

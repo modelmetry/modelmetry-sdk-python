@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,10 +26,10 @@ class RetrievalQuery(BaseModel):
     """
     RetrievalQuery
     """ # noqa: E501
-    embeddings: List[Union[StrictFloat, StrictInt]] = Field(alias="Embeddings")
-    name: StrictStr = Field(alias="Name")
+    embeddings: Optional[List[Union[StrictFloat, StrictInt]]] = Field(default=None, alias="Embeddings")
+    text_representation: StrictStr = Field(alias="TextRepresentation")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Embeddings", "Name"]
+    __properties: ClassVar[List[str]] = ["Embeddings", "TextRepresentation"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,7 +90,7 @@ class RetrievalQuery(BaseModel):
 
         _obj = cls.model_validate({
             "Embeddings": obj.get("Embeddings"),
-            "Name": obj.get("Name")
+            "TextRepresentation": obj.get("TextRepresentation")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

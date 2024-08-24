@@ -19,7 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.completion_payload_input import CompletionPayloadInput
+from modelmetry.openapi.models.completion_family_data_input import CompletionFamilyDataInput
+from modelmetry.openapi.models.options import Options
 from modelmetry.openapi.models.output import Output
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,9 +29,10 @@ class Payload(BaseModel):
     """
     Payload
     """ # noqa: E501
-    input: Optional[CompletionPayloadInput] = Field(default=None, alias="Input")
+    input: Optional[CompletionFamilyDataInput] = Field(default=None, alias="Input")
+    options: Optional[Options] = Field(default=None, alias="Options")
     output: Optional[Output] = Field(default=None, alias="Output")
-    __properties: ClassVar[List[str]] = ["Input", "Output"]
+    __properties: ClassVar[List[str]] = ["Input", "Options", "Output"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -74,6 +76,9 @@ class Payload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of input
         if self.input:
             _dict['Input'] = self.input.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of options
+        if self.options:
+            _dict['Options'] = self.options.to_dict()
         # override the default output from pydantic by calling `to_dict()` of output
         if self.output:
             _dict['Output'] = self.output.to_dict()
@@ -89,7 +94,8 @@ class Payload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Input": CompletionPayloadInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
+            "Input": CompletionFamilyDataInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
+            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None,
             "Output": Output.from_dict(obj["Output"]) if obj.get("Output") is not None else None
         })
         return _obj

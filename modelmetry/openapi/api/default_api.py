@@ -59,7 +59,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GuardrailCheck:
-        """Check a payload
+        """Check payload
 
 
         :param check_payload_request_body: (required)
@@ -129,7 +129,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[GuardrailCheck]:
-        """Check a payload
+        """Check payload
 
 
         :param check_payload_request_body: (required)
@@ -199,7 +199,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Check a payload
+        """Check payload
 
 
         :param check_payload_request_body: (required)
@@ -345,7 +345,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> IngestSignalsV1ResponseBody:
-        """Ingest signals (v1)
+        """Ingest signals v1
 
 
         :param ingest_signals_v1_request_body: (required)
@@ -411,7 +411,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[IngestSignalsV1ResponseBody]:
-        """Ingest signals (v1)
+        """Ingest signals v1
 
 
         :param ingest_signals_v1_request_body: (required)
@@ -477,7 +477,7 @@ class DefaultApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Ingest signals (v1)
+        """Ingest signals v1
 
 
         :param ingest_signals_v1_request_body: (required)

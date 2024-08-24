@@ -35,96 +35,15 @@ class TestPayload(unittest.TestCase):
         model = Payload()
         if include_optional:
             return Payload(
-                input = modelmetry.openapi.models.input.Input(
-                    chat = modelmetry.openapi.models.chat_input.ChatInput(
-                        messages = [
-                            modelmetry.openapi.models.simple_message.SimpleMessage(
-                                contents = [
-                                    modelmetry.openapi.models.simple_part.SimplePart(
-                                        detail = 'auto', 
-                                        mime_type = '', 
-                                        text = '', 
-                                        uri = '', )
-                                    ], 
-                                name = '', 
-                                role = 'system', 
-                                tool_call_id = '', 
-                                tool_calls = [
-                                    modelmetry.openapi.models.tool_call.ToolCall(
-                                        function = modelmetry.openapi.models.function.Function(
-                                            arguments = null, 
-                                            name = '', ), 
-                                        id = '', 
-                                        type = 'function', )
-                                    ], )
-                            ], 
-                        settings = modelmetry.openapi.models.simple_options.SimpleOptions(
-                            frequency_penalty = 1.337, 
-                            logprobs = True, 
-                            max_tokens = 56, 
-                            n = 56, 
-                            presence_penalty = 1.337, 
-                            seed = 56, 
-                            stream = True, 
-                            temperature = 0, 
-                            timeout = 0, 
-                            tool_choice = '', 
-                            tools = [
-                                modelmetry.openapi.models.tool.Tool(
-                                    description = '', 
-                                    name = '', 
-                                    parameters = null, )
-                                ], 
-                            top_logprobs = 56, 
-                            top_p = 0, 
-                            user = '', ), ), 
-                    text = modelmetry.openapi.models.text_input.TextInput(
-                        text = '', ), ),
+                input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(),
+                options = {
+                    'key' : null
+                    },
                 output = modelmetry.openapi.models.output.Output(
-                    chat = modelmetry.openapi.models.chat_input.ChatInput(
-                        messages = [
-                            modelmetry.openapi.models.simple_message.SimpleMessage(
-                                contents = [
-                                    modelmetry.openapi.models.simple_part.SimplePart(
-                                        detail = 'auto', 
-                                        mime_type = '', 
-                                        text = '', 
-                                        uri = '', )
-                                    ], 
-                                name = '', 
-                                role = 'system', 
-                                tool_call_id = '', 
-                                tool_calls = [
-                                    modelmetry.openapi.models.tool_call.ToolCall(
-                                        function = modelmetry.openapi.models.function.Function(
-                                            arguments = null, 
-                                            name = '', ), 
-                                        id = '', 
-                                        type = 'function', )
-                                    ], )
-                            ], 
-                        settings = modelmetry.openapi.models.simple_options.SimpleOptions(
-                            frequency_penalty = 1.337, 
-                            logprobs = True, 
-                            max_tokens = 56, 
-                            n = 56, 
-                            presence_penalty = 1.337, 
-                            seed = 56, 
-                            stream = True, 
-                            temperature = 0, 
-                            timeout = 0, 
-                            tool_choice = '', 
-                            tools = [
-                                modelmetry.openapi.models.tool.Tool(
-                                    description = '', 
-                                    name = '', 
-                                    parameters = null, )
-                                ], 
-                            top_logprobs = 56, 
-                            top_p = 0, 
-                            user = '', ), ), 
-                    text = modelmetry.openapi.models.text_input.TextInput(
-                        text = '', ), )
+                    messages = [
+                        modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
+                        ], 
+                    text = '', )
             )
         else:
             return Payload(

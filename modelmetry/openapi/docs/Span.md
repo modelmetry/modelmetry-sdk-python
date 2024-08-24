@@ -5,20 +5,20 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**completion** | [**CompletionPayload**](CompletionPayload.md) |  | 
+**completion** | [**CompletionFamilyData**](CompletionFamilyData.md) |  | [optional] 
 **created_at** | **datetime** |  | 
-**embeddings** | [**EmbeddingsPayload**](EmbeddingsPayload.md) |  | 
+**embeddings** | [**EmbeddingsFamilyData**](EmbeddingsFamilyData.md) |  | [optional] 
 **end** | **datetime** |  | 
 **events** | [**List[Event]**](Event.md) |  | 
 **family** | **str** |  | 
 **findings** | [**List[Finding]**](Finding.md) |  | 
 **id** | **str** |  | 
 **message** | **str** |  | 
-**metadata** | **object** |  | 
+**metadata** | **Dict[str, object]** |  | 
 **name** | **str** |  | 
-**other** | **Dict[str, object]** |  | 
+**other** | **Dict[str, object]** |  | [optional] 
 **parent_id** | **str** |  | 
-**retrieval** | [**RetrievalPayload**](RetrievalPayload.md) |  | 
+**retrieval** | [**RetrievalFamilyData**](RetrievalFamilyData.md) |  | [optional] 
 **severity** | **str** |  | 
 **start** | **datetime** |  | 
 **tenant_id** | **str** |  | 

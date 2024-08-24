@@ -35,37 +35,43 @@ class TestSummarisedEntry(unittest.TestCase):
         model = SummarisedEntry()
         if include_optional:
             return SummarisedEntry(
+                check_id = '',
                 duration_ms = 56,
                 evaluator_id = '',
+                findings = [
+                    {
+                        'key' : null
+                        }
+                    ],
                 id = '',
                 instance_id = '',
                 message = '',
-                metrics = [
-                    modelmetry.openapi.models.metric_value.MetricValue(
-                        key = '', 
-                        value = 1.337, )
-                    ],
                 outcome = '',
                 score = 1.337,
                 skip = '',
-                tenant_id = ''
+                span_id = '',
+                tenant_id = '',
+                trace_id = ''
             )
         else:
             return SummarisedEntry(
+                check_id = '',
                 duration_ms = 56,
                 evaluator_id = '',
+                findings = [
+                    {
+                        'key' : null
+                        }
+                    ],
                 id = '',
                 instance_id = '',
                 message = '',
-                metrics = [
-                    modelmetry.openapi.models.metric_value.MetricValue(
-                        key = '', 
-                        value = 1.337, )
-                    ],
                 outcome = '',
                 score = 1.337,
                 skip = '',
+                span_id = '',
                 tenant_id = '',
+                trace_id = '',
         )
         """
 

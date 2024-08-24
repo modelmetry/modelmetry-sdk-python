@@ -38,14 +38,14 @@ class GuardrailsClient:
         output_chat: List[openapi.ChatInputMessagesInner] = None,
     ) -> GuardrailCheckResponse:
 
-        input: openapi.CompletionPayloadInput | None = None
+        input: openapi.CompletionFamilyDataInput | None = None
         output: openapi.Output | None = None
 
         if input_text:
-            input = openapi.CompletionPayloadInput(TextInput(Text=input_text))
+            input = openapi.CompletionFamilyDataInput(TextInput(Text=input_text))
 
         if input_chat:
-            input = openapi.CompletionPayloadInput(input_chat)
+            input = openapi.CompletionFamilyDataInput(input_chat)
 
         if output_chat:
             output = openapi.Output(Messages=output_chat)

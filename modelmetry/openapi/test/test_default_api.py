@@ -26,10 +26,17 @@ class TestDefaultApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def test_call_guardrail(self) -> None:
-        """Test case for call_guardrail
+    def test_check_payload(self) -> None:
+        """Test case for check_payload
 
-        CallGuardrail
+        Check payload
+        """
+        pass
+
+    def test_ingest_signals_v1(self) -> None:
+        """Test case for ingest_signals_v1
+
+        Ingest signals v1
         """
         pass
 

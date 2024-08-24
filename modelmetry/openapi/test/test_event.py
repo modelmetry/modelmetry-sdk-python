@@ -36,10 +36,10 @@ class TestEvent(unittest.TestCase):
         if include_optional:
             return Event(
                 at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                attributes = None,
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 entry_id = '',
                 id = '',
+                metadata = None,
                 name = '',
                 span_id = '',
                 tenant_id = '',
@@ -50,10 +50,10 @@ class TestEvent(unittest.TestCase):
         else:
             return Event(
                 at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
-                attributes = None,
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 entry_id = '',
                 id = '',
+                metadata = None,
                 name = '',
                 span_id = '',
                 tenant_id = '',

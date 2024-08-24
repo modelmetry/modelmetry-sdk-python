@@ -42,6 +42,7 @@ class Options(BaseModel):
     model_list: Optional[List[StrictStr]] = Field(default=None, alias="ModelList")
     n: Optional[StrictInt] = Field(default=None, alias="N")
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="PresencePenalty")
+    provider: Optional[StrictStr] = Field(default=None, alias="Provider")
     response_format: Optional[Dict[str, Any]] = Field(default=None, alias="ResponseFormat")
     seed: Optional[StrictInt] = Field(default=None, alias="Seed")
     stop: Optional[Dict[str, Any]] = Field(default=None, alias="Stop")
@@ -54,7 +55,7 @@ class Options(BaseModel):
     top_p: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, alias="TopP")
     user: Optional[StrictStr] = Field(default=None, alias="User")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["APIKey", "APIVersion", "BaseURL", "DeploymentID", "FrequencyPenalty", "FunctionCall", "Functions", "LogitBias", "Logprobs", "MaxTokens", "Model", "ModelList", "N", "PresencePenalty", "ResponseFormat", "Seed", "Stop", "Stream", "Temperature", "Timeout", "ToolChoice", "Tools", "TopLogprobs", "TopP", "User"]
+    __properties: ClassVar[List[str]] = ["APIKey", "APIVersion", "BaseURL", "DeploymentID", "FrequencyPenalty", "FunctionCall", "Functions", "LogitBias", "Logprobs", "MaxTokens", "Model", "ModelList", "N", "PresencePenalty", "Provider", "ResponseFormat", "Seed", "Stop", "Stream", "Temperature", "Timeout", "ToolChoice", "Tools", "TopLogprobs", "TopP", "User"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -135,6 +136,7 @@ class Options(BaseModel):
             "ModelList": obj.get("ModelList"),
             "N": obj.get("N"),
             "PresencePenalty": obj.get("PresencePenalty"),
+            "Provider": obj.get("Provider"),
             "ResponseFormat": obj.get("ResponseFormat"),
             "Seed": obj.get("Seed"),
             "Stop": obj.get("Stop"),

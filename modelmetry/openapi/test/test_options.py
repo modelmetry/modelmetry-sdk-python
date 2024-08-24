@@ -53,6 +53,7 @@ class TestOptions(unittest.TestCase):
                     ],
                 n = 56,
                 presence_penalty = 1.337,
+                provider = '',
                 response_format = None,
                 seed = 56,
                 stop = None,

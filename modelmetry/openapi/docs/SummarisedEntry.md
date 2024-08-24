@@ -15,7 +15,9 @@ Name | Type | Description | Notes
 **outcome** | **str** |  | 
 **score** | **float** |  | 
 **skip** | **str** |  | 
+**span_id** | **str** |  | 
 **tenant_id** | **str** |  | 
+**trace_id** | **str** |  | 
 
 ## Example
 

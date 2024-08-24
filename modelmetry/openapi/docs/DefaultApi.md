@@ -4,14 +4,14 @@ All URIs are relative to *http://api.modelmetry.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**check_payload**](DefaultApi.md#check_payload) | **POST** /checks | Check a payload
-[**ingest_signals_v1**](DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
+[**check_payload**](DefaultApi.md#check_payload) | **POST** /checks | Check payload
+[**ingest_signals_v1**](DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals v1
 
 
 # **check_payload**
 > GuardrailCheck check_payload(check_payload_request_body, dryrun=dryrun)
 
-Check a payload
+Check payload
 
 ### Example
 
@@ -49,7 +49,7 @@ with modelmetry.openapi.ApiClient(configuration) as api_client:
     dryrun = True # bool |  (optional)
 
     try:
-        # Check a payload
+        # Check payload
         api_response = api_instance.check_payload(check_payload_request_body, dryrun=dryrun)
         print("The response of DefaultApi->check_payload:\n")
         pprint(api_response)
@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 # **ingest_signals_v1**
 > IngestSignalsV1ResponseBody ingest_signals_v1(ingest_signals_v1_request_body)
 
-Ingest signals (v1)
+Ingest signals v1
 
 ### Example
 
@@ -129,7 +129,7 @@ with modelmetry.openapi.ApiClient(configuration) as api_client:
     ingest_signals_v1_request_body = modelmetry.openapi.IngestSignalsV1RequestBody() # IngestSignalsV1RequestBody | 
 
     try:
-        # Ingest signals (v1)
+        # Ingest signals v1
         api_response = api_instance.ingest_signals_v1(ingest_signals_v1_request_body)
         print("The response of DefaultApi->ingest_signals_v1:\n")
         pprint(api_response)

@@ -59,7 +59,7 @@ with modelmetry.openapi.ApiClient(configuration) as api_client:
     dryrun = True # bool |  (optional)
 
     try:
-        # Check a payload
+        # Check payload
         api_response = api_instance.check_payload(check_payload_request_body, dryrun=dryrun)
         print("The response of DefaultApi->check_payload:\n")
         pprint(api_response)
@@ -74,8 +74,8 @@ All URIs are relative to *http://api.modelmetry.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**check_payload**](modelmetry/openapi/docs/DefaultApi.md#check_payload) | **POST** /checks | Check a payload
-*DefaultApi* | [**ingest_signals_v1**](modelmetry/openapi/docs/DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals (v1)
+*DefaultApi* | [**check_payload**](modelmetry/openapi/docs/DefaultApi.md#check_payload) | **POST** /checks | Check payload
+*DefaultApi* | [**ingest_signals_v1**](modelmetry/openapi/docs/DefaultApi.md#ingest_signals_v1) | **POST** /signals/ingest/v1 | Ingest signals v1
 
 
 ## Documentation For Models
@@ -85,31 +85,34 @@ Class | Method | HTTP request | Description
  - [ChatInput](modelmetry/openapi/docs/ChatInput.md)
  - [ChatInputMessagesInner](modelmetry/openapi/docs/ChatInputMessagesInner.md)
  - [CheckPayloadRequestBody](modelmetry/openapi/docs/CheckPayloadRequestBody.md)
- - [CompletionPayload](modelmetry/openapi/docs/CompletionPayload.md)
- - [CompletionPayloadContext](modelmetry/openapi/docs/CompletionPayloadContext.md)
- - [CompletionPayloadInput](modelmetry/openapi/docs/CompletionPayloadInput.md)
+ - [CompletionFamilyData](modelmetry/openapi/docs/CompletionFamilyData.md)
+ - [CompletionFamilyDataInput](modelmetry/openapi/docs/CompletionFamilyDataInput.md)
+ - [Cost](modelmetry/openapi/docs/Cost.md)
  - [CreateEventParams](modelmetry/openapi/docs/CreateEventParams.md)
  - [CreateFindingParams](modelmetry/openapi/docs/CreateFindingParams.md)
  - [CreateFindingParamsValue](modelmetry/openapi/docs/CreateFindingParamsValue.md)
+ - [CreateFindingParamsValueOneOf](modelmetry/openapi/docs/CreateFindingParamsValueOneOf.md)
  - [CreateSessionParams](modelmetry/openapi/docs/CreateSessionParams.md)
  - [CreateSpanParams](modelmetry/openapi/docs/CreateSpanParams.md)
  - [CreateTraceParams](modelmetry/openapi/docs/CreateTraceParams.md)
  - [DataPart](modelmetry/openapi/docs/DataPart.md)
- - [EmbeddingsPayload](modelmetry/openapi/docs/EmbeddingsPayload.md)
+ - [Document](modelmetry/openapi/docs/Document.md)
+ - [EmbeddingsFamilyData](modelmetry/openapi/docs/EmbeddingsFamilyData.md)
  - [ErrorDetail](modelmetry/openapi/docs/ErrorDetail.md)
  - [ErrorModel](modelmetry/openapi/docs/ErrorModel.md)
  - [Event](modelmetry/openapi/docs/Event.md)
  - [Finding](modelmetry/openapi/docs/Finding.md)
+ - [FullTrace](modelmetry/openapi/docs/FullTrace.md)
  - [Function](modelmetry/openapi/docs/Function.md)
  - [GuardrailCheck](modelmetry/openapi/docs/GuardrailCheck.md)
  - [IngestSignalsV1RequestBody](modelmetry/openapi/docs/IngestSignalsV1RequestBody.md)
  - [IngestSignalsV1ResponseBody](modelmetry/openapi/docs/IngestSignalsV1ResponseBody.md)
+ - [Money](modelmetry/openapi/docs/Money.md)
  - [Options](modelmetry/openapi/docs/Options.md)
  - [Output](modelmetry/openapi/docs/Output.md)
  - [Payload](modelmetry/openapi/docs/Payload.md)
- - [RetrievalPayload](modelmetry/openapi/docs/RetrievalPayload.md)
+ - [RetrievalFamilyData](modelmetry/openapi/docs/RetrievalFamilyData.md)
  - [RetrievalQuery](modelmetry/openapi/docs/RetrievalQuery.md)
- - [RetrievedItem](modelmetry/openapi/docs/RetrievedItem.md)
  - [SimplifiedFinding](modelmetry/openapi/docs/SimplifiedFinding.md)
  - [Span](modelmetry/openapi/docs/Span.md)
  - [SummarisedEntry](modelmetry/openapi/docs/SummarisedEntry.md)
@@ -120,7 +123,8 @@ Class | Method | HTTP request | Description
  - [ToolCall](modelmetry/openapi/docs/ToolCall.md)
  - [ToolMessage](modelmetry/openapi/docs/ToolMessage.md)
  - [Trace](modelmetry/openapi/docs/Trace.md)
- - [TraceWithSpans](modelmetry/openapi/docs/TraceWithSpans.md)
+ - [Usage](modelmetry/openapi/docs/Usage.md)
+ - [UsageValue](modelmetry/openapi/docs/UsageValue.md)
  - [UserMessage](modelmetry/openapi/docs/UserMessage.md)
 
 

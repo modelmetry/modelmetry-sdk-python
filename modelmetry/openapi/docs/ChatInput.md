@@ -6,7 +6,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **messages** | [**List[ChatInputMessagesInner]**](ChatInputMessagesInner.md) |  | 
-**options** | [**Options**](Options.md) |  | [optional] 
 
 ## Example
 
