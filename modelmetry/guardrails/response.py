@@ -14,6 +14,7 @@ class GuardrailCheckResponse:
         check: Optional[GuardrailCheck] = None,
         error: Optional[Any] = None,
     ):
+        self.check = check
         if check and error:
             self._init_from_check_and_error(check, error)
         elif check:
@@ -49,7 +50,7 @@ class GuardrailCheckResponse:
         self.error = error
 
     def __str__(self):
-        return f"GuardrailCheckOutput(ID={self.check.id}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
+        return f"GuardrailCheckOutput(ID={self.check.id if self.check else ""}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
 
     def __repr__(self):
-        return f"GuardrailCheckOutput(ID={self.check.id}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
+        return f"GuardrailCheckOutput(ID={self.check.id if self.check else ""}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"

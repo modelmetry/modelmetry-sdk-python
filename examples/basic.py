@@ -4,7 +4,7 @@ import sys
 sys.path.append(".")
 
 import modelmetry.sdk
-from devtools import debug
+from devtools import pprint
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,13 +23,13 @@ def main():
     guardrails = client.guardrails()
 
     # Call the guardrail with the CallGuardrailRequestBody object
-    res = guardrails.check(
-        guardrail_id="grd_jaohzgcbd5hbt1grwmvp",
-        input_text="I want to know the weather in London tomorrow",
+    res = guardrails.check_text(
+        text="I want to know the weather in London tomorrow",
+        params={"guardrail_id": "grd_l0laizj7wzcygvwyns9u", "role": "user"},
     )
 
     # C'mon... who are we if we aren't even logging stuff to the terminal?
-    debug(res)
+    pprint(res)
 
     # Check the outcome of the guardrail and handle the happy and unhappy paths accordingly.
     if res.passed:
@@ -40,7 +40,7 @@ def main():
             print(entry)
 
     else:
-        print("Passed!")
+        print("Did not pass...")
 
     client.shutdown()
     return

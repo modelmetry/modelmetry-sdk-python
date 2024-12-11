@@ -24,7 +24,8 @@ class TestGuardrailsClient(unittest.TestCase):
     def test_check_pass_from_api(self):
         client = GuardrailsClient("api_key")
         guardrail_id = "grd_testId"
-        output_text = "Test output"
+        role = "user"
+        text = "Test output"
 
         # Call the method
         mock_response = ApiResponse(
@@ -49,7 +50,10 @@ class TestGuardrailsClient(unittest.TestCase):
         client.backend.check_payload_with_http_info = MagicMock(
             return_value=mock_response
         )
-        result = client.check(guardrail_id=guardrail_id, output_text=output_text)
+        result = client.check_text(
+            text=text,
+            params={"guardrail_id": guardrail_id, "role": role},
+        )
 
         # Assertions
         self.assertIsInstance(result, GuardrailCheckResponse)
@@ -61,7 +65,8 @@ class TestGuardrailsClient(unittest.TestCase):
     def test_check_fail_from_api(self):
         client = GuardrailsClient("api_key")
         guardrail_id = "grd_testId"
-        output_text = "Test output"
+        role = "user"
+        text = "Test output"
 
         # Call the method
         mock_response = ApiResponse(
@@ -86,7 +91,10 @@ class TestGuardrailsClient(unittest.TestCase):
         client.backend.check_payload_with_http_info = MagicMock(
             return_value=mock_response
         )
-        result = client.check(guardrail_id=guardrail_id, output_text=output_text)
+        result = client.check_text(
+            text=text,
+            params={"guardrail_id": guardrail_id, "role": role},
+        )
 
         # Assertions
         self.assertIsInstance(result, GuardrailCheckResponse)
@@ -98,7 +106,8 @@ class TestGuardrailsClient(unittest.TestCase):
     def test_check_error_from_api(self):
         client = GuardrailsClient("api_key")
         guardrail_id = "grd_testId"
-        output_text = "Test output"
+        role = "user"
+        text = "Test output"
 
         # Call the method
         mock_response = ApiResponse(
@@ -123,7 +132,15 @@ class TestGuardrailsClient(unittest.TestCase):
         client.backend.check_payload_with_http_info = MagicMock(
             return_value=mock_response
         )
-        result = client.check(guardrail_id=guardrail_id, output_text=output_text)
+
+        params = dict()
+        params["guardrail_id"] = guardrail_id
+        params["role"] = role
+
+        result = client.check_text(
+            text=text,
+            params=params,
+        )
 
         # Assertions
         self.assertIsInstance(result, GuardrailCheckResponse)
@@ -135,7 +152,8 @@ class TestGuardrailsClient(unittest.TestCase):
     def test_check_transport_error(self):
         client = GuardrailsClient("api_key")
         guardrail_id = "grd_testId"
-        output_text = "Test output"
+        role = "user"
+        text = "Test output"
 
         # Call the method and raise an exception to simulate a transport/http error other than from the backend
         # e.g., connection error, timeout, etc.
@@ -144,7 +162,10 @@ class TestGuardrailsClient(unittest.TestCase):
         )
 
         with self.assertRaises(Exception):
-            result = client.check(guardrail_id=guardrail_id, output_text=output_text)
+            result = client.check_text(
+                text=text,
+                params={"guardrail_id": guardrail_id, "role": role},
+            )
 
             # Assertions
             self.assertIsInstance(result, GuardrailCheckResponse)

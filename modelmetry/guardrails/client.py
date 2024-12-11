@@ -1,10 +1,25 @@
-from typing import List
+from typing import Any, Dict, List, Union
+
+from devtools import pprint
 
 from modelmetry import openapi
 from modelmetry.guardrails.response import GuardrailCheckResponse
 from modelmetry.openapi.api.default_api import DefaultApi
-from modelmetry.openapi.models import CheckPayloadRequestBody
-from modelmetry.openapi.models.text_input import TextInput
+from modelmetry.openapi.models import (
+    CheckPayloadRequestBody,
+    Payload,
+    CompletionPayload,
+    SystemMessage,
+    UserMessage,
+    AssistantMessage,
+    ToolMessage,
+)
+from modelmetry.openapi.models.completion_family_data_messages_inner import (
+    CompletionFamilyDataMessagesInner,
+)
+
+# create a Message type that's a union of the above four message types
+Message = Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
 
 
 class GuardrailsClient:
@@ -29,40 +44,54 @@ class GuardrailsClient:
         )
         self.backend = openapi.DefaultApi(self.client)
 
-    def check(
-        self,
-        guardrail_id: str,
-        input_text: str = None,
-        input_chat: openapi.ChatInput = None,
-        output_text: str = None,
-        output_chat: List[openapi.ChatInputMessagesInner] = None,
+    def check_text(self, text: str, params: Dict[str, Any]) -> GuardrailCheckResponse:
+        role = params.get("role", "user")
+        if role == "user":
+            # {"Role": "user", "Contents": [{"Text": text}]}
+            obj = dict()
+            obj["Role"] = "user"
+            obj["Contents"] = [{"Text": text}]
+            message = UserMessage.from_dict(obj)
+        elif role == "system":
+            message = SystemMessage(Role=role, Text=text)
+        elif role == "assistant":
+            message = AssistantMessage(Role=role, Text=text)
+        elif role == "tool":
+            message = ToolMessage(Role=role, Text=text)
+        else:
+            raise ValueError(f"Invalid role: {role}")
+        return self.check_message(message, params)
+
+    def check_message(
+        self, message: Message, params: Dict[str, Any]
     ) -> GuardrailCheckResponse:
+        return self.check_messages([message], params)
 
-        input: openapi.CompletionFamilyDataInput | None = None
-        output: openapi.Output | None = None
-
-        if input_text:
-            input = openapi.CompletionFamilyDataInput(TextInput(Text=input_text))
-
-        if input_chat:
-            input = openapi.CompletionFamilyDataInput(input_chat)
-
-        if output_chat:
-            output = openapi.Output(Messages=output_chat)
-
-        if output_text and len(output_text) > 0:
-            output = openapi.Output(Text=output_text)
+    def check_messages(
+        self, messages: List[Message], params: Dict[str, Any]
+    ) -> GuardrailCheckResponse:
 
         body = CheckPayloadRequestBody(
             TenantID=self.tenant_id or None,
-            GuardrailID=guardrail_id,
-            Payload=openapi.Payload(Input=input, Output=output),
+            GuardrailID=params["guardrail_id"] or "-",
+            Payload=Payload(
+                Completion=CompletionPayload(
+                    Messages=[
+                        CompletionFamilyDataMessagesInner.from_dict(message.to_dict())
+                        for message in messages
+                    ],
+                    Options={},
+                )
+            ),
         )
 
         try:
-            res = self.backend.check_payload_with_http_info(body)
-            output = GuardrailCheckResponse(check=res.data)
+            data = self.backend.check_payload(body)
+            pprint(data)
+            output = GuardrailCheckResponse(check=data)
+            output.check = data
             return output
         except openapi.ApiException as e:
+            pprint(e.body)
             output = GuardrailCheckResponse(error=e)
             return output
