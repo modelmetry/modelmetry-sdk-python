@@ -4,6 +4,9 @@ import uuid
 
 from modelmetry.observability.finding import Finding
 from modelmetry.observability.event import Event
+from modelmetry.openapi.models.completion_family_data_messages_inner import (
+    CompletionFamilyDataMessagesInner,
+)
 from modelmetry.openapi import CreateSpanParams
 from modelmetry import (
     EmbeddingsFamilyData,
@@ -11,21 +14,21 @@ from modelmetry import (
     RetrievalFamilyData,
     Options,
 )
-from modelmetry.openapi.models.chat_input import ChatInput
-from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
-from modelmetry.openapi.models.completion_family_data import CompletionFamilyData
-from modelmetry.openapi.models.completion_family_data_input import (
-    CompletionFamilyDataInput,
-)
 from modelmetry.openapi.models.cost import Cost
 from modelmetry.openapi.models.document import Document
 from modelmetry.openapi.models.money import Money
 from modelmetry.openapi.models.options import Options
-from modelmetry.openapi.models.output import Output
 from modelmetry.openapi.models.retrieval_query import RetrievalQuery
-from modelmetry.openapi.models.text_input import TextInput
+from modelmetry.openapi.models.text_part import TextPart
 from modelmetry.openapi.models.usage import Usage
 from modelmetry.openapi.models.usage_value import UsageValue
+
+from modelmetry.openapi.models.assistant_message import AssistantMessage
+from modelmetry.openapi.models.system_message import SystemMessage
+from modelmetry.openapi.models.tool_message import ToolMessage
+from modelmetry.openapi.models.user_message import UserMessage
+from modelmetry.openapi.models.completion_family_data import CompletionFamilyData
+from modelmetry.openapi.models.payload import Payload, CompletionPayload
 
 
 class BaseSpan:
@@ -295,10 +298,11 @@ class CompletionSpan(BaseSpan):
         severity: str = "unset",
         family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
-        input: CompletionFamilyDataInput = None,
+        messages: List[
+            Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
+        ] = None,
         documents: List[Document] = None,
         options: Options = None,
-        output: Output = None,
         usage: Usage = None,
         cost: Cost = None,
     ):
@@ -316,8 +320,7 @@ class CompletionSpan(BaseSpan):
         self.family_data = CompletionFamilyData(
             Options=options or Options(),
             Documents=documents or None,
-            Input=input or None,
-            Output=output or None,
+            Messages=messages or [],
             Usage=usage or None,
             Cost=cost or None,
         )
@@ -334,32 +337,29 @@ class CompletionSpan(BaseSpan):
         self.family_data.options.provider = provider
         return self
 
-    def set_input(self, input: CompletionFamilyDataInput) -> "CompletionSpan":
-        self.family_data.input = input
-        return self
-
-    def set_input_text(self, input: str) -> "CompletionSpan":
-        self.set_input(CompletionFamilyDataInput(TextInput(Text=input)))
-        return self
-
-    def set_input_messages(
-        self, messages: List[ChatInputMessagesInner]
+    def set_completion_messages(
+        self, messages: List[CompletionFamilyDataMessagesInner]
     ) -> "CompletionSpan":
-        self.set_input(CompletionFamilyDataInput(ChatInput(Messages=messages)))
+        self.family_data.messages = messages or []
+        return
+
+    def add_system_text(self, text: str) -> "CompletionSpan":
+        self.family_data.messages = self.family_data.messages or []
+        self.family_data.messages.append(
+            {"Role": "system", "Contents": [{"Text": text}]}
+        )
         return self
 
-    def set_output(self, output: Output) -> "CompletionSpan":
-        self.family_data.output = output
+    def add_user_text(self, text: str) -> "CompletionSpan":
+        self.family_data.messages = self.family_data.messages or []
+        self.family_data.messages.append({"Role": "user", "Contents": [{"Text": text}]})
         return self
 
-    def set_output_text(self, output: str) -> "CompletionSpan":
-        self.set_output(Output(Text=output))
-        return self
-
-    def set_output_messages(
-        self, messages: List[ChatInputMessagesInner]
-    ) -> "CompletionSpan":
-        self.set_output(Output(Messages=messages))
+    def add_assistant_text(self, text: str) -> "CompletionSpan":
+        self.family_data.messages = self.family_data.messages or []
+        self.family_data.messages.append(
+            {"Role": "assistant", "Contents": [{"Text": text}]}
+        )
         return self
 
     def set_usage(

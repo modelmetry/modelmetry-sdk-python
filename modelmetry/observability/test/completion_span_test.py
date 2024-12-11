@@ -1,20 +1,24 @@
 import unittest
 
 import unittest
-from modelmetry.openapi.models.chat_input import ChatInput
-from modelmetry.openapi.models.chat_input_messages_inner import ChatInputMessagesInner
-from modelmetry.openapi.models.completion_family_data_input import (
-    CompletionFamilyDataInput,
-)
-from modelmetry.openapi.models.cost import Cost
-from modelmetry.openapi.models.document import Document
-from modelmetry.openapi.models.money import Money
-from modelmetry.openapi.models.options import Options
-from modelmetry.openapi.models.output import Output
-from modelmetry.openapi.models.text_input import TextInput
-from modelmetry.openapi.models.usage import Usage
-from modelmetry.openapi.models.usage_value import UsageValue
 from modelmetry.observability.span import CompletionSpan
+from modelmetry.openapi.models import (
+    Payload,
+    CompletionFamilyData,
+    CompletionPayload,
+    Cost,
+    Document,
+    Money,
+    Options,
+    Usage,
+    UsageValue,
+)
+from modelmetry.openapi.models.system_message import SystemMessage
+from modelmetry.openapi.models.text_part import TextPart
+
+# messages: List[
+#     Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
+# ],
 
 
 class TestCompletionSpan(unittest.TestCase):
@@ -27,9 +31,7 @@ class TestCompletionSpan(unittest.TestCase):
         self.severity = "severity"
         self.family = "family"
         self.metadata = {"key": "value"}
-        self.input_text = "input_text"
-        self.output_text = "output_text"
-        self.messages = [ChatInputMessagesInner(message="message")]
+        self.messages = []
         self.documents = [
             Document(
                 Identifier="identifier",
@@ -40,7 +42,6 @@ class TestCompletionSpan(unittest.TestCase):
             )
         ]
         self.options = Options()
-        self.output = Output(Text="text")
         self.usage = Usage(input=UsageValue(Amount=10, Unit="tokens"))
         self.cost = Cost(input=Money(Amount=10.0, Currency="USD"))
 
@@ -55,10 +56,9 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
+            messages=self.messages,
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -73,11 +73,7 @@ class TestCompletionSpan(unittest.TestCase):
         self.assertEqual(span.metadata, self.metadata)
         self.assertEqual(span.family_data.options, self.options)
         self.assertEqual(span.family_data.documents, self.documents)
-        self.assertEqual(
-            span.family_data.input,
-            CompletionFamilyDataInput(TextInput(Text=self.input_text)),
-        )
-        self.assertEqual(span.family_data.output, self.output)
+        self.assertEqual(span.family_data.messages, self.messages)
         self.assertEqual(span.family_data.usage, self.usage)
         self.assertEqual(span.family_data.cost, self.cost)
 
@@ -92,10 +88,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -114,10 +108,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -125,7 +117,7 @@ class TestCompletionSpan(unittest.TestCase):
         span.set_provider("new_provider")
         self.assertEqual(span.family_data.options.provider, "new_provider")
 
-    def test_completion_span_set_input(self):
+    def test_completion_span_add_system_text(self):
         span = CompletionSpan(
             name=self.name,
             trace_id=self.trace_id,
@@ -136,44 +128,19 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
 
-        new_input = CompletionFamilyDataInput(TextInput(Text=self.input_text))
-        span.set_input(new_input)
-        self.assertEqual(span.family_data.input, new_input)
-
-    def test_completion_span_set_input_text(self):
-        span = CompletionSpan(
-            name=self.name,
-            trace_id=self.trace_id,
-            tenant_id=self.tenant_id,
-            model="model",
-            parent_id=self.parent_id,
-            message=self.message,
-            severity=self.severity,
-            family=self.family,
-            metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
-            documents=self.documents,
-            options=self.options,
-            output=self.output,
-            usage=self.usage,
-            cost=self.cost,
-        )
-
-        span.set_input_text("new_input_text")
+        span.add_system_text("the prompt")
         self.assertEqual(
-            span.family_data.input,
-            CompletionFamilyDataInput(TextInput(Text="new_input_text")),
+            span.family_data.messages,
+            [{"Role": "system", "Contents": [{"Text": "the prompt"}]}],
         )
 
-    def test_completion_span_set_input_messages(self):
+    def test_completion_span_add_user_text(self):
         span = CompletionSpan(
             name=self.name,
             trace_id=self.trace_id,
@@ -184,21 +151,19 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
 
-        span.set_input_messages(self.messages)
+        span.add_user_text("the prompt")
         self.assertEqual(
-            span.family_data.input,
-            CompletionFamilyDataInput(ChatInput(Messages=self.messages)),
+            span.family_data.messages,
+            [{"Role": "user", "Contents": [{"Text": "the prompt"}]}],
         )
 
-    def test_completion_span_set_output(self):
+    def test_completion_span_add_assistant_text(self):
         span = CompletionSpan(
             name=self.name,
             trace_id=self.trace_id,
@@ -209,61 +174,17 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
 
-        new_output = Output(Text="new_text")
-        span.set_output(new_output)
-        self.assertEqual(span.family_data.output, new_output)
-
-    def test_completion_span_set_output_text(self):
-        span = CompletionSpan(
-            name=self.name,
-            trace_id=self.trace_id,
-            tenant_id=self.tenant_id,
-            model="model",
-            parent_id=self.parent_id,
-            message=self.message,
-            severity=self.severity,
-            family=self.family,
-            metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
-            documents=self.documents,
-            options=self.options,
-            output=self.output,
-            usage=self.usage,
-            cost=self.cost,
+        span.add_assistant_text("the prompt")
+        self.assertEqual(
+            span.family_data.messages,
+            [{"Role": "assistant", "Contents": [{"Text": "the prompt"}]}],
         )
-
-        span.set_output_text("new_text")
-        self.assertEqual(span.family_data.output, Output(Text="new_text"))
-
-    def test_completion_span_set_output_messages(self):
-        span = CompletionSpan(
-            name=self.name,
-            trace_id=self.trace_id,
-            tenant_id=self.tenant_id,
-            model="model",
-            parent_id=self.parent_id,
-            message=self.message,
-            severity=self.severity,
-            family=self.family,
-            metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
-            documents=self.documents,
-            options=self.options,
-            output=self.output,
-            usage=self.usage,
-            cost=self.cost,
-        )
-
-        span.set_output_messages(self.messages)
-        self.assertEqual(span.family_data.output, Output(Messages=self.messages))
 
     def test_completion_span_set_usage(self):
         span = CompletionSpan(
@@ -276,10 +197,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -300,10 +219,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -324,10 +241,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )
@@ -359,10 +274,8 @@ class TestCompletionSpan(unittest.TestCase):
             severity=self.severity,
             family=self.family,
             metadata=self.metadata,
-            input=CompletionFamilyDataInput(TextInput(Text=self.input_text)),
             documents=self.documents,
             options=self.options,
-            output=self.output,
             usage=self.usage,
             cost=self.cost,
         )

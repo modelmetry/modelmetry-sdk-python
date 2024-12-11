@@ -1,5 +1,4 @@
 import unittest
-from datetime import datetime
 from modelmetry.observability.span import (
     EmbeddingsSpan,
     CompletionSpan,
