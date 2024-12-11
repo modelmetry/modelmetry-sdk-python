@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, field_validator
 from typing import Any, ClassVar, Dict, List, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -31,6 +31,13 @@ class Money(BaseModel):
     currency: Annotated[str, Field(min_length=3, strict=True, max_length=3)] = Field(alias="Currency")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Amount", "Currency"]
+
+    @field_validator('currency')
+    def currency_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^[A-Z]{3}$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Z]{3}$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,

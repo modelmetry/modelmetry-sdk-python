@@ -36,7 +36,7 @@ class GuardrailCheck(BaseModel):
     guardrail_id: StrictStr = Field(alias="GuardrailID")
     id: StrictStr = Field(alias="ID")
     metadata: Dict[str, Any] = Field(alias="Metadata")
-    outcome: StrictStr = Field(alias="Outcome")
+    outcome: StrictStr = Field(description="The status of the entry.", alias="Outcome")
     payload: Payload = Field(alias="Payload")
     summarised_entries: List[SummarisedEntry] = Field(alias="SummarisedEntries")
     tenant_id: StrictStr = Field(alias="TenantID")
@@ -129,7 +129,7 @@ class GuardrailCheck(BaseModel):
             "GuardrailID": obj.get("GuardrailID"),
             "ID": obj.get("ID"),
             "Metadata": obj.get("Metadata"),
-            "Outcome": obj.get("Outcome"),
+            "Outcome": obj.get("Outcome") if obj.get("Outcome") is not None else na,
             "Payload": Payload.from_dict(obj["Payload"]) if obj.get("Payload") is not None else None,
             "SummarisedEntries": [SummarisedEntry.from_dict(_item) for _item in obj["SummarisedEntries"]] if obj.get("SummarisedEntries") is not None else None,
             "TenantID": obj.get("TenantID"),

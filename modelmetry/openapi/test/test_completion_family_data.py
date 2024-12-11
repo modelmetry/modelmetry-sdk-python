@@ -43,15 +43,12 @@ class TestCompletionFamilyData(unittest.TestCase):
                         'key' : null
                         }
                     ],
-                input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(),
+                messages = [
+                    modelmetry.openapi.models.completion_family_data_messages_inner.CompletionFamilyData_Messages_inner()
+                    ],
                 options = {
                     'key' : null
                     },
-                output = modelmetry.openapi.models.output.Output(
-                    messages = [
-                        modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
-                        ], 
-                    text = '', ),
                 usage = {
                     'key' : null
                     }

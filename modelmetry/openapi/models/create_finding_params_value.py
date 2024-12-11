@@ -17,12 +17,11 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional, Union
-from modelmetry.openapi.models.create_finding_params_value_one_of import CreateFindingParamsValueOneOf
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-CREATEFINDINGPARAMSVALUE_ONE_OF_SCHEMAS = ["CreateFindingParamsValueOneOf", "bool", "float", "str"]
+CREATEFINDINGPARAMSVALUE_ONE_OF_SCHEMAS = ["bool", "float", "str"]
 
 class CreateFindingParamsValue(BaseModel):
     """
@@ -34,10 +33,8 @@ class CreateFindingParamsValue(BaseModel):
     oneof_schema_2_validator: Optional[StrictBool] = None
     # data type: str
     oneof_schema_3_validator: Optional[StrictStr] = None
-    # data type: CreateFindingParamsValueOneOf
-    oneof_schema_4_validator: Optional[CreateFindingParamsValueOneOf] = None
-    actual_instance: Optional[Union[CreateFindingParamsValueOneOf, bool, float, str]] = None
-    one_of_schemas: Set[str] = { "CreateFindingParamsValueOneOf", "bool", "float", "str" }
+    actual_instance: Optional[Union[bool, float, str]] = None
+    one_of_schemas: Set[str] = { "bool", "float", "str" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -78,17 +75,12 @@ class CreateFindingParamsValue(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # validate data type: CreateFindingParamsValueOneOf
-        if not isinstance(v, CreateFindingParamsValueOneOf):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `CreateFindingParamsValueOneOf`")
-        else:
-            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in CreateFindingParamsValue with oneOf schemas: CreateFindingParamsValueOneOf, bool, float, str. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in CreateFindingParamsValue with oneOf schemas: bool, float, str. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in CreateFindingParamsValue with oneOf schemas: CreateFindingParamsValueOneOf, bool, float, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in CreateFindingParamsValue with oneOf schemas: bool, float, str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -130,19 +122,13 @@ class CreateFindingParamsValue(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into CreateFindingParamsValueOneOf
-        try:
-            instance.actual_instance = CreateFindingParamsValueOneOf.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into CreateFindingParamsValue with oneOf schemas: CreateFindingParamsValueOneOf, bool, float, str. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into CreateFindingParamsValue with oneOf schemas: bool, float, str. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into CreateFindingParamsValue with oneOf schemas: CreateFindingParamsValueOneOf, bool, float, str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into CreateFindingParamsValue with oneOf schemas: bool, float, str. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -156,7 +142,7 @@ class CreateFindingParamsValue(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], CreateFindingParamsValueOneOf, bool, float, str]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], bool, float, str]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

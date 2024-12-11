@@ -8,7 +8,6 @@ pipi:
 
 specdl:
 	@echo "Downloading OpenAPI spec..."
-	# @curl -O https://api.modelmetry.com/sdk/spec.yaml
 	@curl -O http://0.0.0.0:8888/sdk/spec.yaml
 
 specgen: specdl

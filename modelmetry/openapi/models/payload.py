@@ -19,9 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.completion_family_data_input import CompletionFamilyDataInput
-from modelmetry.openapi.models.options import Options
-from modelmetry.openapi.models.output import Output
+from modelmetry.openapi.models.completion_payload import CompletionPayload
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,10 +27,8 @@ class Payload(BaseModel):
     """
     Payload
     """ # noqa: E501
-    input: Optional[CompletionFamilyDataInput] = Field(default=None, alias="Input")
-    options: Optional[Options] = Field(default=None, alias="Options")
-    output: Optional[Output] = Field(default=None, alias="Output")
-    __properties: ClassVar[List[str]] = ["Input", "Options", "Output"]
+    completion: Optional[CompletionPayload] = Field(default=None, alias="Completion")
+    __properties: ClassVar[List[str]] = ["Completion"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,15 +69,9 @@ class Payload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of input
-        if self.input:
-            _dict['Input'] = self.input.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of options
-        if self.options:
-            _dict['Options'] = self.options.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of output
-        if self.output:
-            _dict['Output'] = self.output.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of completion
+        if self.completion:
+            _dict['Completion'] = self.completion.to_dict()
         return _dict
 
     @classmethod
@@ -94,9 +84,7 @@ class Payload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Input": CompletionFamilyDataInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
-            "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None,
-            "Output": Output.from_dict(obj["Output"]) if obj.get("Output") is not None else None
+            "Completion": CompletionPayload.from_dict(obj["Completion"]) if obj.get("Completion") is not None else None
         })
         return _obj
 

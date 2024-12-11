@@ -44,7 +44,9 @@ class TestOptions(unittest.TestCase):
                 functions = [
                     ''
                     ],
-                logit_bias = None,
+                logit_bias = {
+                    'key' : null
+                    },
                 logprobs = True,
                 max_tokens = 56,
                 model = '',
@@ -54,18 +56,21 @@ class TestOptions(unittest.TestCase):
                 n = 56,
                 presence_penalty = 1.337,
                 provider = '',
-                response_format = None,
+                response_format = {
+                    'key' : null
+                    },
                 seed = 56,
-                stop = None,
+                stop = {
+                    'key' : null
+                    },
                 stream = True,
                 temperature = 0,
                 timeout = 0,
                 tool_choice = '',
                 tools = [
-                    modelmetry.openapi.models.tool.Tool(
-                        description = '', 
-                        name = '', 
-                        parameters = null, )
+                    {
+                        'key' : null
+                        }
                     ],
                 top_logprobs = 56,
                 top_p = 0,

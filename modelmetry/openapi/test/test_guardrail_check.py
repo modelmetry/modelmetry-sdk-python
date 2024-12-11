@@ -42,17 +42,11 @@ class TestGuardrailCheck(unittest.TestCase):
                 guardrail_id = '',
                 id = '',
                 metadata = None,
-                outcome = 'pass',
+                outcome = 'na',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
-                    options = {
+                    completion = {
                         'key' : null
-                        }, 
-                    output = modelmetry.openapi.models.output.Output(
-                        messages = [
-                            modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
-                            ], 
-                        text = '', ), ),
+                        }, ),
                 summarised_entries = [
                     modelmetry.openapi.models.summarised_entry.SummarisedEntry(
                         check_id = '', 
@@ -66,8 +60,7 @@ class TestGuardrailCheck(unittest.TestCase):
                         id = '', 
                         instance_id = '', 
                         message = '', 
-                        outcome = '', 
-                        score = 1.337, 
+                        outcome = 'na', 
                         skip = '', 
                         span_id = '', 
                         tenant_id = '', 
@@ -85,17 +78,11 @@ class TestGuardrailCheck(unittest.TestCase):
                 guardrail_id = '',
                 id = '',
                 metadata = None,
-                outcome = 'pass',
+                outcome = 'na',
                 payload = modelmetry.openapi.models.payload.Payload(
-                    input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(), 
-                    options = {
+                    completion = {
                         'key' : null
-                        }, 
-                    output = modelmetry.openapi.models.output.Output(
-                        messages = [
-                            modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
-                            ], 
-                        text = '', ), ),
+                        }, ),
                 summarised_entries = [
                     modelmetry.openapi.models.summarised_entry.SummarisedEntry(
                         check_id = '', 
@@ -109,8 +96,7 @@ class TestGuardrailCheck(unittest.TestCase):
                         id = '', 
                         instance_id = '', 
                         message = '', 
-                        outcome = '', 
-                        score = 1.337, 
+                        outcome = 'na', 
                         skip = '', 
                         span_id = '', 
                         tenant_id = '', 

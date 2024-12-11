@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **guardrail_id** | **str** |  | 
 **id** | **str** |  | 
 **metadata** | **object** |  | 
-**outcome** | **str** |  | 
+**outcome** | **str** | The status of the entry. | [default to na]
 **payload** | [**Payload**](Payload.md) |  | 
 **summarised_entries** | [**List[SummarisedEntry]**](SummarisedEntry.md) |  | 
 **tenant_id** | **str** |  | 

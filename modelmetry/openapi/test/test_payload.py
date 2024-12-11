@@ -35,15 +35,9 @@ class TestPayload(unittest.TestCase):
         model = Payload()
         if include_optional:
             return Payload(
-                input = modelmetry.openapi.models.completion_family_data_input.CompletionFamilyData_Input(),
-                options = {
+                completion = {
                     'key' : null
-                    },
-                output = modelmetry.openapi.models.output.Output(
-                    messages = [
-                        modelmetry.openapi.models.chat_input_messages_inner.ChatInput_Messages_inner()
-                        ], 
-                    text = '', )
+                    }
             )
         else:
             return Payload(

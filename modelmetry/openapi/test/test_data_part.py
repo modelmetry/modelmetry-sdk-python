@@ -35,14 +35,14 @@ class TestDataPart(unittest.TestCase):
         model = DataPart()
         if include_optional:
             return DataPart(
+                data = '',
                 detail = 'auto',
-                mime_type = '',
-                uri = ''
+                mime_type = ''
             )
         else:
             return DataPart(
+                data = '',
                 mime_type = '',
-                uri = '',
         )
         """
 

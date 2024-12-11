@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**at** | **datetime** |  | 
 **created_at** | **datetime** |  | 
 **entry_id** | **str** |  | 
 **id** | **str** |  | 

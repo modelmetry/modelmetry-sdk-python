@@ -26,10 +26,10 @@ class DataPart(BaseModel):
     """
     DataPart
     """ # noqa: E501
+    data: StrictStr = Field(alias="Data")
     detail: Optional[StrictStr] = Field(default=None, alias="Detail")
     mime_type: StrictStr = Field(alias="MimeType")
-    uri: StrictStr = Field(alias="URI")
-    __properties: ClassVar[List[str]] = ["Detail", "MimeType", "URI"]
+    __properties: ClassVar[List[str]] = ["Data", "Detail", "MimeType"]
 
     @field_validator('detail')
     def detail_validate_enum(cls, value):
@@ -92,9 +92,9 @@ class DataPart(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "Data": obj.get("Data"),
             "Detail": obj.get("Detail"),
-            "MimeType": obj.get("MimeType"),
-            "URI": obj.get("URI")
+            "MimeType": obj.get("MimeType")
         })
         return _obj
 

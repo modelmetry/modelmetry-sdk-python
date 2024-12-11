@@ -36,12 +36,12 @@ class TestMoney(unittest.TestCase):
         if include_optional:
             return Money(
                 amount = 1.337,
-                currency = '012'
+                currency = 'AEI012'
             )
         else:
             return Money(
                 amount = 1.337,
-                currency = '012',
+                currency = 'AEI012',
         )
         """
 

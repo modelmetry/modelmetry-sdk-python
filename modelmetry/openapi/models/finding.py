@@ -28,7 +28,6 @@ class Finding(BaseModel):
     """
     Finding
     """ # noqa: E501
-    at: datetime = Field(alias="At")
     check_id: Optional[StrictStr] = Field(default=None, alias="CheckID")
     comment: StrictStr = Field(alias="Comment")
     created_at: datetime = Field(alias="CreatedAt")
@@ -41,11 +40,12 @@ class Finding(BaseModel):
     span_id: Optional[StrictStr] = Field(default=None, alias="SpanID")
     tenant_id: StrictStr = Field(alias="TenantID")
     trace_id: Optional[StrictStr] = Field(default=None, alias="TraceID")
+    unit: StrictStr = Field(alias="Unit")
     updated_at: datetime = Field(alias="UpdatedAt")
     value: CreateFindingParamsValue = Field(alias="Value")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "CheckID", "Comment", "CreatedAt", "EntryID", "EvaluatorID", "ID", "Metadata", "Name", "Source", "SpanID", "TenantID", "TraceID", "UpdatedAt", "Value", "XID"]
+    __properties: ClassVar[List[str]] = ["CheckID", "Comment", "CreatedAt", "EntryID", "EvaluatorID", "ID", "Metadata", "Name", "Source", "SpanID", "TenantID", "TraceID", "Unit", "UpdatedAt", "Value", "XID"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -115,7 +115,6 @@ class Finding(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "At": obj.get("At"),
             "CheckID": obj.get("CheckID"),
             "Comment": obj.get("Comment"),
             "CreatedAt": obj.get("CreatedAt"),
@@ -128,6 +127,7 @@ class Finding(BaseModel):
             "SpanID": obj.get("SpanID"),
             "TenantID": obj.get("TenantID"),
             "TraceID": obj.get("TraceID"),
+            "Unit": obj.get("Unit"),
             "UpdatedAt": obj.get("UpdatedAt"),
             "Value": CreateFindingParamsValue.from_dict(obj["Value"]) if obj.get("Value") is not None else None,
             "XID": obj.get("XID")

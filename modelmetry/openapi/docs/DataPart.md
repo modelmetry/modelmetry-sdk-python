@@ -5,9 +5,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**data** | **str** |  | 
 **detail** | **str** |  | [optional] 
 **mime_type** | **str** |  | 
-**uri** | **str** |  | 
 
 ## Example
 

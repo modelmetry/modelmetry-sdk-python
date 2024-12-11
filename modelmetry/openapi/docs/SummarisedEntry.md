@@ -12,8 +12,7 @@ Name | Type | Description | Notes
 **id** | **str** |  | 
 **instance_id** | **str** |  | 
 **message** | **str** |  | 
-**outcome** | **str** |  | 
-**score** | **float** |  | 
+**outcome** | **str** | The status of the entry. | [default to 'na']
 **skip** | **str** |  | 
 **span_id** | **str** |  | 
 **tenant_id** | **str** |  | 

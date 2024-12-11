@@ -27,7 +27,6 @@ class Event(BaseModel):
     """
     Event
     """ # noqa: E501
-    at: datetime = Field(alias="At")
     created_at: datetime = Field(alias="CreatedAt")
     entry_id: StrictStr = Field(alias="EntryID")
     id: StrictStr = Field(alias="ID")
@@ -39,7 +38,7 @@ class Event(BaseModel):
     updated_at: datetime = Field(alias="UpdatedAt")
     xid: StrictStr = Field(alias="XID")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "CreatedAt", "EntryID", "ID", "Metadata", "Name", "SpanID", "TenantID", "TraceID", "UpdatedAt", "XID"]
+    __properties: ClassVar[List[str]] = ["CreatedAt", "EntryID", "ID", "Metadata", "Name", "SpanID", "TenantID", "TraceID", "UpdatedAt", "XID"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,7 +98,6 @@ class Event(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "At": obj.get("At"),
             "CreatedAt": obj.get("CreatedAt"),
             "EntryID": obj.get("EntryID"),
             "ID": obj.get("ID"),

@@ -28,15 +28,15 @@ class SimplifiedFinding(BaseModel):
     """
     SimplifiedFinding
     """ # noqa: E501
-    at: datetime = Field(alias="At")
     comment: StrictStr = Field(alias="Comment")
+    created_at: datetime = Field(alias="CreatedAt")
     evaluator_id: StrictStr = Field(alias="EvaluatorID")
     metadata: Dict[str, Any] = Field(alias="Metadata")
     name: StrictStr = Field(alias="Name")
     source: StrictStr = Field(alias="Source")
     value: CreateFindingParamsValue = Field(alias="Value")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["At", "Comment", "EvaluatorID", "Metadata", "Name", "Source", "Value"]
+    __properties: ClassVar[List[str]] = ["Comment", "CreatedAt", "EvaluatorID", "Metadata", "Name", "Source", "Value"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -106,8 +106,8 @@ class SimplifiedFinding(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "At": obj.get("At"),
             "Comment": obj.get("Comment"),
+            "CreatedAt": obj.get("CreatedAt"),
             "EvaluatorID": obj.get("EvaluatorID"),
             "Metadata": obj.get("Metadata"),
             "Name": obj.get("Name"),

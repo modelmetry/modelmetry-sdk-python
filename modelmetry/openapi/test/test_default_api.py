@@ -33,6 +33,13 @@ class TestDefaultApi(unittest.TestCase):
         """
         pass
 
+    def test_evaluate(self) -> None:
+        """Test case for evaluate
+
+        Evaluate
+        """
+        pass
+
     def test_ingest_signals_v1(self) -> None:
         """Test case for ingest_signals_v1
 

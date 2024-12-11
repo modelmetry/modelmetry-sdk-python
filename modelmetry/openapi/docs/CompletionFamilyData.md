@@ -7,9 +7,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **cost** | [**Cost**](Cost.md) |  | [optional] 
 **documents** | [**List[Document]**](Document.md) |  | [optional] 
-**input** | [**CompletionFamilyDataInput**](CompletionFamilyDataInput.md) |  | [optional] 
+**messages** | [**List[CompletionFamilyDataMessagesInner]**](CompletionFamilyDataMessagesInner.md) |  | [optional] 
 **options** | [**Options**](Options.md) |  | [optional] 
-**output** | [**Output**](Output.md) |  | [optional] 
 **usage** | [**Usage**](Usage.md) |  | [optional] 
 
 ## Example

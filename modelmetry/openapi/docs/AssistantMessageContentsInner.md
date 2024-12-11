@@ -7,9 +7,9 @@ Represents a part of a completion message.
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **text** | **str** |  | 
+**data** | **str** |  | 
 **detail** | **str** |  | [optional] 
 **mime_type** | **str** |  | 
-**uri** | **str** |  | 
 
 ## Example
 

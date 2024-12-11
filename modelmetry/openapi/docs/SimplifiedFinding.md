@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**at** | **datetime** |  | 
 **comment** | **str** |  | 
+**created_at** | **datetime** |  | 
 **evaluator_id** | **str** |  | 
 **metadata** | **object** |  | 
 **name** | **str** |  | 

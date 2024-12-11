@@ -5,7 +5,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**at** | **datetime** |  | 
 **check_id** | **str** |  | [optional] 
 **comment** | **str** |  | 
 **created_at** | **datetime** |  | 
@@ -18,6 +17,7 @@ Name | Type | Description | Notes
 **span_id** | **str** |  | [optional] 
 **tenant_id** | **str** |  | 
 **trace_id** | **str** |  | [optional] 
+**unit** | **str** |  | 
 **updated_at** | **datetime** |  | 
 **value** | [**CreateFindingParamsValue**](CreateFindingParamsValue.md) |  | 
 **xid** | **str** |  | 

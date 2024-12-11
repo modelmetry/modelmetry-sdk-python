@@ -19,11 +19,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from modelmetry.openapi.models.completion_family_data_input import CompletionFamilyDataInput
+from modelmetry.openapi.models.completion_family_data_messages_inner import CompletionFamilyDataMessagesInner
 from modelmetry.openapi.models.cost import Cost
 from modelmetry.openapi.models.document import Document
 from modelmetry.openapi.models.options import Options
-from modelmetry.openapi.models.output import Output
 from modelmetry.openapi.models.usage import Usage
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,12 +33,11 @@ class CompletionFamilyData(BaseModel):
     """ # noqa: E501
     cost: Optional[Cost] = Field(default=None, alias="Cost")
     documents: Optional[List[Document]] = Field(default=None, alias="Documents")
-    input: Optional[CompletionFamilyDataInput] = Field(default=None, alias="Input")
+    messages: Optional[List[CompletionFamilyDataMessagesInner]] = Field(default=None, alias="Messages")
     options: Optional[Options] = Field(default=None, alias="Options")
-    output: Optional[Output] = Field(default=None, alias="Output")
     usage: Optional[Usage] = Field(default=None, alias="Usage")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["Cost", "Documents", "Input", "Options", "Output", "Usage"]
+    __properties: ClassVar[List[str]] = ["Cost", "Documents", "Messages", "Options", "Usage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,15 +90,16 @@ class CompletionFamilyData(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['Documents'] = _items
-        # override the default output from pydantic by calling `to_dict()` of input
-        if self.input:
-            _dict['Input'] = self.input.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in messages (list)
+        _items = []
+        if self.messages:
+            for _item in self.messages:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['Messages'] = _items
         # override the default output from pydantic by calling `to_dict()` of options
         if self.options:
             _dict['Options'] = self.options.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of output
-        if self.output:
-            _dict['Output'] = self.output.to_dict()
         # override the default output from pydantic by calling `to_dict()` of usage
         if self.usage:
             _dict['Usage'] = self.usage.to_dict()
@@ -123,9 +122,8 @@ class CompletionFamilyData(BaseModel):
         _obj = cls.model_validate({
             "Cost": Cost.from_dict(obj["Cost"]) if obj.get("Cost") is not None else None,
             "Documents": [Document.from_dict(_item) for _item in obj["Documents"]] if obj.get("Documents") is not None else None,
-            "Input": CompletionFamilyDataInput.from_dict(obj["Input"]) if obj.get("Input") is not None else None,
+            "Messages": [CompletionFamilyDataMessagesInner.from_dict(_item) for _item in obj["Messages"]] if obj.get("Messages") is not None else None,
             "Options": Options.from_dict(obj["Options"]) if obj.get("Options") is not None else None,
-            "Output": Output.from_dict(obj["Output"]) if obj.get("Output") is not None else None,
             "Usage": Usage.from_dict(obj["Usage"]) if obj.get("Usage") is not None else None
         })
         # store additional fields in additional_properties

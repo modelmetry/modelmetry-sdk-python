@@ -36,15 +36,15 @@ class TestAssistantMessageContentsInner(unittest.TestCase):
         if include_optional:
             return AssistantMessageContentsInner(
                 text = '',
+                data = '',
                 detail = 'auto',
-                mime_type = '',
-                uri = ''
+                mime_type = ''
             )
         else:
             return AssistantMessageContentsInner(
                 text = '',
+                data = '',
                 mime_type = '',
-                uri = '',
         )
         """
 

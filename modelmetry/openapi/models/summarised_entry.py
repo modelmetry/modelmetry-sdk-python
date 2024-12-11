@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.simplified_finding import SimplifiedFinding
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,13 +34,19 @@ class SummarisedEntry(BaseModel):
     id: StrictStr = Field(alias="ID")
     instance_id: Optional[StrictStr] = Field(alias="InstanceID")
     message: StrictStr = Field(alias="Message")
-    outcome: StrictStr = Field(alias="Outcome")
-    score: Optional[Union[StrictFloat, StrictInt]] = Field(alias="Score")
+    outcome: StrictStr = Field(description="The status of the entry.", alias="Outcome")
     skip: StrictStr = Field(alias="Skip")
     span_id: Optional[StrictStr] = Field(alias="SpanID")
     tenant_id: StrictStr = Field(alias="TenantID")
     trace_id: Optional[StrictStr] = Field(alias="TraceID")
-    __properties: ClassVar[List[str]] = ["CheckID", "DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Score", "Skip", "SpanID", "TenantID", "TraceID"]
+    __properties: ClassVar[List[str]] = ["CheckID", "DurationMs", "EvaluatorID", "Findings", "ID", "InstanceID", "Message", "Outcome", "Skip", "SpanID", "TenantID", "TraceID"]
+
+    @field_validator('outcome')
+    def outcome_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['na', 'pending', 'pass', 'fail', 'error', 'skip']):
+            raise ValueError("must be one of enum values ('na', 'pending', 'pass', 'fail', 'error', 'skip')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,11 +104,6 @@ class SummarisedEntry(BaseModel):
         if self.instance_id is None and "instance_id" in self.model_fields_set:
             _dict['InstanceID'] = None
 
-        # set to None if score (nullable) is None
-        # and model_fields_set contains the field
-        if self.score is None and "score" in self.model_fields_set:
-            _dict['Score'] = None
-
         # set to None if span_id (nullable) is None
         # and model_fields_set contains the field
         if self.span_id is None and "span_id" in self.model_fields_set:
@@ -132,8 +133,7 @@ class SummarisedEntry(BaseModel):
             "ID": obj.get("ID"),
             "InstanceID": obj.get("InstanceID"),
             "Message": obj.get("Message"),
-            "Outcome": obj.get("Outcome"),
-            "Score": obj.get("Score"),
+            "Outcome": obj.get("Outcome") if obj.get("Outcome") is not None else 'na',
             "Skip": obj.get("Skip"),
             "SpanID": obj.get("SpanID"),
             "TenantID": obj.get("TenantID"),

@@ -35,7 +35,6 @@ class TestEvent(unittest.TestCase):
         model = Event()
         if include_optional:
             return Event(
-                at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 entry_id = '',
                 id = '',
@@ -49,7 +48,6 @@ class TestEvent(unittest.TestCase):
             )
         else:
             return Event(
-                at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 entry_id = '',
                 id = '',

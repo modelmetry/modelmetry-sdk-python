@@ -35,8 +35,8 @@ class TestSimplifiedFinding(unittest.TestCase):
         model = SimplifiedFinding()
         if include_optional:
             return SimplifiedFinding(
-                at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 comment = '',
+                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 evaluator_id = '',
                 metadata = None,
                 name = '',
@@ -45,8 +45,8 @@ class TestSimplifiedFinding(unittest.TestCase):
             )
         else:
             return SimplifiedFinding(
-                at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 comment = '',
+                created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'),
                 evaluator_id = '',
                 metadata = None,
                 name = '',
