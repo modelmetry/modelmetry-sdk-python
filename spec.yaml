@@ -134,7 +134,6 @@ components:
           additionalProperties: {}
           type: object
       required:
-        - Options
         - Messages
       type: object
     Cost:

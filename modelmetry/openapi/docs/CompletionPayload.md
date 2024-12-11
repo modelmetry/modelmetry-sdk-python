@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **messages** | [**List[CompletionFamilyDataMessagesInner]**](CompletionFamilyDataMessagesInner.md) |  | 
-**options** | **object** |  | 
+**options** | **object** |  | [optional] 
 
 ## Example
 

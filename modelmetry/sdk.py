@@ -1,10 +1,7 @@
-from typing import List
-
 from modelmetry import openapi
 from modelmetry.guardrails.client import GuardrailsClient
 from modelmetry.openapi.models import CheckPayloadRequestBody, GuardrailCheck
 from modelmetry.observability.client import ObservabilityClient
-from modelmetry.openapi.models.text_input import TextInput
 
 
 class GuardrailCheckOutput:
@@ -25,7 +22,7 @@ class GuardrailCheckOutput:
         self.Errored = True if call.outcome == "error" else False
 
     def __str__(self):
-        return f"GuardrailCheckOutput(ID={self.Call.id}, Passed={self.Passed} Failed={self.Failed} Errored={self.Errored})"
+        return f"GuardrailCheckOutput(ID={self.Call.id or ""}, Passed={self.Passed} Failed={self.Failed} Errored={self.Errored})"
 
     def __repr__(self):
         return f"GuardrailCheckOutput(ID={self.Call.id}, Passed={self.Passed} Failed={self.Failed} Errored={self.Errored})"

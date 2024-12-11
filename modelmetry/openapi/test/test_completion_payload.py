@@ -45,7 +45,6 @@ class TestCompletionPayload(unittest.TestCase):
                 messages = [
                     modelmetry.openapi.models.completion_family_data_messages_inner.CompletionFamilyData_Messages_inner()
                     ],
-                options = None,
         )
         """
 

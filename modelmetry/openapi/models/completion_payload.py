@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from modelmetry.openapi.models.completion_family_data_messages_inner import CompletionFamilyDataMessagesInner
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +28,7 @@ class CompletionPayload(BaseModel):
     CompletionPayload
     """ # noqa: E501
     messages: List[CompletionFamilyDataMessagesInner] = Field(alias="Messages")
-    options: Dict[str, Any] = Field(alias="Options")
+    options: Optional[Dict[str, Any]] = Field(default=None, alias="Options")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["Messages", "Options"]
 
