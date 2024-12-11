@@ -1,5 +1,3 @@
-# flake8: noqa
+"""Contains methods for accessing the API"""
 
-# import apis into api package
-from modelmetry.openapi.api.default_api import DefaultApi
-
+from .default import *

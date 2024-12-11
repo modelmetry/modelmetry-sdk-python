@@ -10,7 +10,10 @@ from modelmetry.observability.span import (
     OtherSpan,
     RetrievalSpan,
 )
-from modelmetry.openapi.models.create_trace_params import CreateTraceParams
+from modelmetry.openapi import (
+    CreateTraceParams,
+    CreateTraceParamsMetadata,
+)
 
 
 class Trace:
@@ -157,7 +160,7 @@ class Trace:
             name=self.name,
             start=self.started_at,
             end=self.ended_at or None,
-            metadata=self.metadata,
+            metadata=CreateTraceParamsMetadata.from_dict(self.metadata),
             session_id=None,
         )
 

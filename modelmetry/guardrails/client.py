@@ -2,10 +2,9 @@ from typing import Any, Dict, List, Union
 
 from devtools import pprint
 
-from modelmetry import openapi
 from modelmetry.guardrails.response import GuardrailCheckResponse
-from modelmetry.openapi.api.default_api import DefaultApi
-from modelmetry.openapi.models import (
+from modelmetry.openapi import (
+    AuthenticatedClient,
     CheckPayloadRequestBody,
     Payload,
     CompletionPayload,
@@ -13,51 +12,67 @@ from modelmetry.openapi.models import (
     UserMessage,
     AssistantMessage,
     ToolMessage,
-)
-from modelmetry.openapi.models.completion_family_data_messages_inner import (
-    CompletionFamilyDataMessagesInner,
+    TextPart,
+    check_payload,
+    AssistantMessageRole,
+    SystemMessageRole,
+    ToolMessageRole,
+    UserMessageRole,
 )
 
 # create a Message type that's a union of the above four message types
 Message = Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
 
 
+def log_request(request):
+    pprint(request.headers)
+
+
 class GuardrailsClient:
-    backend: DefaultApi = None
+    client: AuthenticatedClient = None
     tenant_id: str | None = None
 
     def __init__(
         self,
-        # backend
         api_key: str,
         tenant_id: str | None = None,
         host="https://api.modelmetry.com",
-        # opts
     ):
         if not api_key:
             raise ValueError("api_key is required to instantiate GuardrailsClient")
 
         self.tenant_id = tenant_id or None
         self.api_key = api_key
-        self.client = openapi.ApiClient(
-            openapi.Configuration(host, api_key={"apikeyAuth": api_key})
-        )
-        self.backend = openapi.DefaultApi(self.client)
+        self.client = AuthenticatedClient(
+            base_url=host,
+            token=api_key,
+            auth_header_name="X-API-Key",
+            prefix="",
+            httpx_args={"event_hooks": {"request": [log_request]}},
+        ).with_headers({"X-API-Key": api_key})
 
     def check_text(self, text: str, params: Dict[str, Any]) -> GuardrailCheckResponse:
         role = params.get("role", "user")
         if role == "user":
-            # {"Role": "user", "Contents": [{"Text": text}]}
-            obj = dict()
-            obj["Role"] = "user"
-            obj["Contents"] = [{"Text": text}]
-            message = UserMessage.from_dict(obj)
+            message = UserMessage(
+                role="user",
+                contents=[TextPart(text=text)],
+            )
         elif role == "system":
-            message = SystemMessage(Role=role, Text=text)
+            message = SystemMessage(
+                role="system",
+                contents=[TextPart(text=text)],
+            )
         elif role == "assistant":
-            message = AssistantMessage(Role=role, Text=text)
+            message = AssistantMessage(
+                role="assistant",
+                contents=[TextPart(text=text)],
+            )
         elif role == "tool":
-            message = ToolMessage(Role=role, Text=text)
+            message = ToolMessage(
+                role="tool",
+                contents=[TextPart(text=text)],
+            )
         else:
             raise ValueError(f"Invalid role: {role}")
         return self.check_message(message, params)
@@ -72,26 +87,23 @@ class GuardrailsClient:
     ) -> GuardrailCheckResponse:
 
         body = CheckPayloadRequestBody(
-            TenantID=self.tenant_id or None,
-            GuardrailID=params["guardrail_id"] or "-",
-            Payload=Payload(
-                Completion=CompletionPayload(
-                    Messages=[
-                        CompletionFamilyDataMessagesInner.from_dict(message.to_dict())
-                        for message in messages
-                    ],
-                    Options={},
+            tenant_id=self.tenant_id or None,
+            guardrail_id=params["guardrail_id"] or "-",
+            payload=Payload(
+                completion=CompletionPayload(
+                    messages=messages,
                 )
             ),
         )
 
         try:
-            data = self.backend.check_payload(body)
-            pprint(data)
-            output = GuardrailCheckResponse(check=data)
-            output.check = data
-            return output
-        except openapi.ApiException as e:
-            pprint(e.body)
+            with self.client as client:
+                data = check_payload.sync(client=client, body=body, dryrun=False)
+                output = GuardrailCheckResponse(check=data)
+                output.check = data
+                return output
+        except Exception as e:
+            pprint(e)
             output = GuardrailCheckResponse(error=e)
+            raise e
             return output

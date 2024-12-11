@@ -26,6 +26,10 @@ class TestIngest(unittest.TestCase):
         )
 
         trace2_span1 = trace2.completion(name="trace2.span1", model="model2")
+        trace2_span1.add_system_text("system text")
+        trace2_span1.add_user_text("user text")
+        trace2_span1.add_assistant_text("assistant text")
+
         trace2_span1_event1 = trace2_span1.event(name="trace2.span1.event1")
         trace2_span1_finding1 = trace2_span1.finding(
             name="trace2.span1.finding1", value=6, comment="cmt2"

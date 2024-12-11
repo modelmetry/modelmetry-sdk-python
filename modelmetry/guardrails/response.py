@@ -1,5 +1,5 @@
 from typing import Any, Optional
-from modelmetry.openapi.models.guardrail_check import GuardrailCheck
+from modelmetry.openapi import GuardrailCheck
 
 
 class GuardrailCheckResponse:
@@ -50,7 +50,7 @@ class GuardrailCheckResponse:
         self.error = error
 
     def __str__(self):
-        return f"GuardrailCheckOutput(ID={self.check.id if self.check else ""}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
+        return f"GuardrailCheckResponse(ID={self.check.id if self.check else "NONE"}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
 
     def __repr__(self):
-        return f"GuardrailCheckOutput(ID={self.check.id if self.check else ""}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"
+        return f"GuardrailCheckResponse(ID={self.check.id if self.check else "NONE"}, Passed={self.passed} Failed={self.failed} Errored={self.errored})"

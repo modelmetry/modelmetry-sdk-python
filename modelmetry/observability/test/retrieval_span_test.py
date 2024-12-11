@@ -2,6 +2,8 @@ import unittest
 
 import unittest
 from datetime import datetime, timezone
+
+from devtools import pprint
 from modelmetry.observability.span import RetrievalSpan, Document, RetrievalQuery
 
 
@@ -13,24 +15,24 @@ class TestRetrievalSpan(unittest.TestCase):
         self.name = "name"
         self.message = "message"
         self.severity = "severity"
-        self.family = "family"
+        self.family = "retrieval"
         self.metadata = {"key": "value"}
         self.queries = [
-            RetrievalQuery(TextRepresentation="query1"),
-            RetrievalQuery(TextRepresentation="query2"),
+            RetrievalQuery(text_representation="query1"),
+            RetrievalQuery(text_representation="query2"),
         ]
         self.documents = [
             Document(
-                Identifier="doc1",
-                Title="Document 1",
-                ContentType="text/plain",
-                Content="This is document 1",
+                identifier="doc1",
+                title="Document 1",
+                content_type="text/plain",
+                content="This is document 1",
             ),
             Document(
-                Identifier="doc2",
-                Title="Document 2",
-                ContentType="text/plain",
-                Content="This is document 2",
+                identifier="doc2",
+                title="Document 2",
+                content_type="text/plain",
+                content="This is document 2",
             ),
         ]
         self.retrieval_span = RetrievalSpan(
@@ -40,7 +42,6 @@ class TestRetrievalSpan(unittest.TestCase):
             parent_id=self.parent_id,
             message=self.message,
             severity=self.severity,
-            family=self.family,
             metadata=self.metadata,
             queries=self.queries,
             documents=self.documents,
@@ -67,11 +68,11 @@ class TestRetrievalSpan(unittest.TestCase):
 
     def test_retrieval_span_add_document(self):
         new_document = Document(
-            Identifier="doc3",
-            Title="Document 3",
-            ContentType="text/plain",
-            Content="This is document 3",
-            Metadata={"key": "value"},
+            identifier="doc3",
+            title="Document 3",
+            content_type="text/plain",
+            content="This is document 3",
+            metadata={"key": "value"},
         )
         self.retrieval_span.add_document(
             identifier=new_document.identifier,
@@ -91,7 +92,7 @@ class TestRetrievalSpan(unittest.TestCase):
         self.assertTrue(found)
 
     def test_retrieval_span_add_query(self):
-        new_query = RetrievalQuery(TextRepresentation="query3")
+        new_query = RetrievalQuery(text_representation="query3", embeddings=[1.0])
         self.retrieval_span.add_query(
             text_representation=new_query.text_representation,
             embeddings=new_query.embeddings,

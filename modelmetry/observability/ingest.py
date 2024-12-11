@@ -1,5 +1,7 @@
 from typing import List, Union
 
+from devtools import pprint
+
 from modelmetry.observability.event import Event
 from modelmetry.observability.finding import Finding
 from modelmetry.observability.trace import Trace
@@ -9,11 +11,11 @@ from modelmetry.observability.span import (
     EmbeddingsSpan,
     OtherSpan,
 )
-from modelmetry.openapi.models.create_event_params import CreateEventParams
-from modelmetry.openapi.models.create_finding_params import CreateFindingParams
-from modelmetry.openapi.models.create_span_params import CreateSpanParams
-from modelmetry.openapi.models.create_trace_params import CreateTraceParams
-from modelmetry.openapi.models.ingest_signals_v1_request_body import (
+from modelmetry.openapi.models import (
+    CreateEventParams,
+    CreateFindingParams,
+    CreateSpanParams,
+    CreateTraceParams,
     IngestSignalsV1RequestBody,
 )
 
@@ -56,9 +58,11 @@ def build_ingest_batch_from_traces(items: List[Trace]) -> IngestSignalsV1Request
         f.to_ingest_params() for f in all_findings
     ]
 
-    return IngestSignalsV1RequestBody(
+    body = IngestSignalsV1RequestBody(
         traces=converted_traces,
         spans=converted_spans,
         events=converted_events,
         findings=converted_findings,
     )
+
+    return body

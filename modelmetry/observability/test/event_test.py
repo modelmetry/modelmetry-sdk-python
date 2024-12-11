@@ -38,7 +38,7 @@ class TestEvent(unittest.TestCase):
         self.assertEqual(ingest_params.xid, event.xid)
         self.assertEqual(ingest_params.name, event.name)
         self.assertEqual(ingest_params.at, event.at)
-        self.assertEqual(ingest_params.metadata, event.metadata)
+        self.assertEqual(ingest_params.metadata.to_dict(), event.metadata)
         self.assertEqual(ingest_params.trace_id, event.trace_id)
         self.assertEqual(ingest_params.span_id, event.span_id)
         self.assertIsNone(ingest_params.entry_id)

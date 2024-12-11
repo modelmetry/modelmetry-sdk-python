@@ -2,33 +2,31 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Union
 import uuid
 
+from devtools import pprint
+
 from modelmetry.observability.finding import Finding
 from modelmetry.observability.event import Event
-from modelmetry.openapi.models.completion_family_data_messages_inner import (
-    CompletionFamilyDataMessagesInner,
-)
-from modelmetry.openapi import CreateSpanParams
-from modelmetry import (
-    EmbeddingsFamilyData,
-    CompletionFamilyData,
-    RetrievalFamilyData,
-    Options,
-)
-from modelmetry.openapi.models.cost import Cost
-from modelmetry.openapi.models.document import Document
-from modelmetry.openapi.models.money import Money
-from modelmetry.openapi.models.options import Options
-from modelmetry.openapi.models.retrieval_query import RetrievalQuery
-from modelmetry.openapi.models.text_part import TextPart
-from modelmetry.openapi.models.usage import Usage
-from modelmetry.openapi.models.usage_value import UsageValue
 
-from modelmetry.openapi.models.assistant_message import AssistantMessage
-from modelmetry.openapi.models.system_message import SystemMessage
-from modelmetry.openapi.models.tool_message import ToolMessage
-from modelmetry.openapi.models.user_message import UserMessage
-from modelmetry.openapi.models.completion_family_data import CompletionFamilyData
-from modelmetry.openapi.models.payload import Payload, CompletionPayload
+from modelmetry.openapi import (
+    Cost,
+    Document,
+    Money,
+    Options,
+    RetrievalQuery,
+    Usage,
+    UsageValue,
+    AssistantMessage,
+    SystemMessage,
+    ToolMessage,
+    UserMessage,
+    RetrievalFamilyData,
+    CompletionFamilyData,
+    EmbeddingsFamilyData,
+    CreateSpanParams,
+    CreateSpanParamsMetadata,
+    Unset,
+)
+from modelmetry.openapi.models.text_part import TextPart
 
 
 class BaseSpan:
@@ -41,7 +39,7 @@ class BaseSpan:
         parent_id: Optional[str] = None,
         message: str = "",
         severity: str = "unset",
-        family: str = "",
+        family: str = "other",
         metadata: Optional[Dict[str, Any]] = None,
     ):
         self.xid: str = str(uuid.uuid4())
@@ -54,7 +52,7 @@ class BaseSpan:
         self.ended_at: Optional[datetime] = None
         self.severity: str = severity
         self.metadata: Dict[str, Any] = metadata or {}
-        self.family: str = family
+        self.family: str = family or "other"
         self.family_data: Dict[str, Any] = {}
 
         self.spans: List[
@@ -66,7 +64,7 @@ class BaseSpan:
     def finding(
         self,
         name: str,
-        value: Union[int, bool, str],
+        value: Union[float, int, bool, str],
         comment: Optional[str] = None,
         description: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None,
@@ -194,21 +192,6 @@ class BaseSpan:
 
         return self
 
-    def to_ingest_params(self) -> CreateSpanParams:
-        return CreateSpanParams(
-            xid=self.xid,
-            name=self.name,
-            start=self.started_at,
-            end=self.ended_at or None,
-            message=self.message,
-            trace_id=self.trace_id,
-            metadata=self.metadata,
-            family=self.family,
-            family_data=self.family_data,
-            parent_id=self.parent_id,
-            severity=self.severity,
-        )
-
     def __eq__(self, other):
         if not isinstance(other, BaseSpan):
             return False
@@ -228,7 +211,6 @@ class OtherSpan(BaseSpan):
         parent_id: Optional[str] = None,
         message: str = "",
         severity: str = "unset",
-        family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
     ):
         super().__init__(
@@ -238,9 +220,26 @@ class OtherSpan(BaseSpan):
             parent_id=parent_id,
             message=message,
             severity=severity,
-            family=family,
+            family="other",
             metadata=metadata,
         )
+
+    def to_ingest_params(self) -> CreateSpanParams:
+        params = CreateSpanParams(
+            xid=self.xid,
+            name=self.name,
+            start=self.started_at,
+            end=self.ended_at or None,
+            message=self.message,
+            trace_id=self.trace_id,
+            metadata=CreateSpanParamsMetadata.from_dict(self.metadata),
+            family=self.family,
+            family_data=self.family_data,
+            parent_id=self.parent_id,
+            severity=self.severity,
+        )
+
+        return params
 
     def end(self) -> "OtherSpan":
         self.maybe_set_ended_at_to_now()
@@ -248,6 +247,7 @@ class OtherSpan(BaseSpan):
 
 
 class EmbeddingsSpan(BaseSpan):
+    family_data: EmbeddingsFamilyData
 
     def __init__(
         self,
@@ -257,7 +257,6 @@ class EmbeddingsSpan(BaseSpan):
         parent_id: Optional[str] = None,
         message: str = "",
         severity: str = "unset",
-        family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
         inputs: List[str] = None,
         options: Options = None,
@@ -269,7 +268,7 @@ class EmbeddingsSpan(BaseSpan):
             parent_id=parent_id,
             message=message,
             severity=severity,
-            family=family,
+            family="embeddings",
             metadata=metadata,
         )
 
@@ -278,13 +277,29 @@ class EmbeddingsSpan(BaseSpan):
             options=options or Options(),
         )
 
+    def to_ingest_params(self) -> CreateSpanParams:
+        params = CreateSpanParams(
+            xid=self.xid,
+            name=self.name,
+            start=self.started_at,
+            end=self.ended_at or None,
+            message=self.message,
+            trace_id=self.trace_id,
+            metadata=CreateSpanParamsMetadata.from_dict(self.metadata),
+            family=self.family,
+            family_data=self.family_data,
+            parent_id=self.parent_id,
+            severity=self.severity,
+        )
+
+        return params
+
     def end(self) -> "EmbeddingsSpan":
         self.maybe_set_ended_at_to_now()
         return self
 
 
 class CompletionSpan(BaseSpan):
-
     family_data: CompletionFamilyData
 
     def __init__(
@@ -296,7 +311,6 @@ class CompletionSpan(BaseSpan):
         parent_id: Optional[str] = None,
         message: str = "",
         severity: str = "unset",
-        family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
         messages: List[
             Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
@@ -313,16 +327,12 @@ class CompletionSpan(BaseSpan):
             parent_id=parent_id,
             message=message,
             severity=severity,
-            family=family,
+            family="completion",
             metadata=metadata,
         )
 
         self.family_data = CompletionFamilyData(
-            Options=options or Options(),
-            Documents=documents or None,
-            Messages=messages or [],
-            Usage=usage or None,
-            Cost=cost or None,
+            messages=messages or [],
         )
 
     def end(self) -> "CompletionSpan":
@@ -338,28 +348,46 @@ class CompletionSpan(BaseSpan):
         return self
 
     def set_completion_messages(
-        self, messages: List[CompletionFamilyDataMessagesInner]
+        self,
+        messages: List[
+            Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
+        ],
     ) -> "CompletionSpan":
         self.family_data.messages = messages or []
         return
 
     def add_system_text(self, text: str) -> "CompletionSpan":
-        self.family_data.messages = self.family_data.messages or []
-        self.family_data.messages.append(
-            {"Role": "system", "Contents": [{"Text": text}]}
+        self.append_message(
+            SystemMessage(
+                role="system",
+                contents=[TextPart(text=text)],
+            )
         )
         return self
 
     def add_user_text(self, text: str) -> "CompletionSpan":
-        self.family_data.messages = self.family_data.messages or []
-        self.family_data.messages.append({"Role": "user", "Contents": [{"Text": text}]})
+        self.append_message(
+            UserMessage(
+                role="user",
+                contents=[TextPart(text=text)],
+            )
+        )
         return self
 
     def add_assistant_text(self, text: str) -> "CompletionSpan":
-        self.family_data.messages = self.family_data.messages or []
-        self.family_data.messages.append(
-            {"Role": "assistant", "Contents": [{"Text": text}]}
+        self.append_message(
+            AssistantMessage(
+                role="assistant",
+                contents=[TextPart(text=text)],
+            )
         )
+        return self
+
+    def append_message(
+        self, message: Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
+    ) -> "CompletionSpan":
+        self.family_data.messages = self.family_data.messages or []
+        self.family_data.messages.append(message)
         return self
 
     def set_usage(
@@ -367,11 +395,11 @@ class CompletionSpan(BaseSpan):
     ) -> "CompletionSpan":
         self.family_data.usage = self.family_data.usage or {}
         if kind == "input":
-            self.family_data.usage.input = UsageValue(Amount=amount, Unit=unit)
+            self.family_data.usage.input_ = UsageValue(amount=amount, unit=unit)
         elif kind == "output":
-            self.family_data.usage.output = UsageValue(Amount=amount, Unit=unit)
+            self.family_data.usage.output = UsageValue(amount=amount, unit=unit)
         elif kind == "total":
-            self.family_data.usage.total = UsageValue(Amount=amount, Unit=unit)
+            self.family_data.usage.total = UsageValue(amount=amount, unit=unit)
         return self
 
     def set_cost(
@@ -379,11 +407,11 @@ class CompletionSpan(BaseSpan):
     ) -> "CompletionSpan":
         self.family_data.cost = self.family_data.cost or {}
         if kind == "input":
-            self.family_data.cost.input = Money(Amount=amount, Currency=currency)
+            self.family_data.cost.input_ = Money(amount=amount, currency=currency)
         elif kind == "output":
-            self.family_data.cost.output = Money(Amount=amount, Currency=currency)
+            self.family_data.cost.output = Money(amount=amount, currency=currency)
         elif kind == "total":
-            self.family_data.cost.total = Money(Amount=amount, Currency=currency)
+            self.family_data.cost.total = Money(amount=amount, currency=currency)
         return self
 
     def add_document(
@@ -397,18 +425,34 @@ class CompletionSpan(BaseSpan):
         self.family_data.documents = self.family_data.documents or []
         self.family_data.documents.append(
             Document(
-                Identifier=identifier,
-                Title=title,
-                ContentType=content_type,
-                Content=content or None,
-                Metadata=metadata or None,
+                identifier=identifier,
+                title=title,
+                content_type=content_type,
+                content=content or None,
+                metadata=metadata or None,
             )
         )
         return self
 
+    def to_ingest_params(self) -> CreateSpanParams:
+        params = CreateSpanParams(
+            xid=self.xid,
+            name=self.name,
+            start=self.started_at,
+            end=self.ended_at or None,
+            message=self.message,
+            trace_id=self.trace_id,
+            metadata=CreateSpanParamsMetadata.from_dict(self.metadata),
+            family=self.family,
+            family_data=self.family_data.to_dict(),
+            parent_id=self.parent_id,
+            severity=self.severity,
+        )
+
+        return params
+
 
 class RetrievalSpan(BaseSpan):
-
     family_data: RetrievalFamilyData
 
     def __init__(
@@ -419,7 +463,6 @@ class RetrievalSpan(BaseSpan):
         parent_id: Optional[str] = None,
         message: str = "",
         severity: str = "unset",
-        family: str = "",
         metadata: Optional[Dict[str, Any]] = None,
         queries: List[RetrievalQuery] = None,
         documents: List[Document] = None,
@@ -431,13 +474,13 @@ class RetrievalSpan(BaseSpan):
             parent_id=parent_id,
             message=message,
             severity=severity,
-            family=family,
+            family="retrieval",
             metadata=metadata,
         )
 
         self.family_data = RetrievalFamilyData(
-            Queries=queries or [],
-            Documents=documents or [],
+            queries=queries or [],
+            documents=documents or [],
         )
 
     def end(self) -> "RetrievalSpan":
@@ -455,11 +498,11 @@ class RetrievalSpan(BaseSpan):
         self.family_data.documents = self.family_data.documents or []
         self.family_data.documents.append(
             Document(
-                Identifier=identifier,
-                Title=title,
-                ContentType=content_type,
-                Content=content or None,
-                Metadata=metadata or None,
+                identifier=identifier,
+                title=title,
+                content_type=content_type,
+                content=content or None,
+                metadata=metadata or None,
             )
         )
         return self
@@ -470,8 +513,25 @@ class RetrievalSpan(BaseSpan):
         self.family_data.queries = self.family_data.queries or []
         self.family_data.queries.append(
             RetrievalQuery(
-                TextRepresentation=text_representation,
-                Embeddings=embeddings or None,
+                text_representation=text_representation,
+                embeddings=embeddings or None,
             )
         )
         return self
+
+    def to_ingest_params(self) -> CreateSpanParams:
+        params = CreateSpanParams(
+            xid=self.xid,
+            name=self.name,
+            start=self.started_at,
+            end=self.ended_at or None,
+            message=self.message,
+            trace_id=self.trace_id,
+            metadata=CreateSpanParamsMetadata.from_dict(self.metadata),
+            family=self.family,
+            family_data=self.family_data,
+            parent_id=self.parent_id,
+            severity=self.severity,
+        )
+
+        return params

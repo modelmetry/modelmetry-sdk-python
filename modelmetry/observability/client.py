@@ -8,20 +8,21 @@ from modelmetry.observability.ingest import build_ingest_batch_from_traces
 from modelmetry.observability.trace import Trace
 import sys
 
-from modelmetry.openapi.api.default_api import DefaultApi
-from modelmetry.openapi.models.ingest_signals_v1_request_body import (
+from modelmetry.openapi import (
+    AuthenticatedClient,
     IngestSignalsV1RequestBody,
 )
+from modelmetry.openapi.api.default import ingest_signals_v1
 
 
 class FlushManager:
     def __init__(
         self,
-        api: DefaultApi,
+        client: AuthenticatedClient,
         on_failure: Callable[[List[Trace], Exception], None],
         on_flushed: Callable[[List[Trace]], None],
     ):
-        self.api = api
+        self.client = client
         self._running = True
         self.queue = queue.Queue()
         self.on_failure = on_failure
@@ -52,10 +53,11 @@ class FlushManager:
                 self.queue.task_done()
 
     def _send_batch(self, batch: IngestSignalsV1RequestBody):
-        try:
-            self.api.ingest_signals_v1(batch)
-        except Exception as e:
-            raise e
+        with self.client as client:
+            try:
+                ingest_signals_v1.sync_detailed(client=client, body=batch)
+            except Exception as e:
+                raise e
 
     def shutdown(self):
         self._running = False
@@ -73,7 +75,7 @@ class FlushManager:
 
 class ObservabilityClient:
     tenant_id: str = None
-    backend: DefaultApi = None
+    client: AuthenticatedClient = None
 
     traces: List[Trace] = []
     in_transit: Dict[str, Trace] = {}
@@ -104,20 +106,25 @@ class ObservabilityClient:
         self.max_size_kb = max_size_kb
         self.flush_interval = flush_interval
 
-        self.client = openapi.ApiClient(
-            openapi.Configuration(host, api_key={"apikeyAuth": api_key})
+        self.client = AuthenticatedClient(
+            base_url=host,
+            token=api_key,
+            auth_header_name="X-API-Key",
+            prefix="",
         )
-        self.backend = openapi.DefaultApi(self.client)
 
         # Initialize the flushing mechanism
         self.traces_lock = threading.Lock()
         self.task_manager = FlushManager(
-            api=self.backend,
+            client=self.client,
             on_failure=self._on_batch_failure,
             on_flushed=self._on_batch_flushed,
         )
         self.flush_timer = threading.Timer(self.flush_interval, self._timed_flush)
         self.flush_timer.start()
+
+        self.on_flush_success_callback = on_flush_success_callback
+        self.on_flush_failure_callback = on_flush_failure_callback
 
     def flush_batch(self, traces_to_flush: List[Trace]):
         batch = []

@@ -4,14 +4,19 @@ import uuid
 
 from typing import Dict, Optional
 from datetime import datetime
-from modelmetry.openapi import CreateFindingParams, CreateFindingParamsValue
+from modelmetry.openapi import (
+    CreateFindingParams,
+)
+from modelmetry.openapi import (
+    CreateFindingParamsMetadata,
+)
 
 
 class Finding:
     def __init__(
         self,
         name: str,
-        value: Union[int, bool, str],
+        value: Union[float, int, bool, str],
         tenant_id: str = None,
         trace_id: Optional[str] = None,
         span_id: Optional[str] = None,
@@ -23,7 +28,7 @@ class Finding:
     ) -> None:
         self.xid: str = str(uuid.uuid4())
         self.name: str = name
-        self.value: Union[int, bool, str] = value
+        self.value: Union[float, int, bool, str] = value
         self.tenant_id: str = tenant_id
         self.trace_id: Optional[str] = trace_id
         self.span_id: Optional[str] = span_id
@@ -33,7 +38,7 @@ class Finding:
         self.metadata = metadata or {}
         self.at: datetime = at or datetime.now(timezone.utc)
 
-    def set_value(self, value: Union[int, bool, str]) -> "Finding":
+    def set_value(self, value: Union[float, int, bool, str]) -> "Finding":
         self.value = value
         return self
 
@@ -41,12 +46,12 @@ class Finding:
         return CreateFindingParams(
             xid=self.xid,
             name=self.name,
-            value=CreateFindingParamsValue(actual_instance=self.value),
+            value=self.value,
             comment=self.comment,
             description=self.description,
             source=self.source or "sdk",
             at=self.at,
-            metadata=self.metadata,
+            metadata=CreateFindingParamsMetadata.from_dict(self.metadata),
             trace_id=self.trace_id,
             span_id=self.span_id,
             entry_id=None,

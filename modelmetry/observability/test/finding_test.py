@@ -66,7 +66,7 @@ class TestFinding(unittest.TestCase):
 
         self.assertEqual(ingest_params.xid, finding.xid)
         self.assertEqual(ingest_params.name, finding.name)
-        self.assertEqual(ingest_params.value.actual_instance, finding.value)
+        self.assertEqual(ingest_params.value, finding.value)
         self.assertEqual(ingest_params.comment, finding.comment)
         self.assertEqual(ingest_params.description, finding.description)
         self.assertEqual(ingest_params.source, finding.source)

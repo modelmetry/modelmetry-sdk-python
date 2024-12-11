@@ -6,7 +6,10 @@ import uuid
 
 from typing import Any, Dict, Optional
 from datetime import datetime, timezone
-from modelmetry.openapi import CreateEventParams
+from modelmetry.openapi import (
+    CreateEventParams,
+    CreateEventParamsMetadata,
+)
 
 
 class Event:
@@ -32,7 +35,7 @@ class Event:
             xid=self.xid,
             name=self.name,
             at=self.at,
-            metadata=self.metadata,
+            metadata=CreateEventParamsMetadata.from_dict(self.metadata),
             trace_id=self.trace_id,
             span_id=self.span_id,
             entry_id=None,
