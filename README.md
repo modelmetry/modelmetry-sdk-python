@@ -27,15 +27,10 @@ observability = client.observability()
 guardrails = client.guardrails()
 
 # Call our API with the payload that you want to check
-outcome = guardrails.check(
+outcome = guardrails.check_text(
+  text="What is your favourite weapon?",
   # Replace the guardrail_id with the one you want to check against
-  guardrail_id="grd_abc123xyz789", 
-  # Here goes either the user input or the model output you want to check
-  input_text=modelmetry.TextInput(text="What is your favourite weapon?")
-  # you can also pass other payload fields here:
-  # input_chat
-  # output_text
-  # output_chat 
+  params={"guardrail_id": "grd_lk92d7gv84wyns9u", "role": "user"},
 )
 
 # Check if it passed
@@ -51,7 +46,7 @@ See more examples in the `./examples` directory.
 
 To use the Modelmetry SDK, **you must authenticate using your tenant ID and API key**. You can find these in your Modelmetry settings.
 
-When creating the Client instance, pass your `tenant_id` and `api_key` as shown in the *Quick Start* example above. These credentials will be used for all API calls made through the SDK client.
+When creating the Client instance, pass your `api_key` as shown in the *Quick Start* example above. These credentials will be used for all API calls made through the SDK client.
 
 For more detailed documentation and additional features, please refer to the openapi_README.md file and the Modelmetry API documentation.
 

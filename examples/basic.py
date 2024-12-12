@@ -15,14 +15,15 @@ def main():
     # Instantiate the SDK with your tenant_id and api_key
     # You can find your API key in Modelmetry's settings
     client = modelmetry.sdk.Client(
-        tenant_id=os.getenv("TENANT_ID"),
+        # tenant_id=os.getenv("TENANT_ID"),
         api_key=os.getenv("API_KEY"),
         host=os.getenv("HOST"),
     )
 
     guardrails = client.guardrails()
 
-    # Call the guardrail with the CallGuardrailRequestBody object
+    # Call the guardrail to check some text with check_text.
+    # You can also use check_message, or even check_messages for an entire thread (e.g., system message, user message, and assistant message).
     res = guardrails.check_text(
         text="I want to know the weather in London tomorrow",
         params={"guardrail_id": "grd_l0laizj7wzcygvwyns9u", "role": "user"},
