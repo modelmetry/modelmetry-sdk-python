@@ -14,7 +14,9 @@ class Client:
     _observability: ObservabilityClient = None
     _guardrails: GuardrailsClient = None
 
-    def __init__(self, api_key: str, tenant_id: str, host="https://api.modelmetry.com"):
+    def __init__(
+        self, api_key: str, host="https://api.modelmetry.com", tenant_id: str = None
+    ):
         self._configuration = Configuration(
             host=host,
             api_key=api_key,
