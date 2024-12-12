@@ -14,18 +14,10 @@ from modelmetry.openapi import (
     ToolMessage,
     TextPart,
     check_payload,
-    AssistantMessageRole,
-    SystemMessageRole,
-    ToolMessageRole,
-    UserMessageRole,
 )
 
 # create a Message type that's a union of the above four message types
 Message = Union[SystemMessage, UserMessage, AssistantMessage, ToolMessage]
-
-
-def log_request(request):
-    pprint(request.headers)
 
 
 class GuardrailsClient:
@@ -48,7 +40,6 @@ class GuardrailsClient:
             token=api_key,
             auth_header_name="X-API-Key",
             prefix="",
-            httpx_args={"event_hooks": {"request": [log_request]}},
         ).with_headers({"X-API-Key": api_key})
 
     def check_text(self, text: str, params: Dict[str, Any]) -> GuardrailCheckResponse:
